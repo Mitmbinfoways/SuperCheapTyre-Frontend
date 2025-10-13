@@ -174,16 +174,19 @@ export const EnquirySection = () => {
             icon: "/contactus/call.svg",
             title: "Phone",
             value: "1234567832",
+            link: "tel:1234567832",
         },
         {
             icon: "/contactus/email.svg",
             title: "Email",
             value: "supercheaptyredandenong@gmail.com",
+            link: "mailto:supercheaptyredandenong@gmail.com",
         },
         {
             icon: "/contactus/location.svg",
             title: "Address",
             value: "114 Hammond Rd, Dandenong South VIC, 3175",
+            link: "https://www.google.com/maps/place/114+Hammond+Rd,+Dandenong+South+VIC+3175",
         },
     ];
 
@@ -200,14 +203,15 @@ export const EnquirySection = () => {
                         <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0">
                             <CardContent className="p-1 sm:p-2">
                                 <iframe
-                                    title="New Delhi Location"
+                                    title="Supercheap Tyres Dandenong Location"
                                     className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-lg"
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.346785820778!2d77.20902181508345!3d28.6139399824275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd35b5b2bdc7%3A0x4c06f3b7e5a7e2b7!2sNew%20Delhi%2C%20Delhi%2C%20India!5e0!3m2!1sen!2sin!4v1738176000000!5m2!1sen!2sin"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin"
                                     style={{ border: 0 }}
                                     allowFullScreen=""
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
                                 />
+
                             </CardContent>
                         </Card>
                     </div>
@@ -221,7 +225,13 @@ export const EnquirySection = () => {
                             <CardContent className="p-4 sm:p-5 h-full flex flex-col justify-center">
                                 <div className="flex flex-col gap-4 sm:gap-5">
                                     {contactInfo.map((info, index) => (
-                                        <div key={index} className="flex items-start gap-3">
+                                        <a
+                                            key={index}
+                                            href={info.link}
+                                            target={info.title === "Address" ? "_blank" : "_self"}
+                                            rel="noopener noreferrer"
+                                            className="flex items-start gap-3 hover:opacity-80 transition-opacity duration-200"
+                                        >
                                             <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] bg-[#000000] rounded-[5px] flex items-center justify-center flex-shrink-0">
                                                 <img
                                                     className="w-5 h-5 sm:w-6 sm:h-6"
@@ -233,11 +243,11 @@ export const EnquirySection = () => {
                                                 <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-sm tracking-[0] leading-[normal] mb-1">
                                                     {info.title}
                                                 </div>
-                                                <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal]">
+                                                <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal] break-all">
                                                     {info.value}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     ))}
 
                                     {/* Opening Hours */}

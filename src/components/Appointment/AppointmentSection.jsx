@@ -405,12 +405,12 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         <div>
           <label className="text-base font-normal mb-2 block">Phone No.</label>
           <input
-            type="tel"
+            type="number"
             placeholder="Enter your Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
-            className={`w-full p-2 placeholder:text-[#6F6F6F] border text-sm border-[#7E7E7E] rounded-lg bg-transparent focus:outline-none focus:ring-1 ${errors.phone && touched.phone ? 'border-[#FF0000] focus:ring-[#FF0000]' : 'border-border-gray focus:ring-brand-red'}`}
+            className={` no-arrows w-full p-2 placeholder:text-[#6F6F6F] border text-sm border-[#7E7E7E] rounded-lg bg-transparent focus:outline-none focus:ring-1 ${errors.phone && touched.phone ? 'border-[#FF0000] focus:ring-[#FF0000]' : 'border-border-gray focus:ring-brand-red'}`}
           />
           {errors.phone && touched.phone && (
             <p className="mt-1 text-xs text-[#FF0000]">{errors.phone}</p>
