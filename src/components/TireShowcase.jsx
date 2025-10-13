@@ -22,6 +22,7 @@ const TireCard = ({ image, name, price, onClick }) => (
 const TireShowcase = () => {
   const [bestSeller, setBestSeller] = useState([]);
   const [newArrival, setNewArrival] = useState([]);
+  const [popularProduct, setPopularProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -31,6 +32,7 @@ const TireShowcase = () => {
         const res = await gethomedata();
         const bs = res?.data?.data?.bestSeller || [];
         const na = res?.data?.data?.newArrival || [];
+        const pp = res?.data?.data?.popularProduct || null;
 
         const mapItem = (item) => ({
           id: item._id,
@@ -41,9 +43,13 @@ const TireShowcase = () => {
 
         setBestSeller(bs.map(mapItem));
         setNewArrival(na.map(mapItem));
+        if (pp) {
+          setPopularProduct(mapItem(pp));
+        }
       } catch (e) {
         setBestSeller([]);
         setNewArrival([]);
+        setPopularProduct(null);
       } finally {
         setLoading(false);
       }
@@ -110,22 +116,22 @@ const TireShowcase = () => {
               <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 sm:mb-4">
                 Popular
               </h3>
-              {(loading ? [] : bestSeller).slice(2, 3).map((p) => (
-                <div key={p.id} onClick={() => navigate(`/productdetails/${p.id}`)} className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer">
+              {popularProduct && (
+                <div key={popularProduct.id} onClick={() => navigate(`/productdetails/${popularProduct.id}`)} className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer">
                   <div className="bg-white rounded-lg sm:rounded-xl p-2  h-24 sm:h-32">
                     <img
-                      src={p.image}
-                      alt={p.name}
+                      src={popularProduct.image}
+                      alt={popularProduct.name}
                       className="w-full h-full object-contain"
                     />
                   </div>
                   <div className="text-white mb-8">
-                    <p className="font-medium text-sm sm:text-lg md:text-xl">{p.name}</p>
-                    <p className="font-medium text-xs sm:text-sm md:text-base">{p.price}</p>
+                    <p className="font-medium text-sm sm:text-lg md:text-xl">{popularProduct.name}</p>
+                    <p className="font-medium text-xs sm:text-sm md:text-base">{popularProduct.price}</p>
                     <p className="text-xs text-[#E0E0E0] mt-1">View Details</p>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
 
           </div>
