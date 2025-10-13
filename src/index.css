@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Roboto:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@500;600&family=Open+Sans:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  @apply font-lexend bg-white text-gray-800;
+}
+
+@font-face {
+  font-family: 'SourceSerif-bold';
+  src: url("/public/Font/static/SourceSerif4-Black.ttf");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* Add to your global CSS */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
+/* Prevent scrolling via mouse wheel or touch */
+.no-scroll {
+  overflow-x: hidden !important;
+}
+
+.swiper-pagination-bullet-active{
+  background-color: #000 !important;
+}
+
+.testimonials-pagination .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: #d1d5db; /* default gray-300 */
+  opacity: 1;
+  margin: 0 6px !important; /* increase spacing */
+}

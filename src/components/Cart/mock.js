@@ -1,0 +1,38 @@
+export const cartData = [
+  {
+    id: 1,
+    name: 'CrossClimate',
+    size: '165/65R13',
+    description: 'Platinum 7 77H BSW',
+    price: 145,
+    quantity: 1,
+    image: '/cart/carttyre.svg',
+  },
+  {
+    id: 2,
+    name: 'CrossClimate',
+    size: '165/65R13',
+    description: 'Platinum 7 77H BSW',
+    price: 145,
+    quantity: 1,
+    image: '/cart/carttyre.svg',
+  },
+  {
+    id: 3,
+    name: 'CrossClimate',
+    size: '165/65R13',
+    description: 'Platinum 7 77H BSW',
+    price: 145,
+    quantity: 1,
+    image: '/cart/carttyre.svg',
+  },
+    {
+    id: 4,
+    name: 'CrossClimate',
+    size: '165/65R13',
+    description: 'Platinum 7 77H BSW',
+    price: 130,
+    quantity: 1,
+    image: '/cart/carttyre.svg',
+  },
+];
