@@ -16,6 +16,8 @@ const HeroSection = () => {
       try {
         const response = await getTyreById(id);
         console.log('Product API Response:', response.data);
+        // Log the actual product data to see the ID field
+        console.log('Product data:', response.data?.data);
         setProduct(response.data?.data);
       } catch (error) {
         console.error('Error fetching product:', error);

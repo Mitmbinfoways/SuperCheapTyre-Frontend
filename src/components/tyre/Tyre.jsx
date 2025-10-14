@@ -31,6 +31,7 @@ function Tyre() {
           .filter((item) => item.category === "tyre") // 👈 only tyres
           .map((item) => ({
             id: item._id,
+            _id: item._id, // Also pass _id for compatibility
             image: getTyreImageUrl(item.images?.[0]), // fallback image
             brand: item.brand,
             name: item.name,

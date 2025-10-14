@@ -4,6 +4,7 @@ import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 
 const TyreCard = ({
   id,
+  _id, // Also accept _id for consistency
   image,
   brand,
   name,
@@ -12,6 +13,10 @@ const TyreCard = ({
   rating,
 }) => {
   const navigate = useNavigate();
+  
+  // Use either id or _id for consistency
+  const productId = id || _id;
+
   const renderStars = () => {
     const SolidStar = ({ size = 20, className = '' }) => (
       <svg width={size} height={size} viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -34,11 +39,20 @@ const TyreCard = ({
   const handleAddToCart = (e) => {
     e.stopPropagation();
     const cart = secureGetItem('cartItems', []);
-    const existingIndex = cart.findIndex((ci) => ci.id === id);
+    const existingIndex = cart.findIndex((ci) => ci.id === productId);
     if (existingIndex >= 0) {
       cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
     } else {
-      cart.push({ id, image, brand, name, size, price, quantity: 1 });
+      cart.push({ 
+        id: productId, 
+        image, 
+        name: name || brand || 'Tyre', 
+        brand, 
+        size, 
+        price, 
+        quantity: 1,
+        description: `${brand || ''} ${name || ''}`.trim() || 'Tyre Product'
+      });
     }
     secureSetItem('cartItems', cart);
     localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));

@@ -3,20 +3,11 @@ import { toast } from 'react-toastify';
 import Button from './ui/Button';
 import QuantityInput from './ui/QuantityInput';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
-
-// Removed top-level await dynamic imports; using static imports above
+import { getTyreImageUrl } from '../../Utils/Utils';
 
 const ProductInfo = (product) => {
   const [quantity, setQuantity] = useState(1);
 
-  // const specifications = [
-  //   { label: 'Brand :', value: 'Apollo', icon: '/productdetails/brand.svg' },
-  //   { label: 'Size :', value: '205/60R16', icon: '/productdetails/size.svg' },
-  //   { label: 'Tread type :', value: 'Type', icon: '/productdetails/tread.svg' },
-  //   { label: 'Stock :', value: '2', icon: '/productdetails/stock.svg' },
-  //   { label: 'Bolt pattern :', value: 'Bolt pattern', icon: '/productdetails/bolt.svg' },
-  //   { label: 'Offset :', value: 'offset', icon: '/productdetails/Offset.svg' }
-  // ];
   const specifications = [
     { label: 'Brand :', value: product.product.brand, icon: '/productdetails/brand.svg' },
     {
@@ -39,21 +30,22 @@ const ProductInfo = (product) => {
 
   const handleAddToCart = () => {
     const cart = secureGetItem('cartItems', []);
-    const productId = product.product.id;
+    const productId = product.product.id || product.product._id;
     const existingIndex = cart.findIndex((ci) => ci.id === productId);
     if (existingIndex >= 0) {
       cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + quantity;
     } else {
       cart.push({
         id: productId,
-        image: product.product.images?.[0] || '/cart/carttyre.svg',
-        name: product.product.name || product.product.brand || 'Tyre',
+        image: product.product.images?.[0] ? getTyreImageUrl(product.product.images[0]) : '/cart/carttyre.svg',
+        name: product.product.name || 'Tyre',
         brand: product.product.brand,
         size: product.product.tyreSpecifications
           ? `${product.product.tyreSpecifications.width}/${product.product.tyreSpecifications.profile}${product.product.tyreSpecifications.speedRating}${product.product.tyreSpecifications.diameter}`
           : 'N/A',
         price: product.product.price || 0,
         quantity,
+        description: `${product.product.brand || ''} ${product.product.name || ''}`.trim() || 'Tyre Product'
       });
     }
     secureSetItem('cartItems', cart);
