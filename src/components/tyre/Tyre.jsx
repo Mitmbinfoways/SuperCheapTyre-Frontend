@@ -11,17 +11,21 @@ import Loader from '../common/Loader';
 function Tyre() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [pageSize] = useState(6); // Set page size to 6 as in original
 
-  // Fetch data from API with axios
+  // Fetch data from API with axios and pagination
   useEffect(() => {
     const fetchTyres = async () => {
       try {
-        const response = await getTyres();
+        setLoading(true);
+        const response = await getTyres({ page: currentPage, limit: pageSize });
         console.log("API Response:", response.data);
 
         // extract and map response
         const items = response.data?.data?.items || [];
+        const pagination = response.data?.data?.pagination || {};
 
         const mappedProducts = items
           .filter((item) => item.category === "tyre") // 👈 only tyres
@@ -38,25 +42,18 @@ function Tyre() {
           }));
 
         setProducts(mappedProducts);
+        setTotalPages(pagination.totalPages || 1);
       } catch (error) {
         console.error("Error fetching tyres:", error);
         setProducts([]);
+        setTotalPages(1);
       } finally {
         setLoading(false);
       }
     };
 
     fetchTyres();
-  }, []);
-
-  // Pagination
-  const pageSize = 6;
-  const totalPages = Math.max(1, Math.ceil(products.length / pageSize));
-
-  const pageItems = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return products.slice(start, start + pageSize);
-  }, [products, currentPage]);
+  }, [currentPage, pageSize]);
 
   if (loading) {
     return <Loader label="Loading tyres..." />;
@@ -85,7 +82,7 @@ function Tyre() {
               </div>
 
               {/* Product Grid */}
-              <TyreGrid products={pageItems} />
+              <TyreGrid products={products} />
             </div>
           </div>
         </div>

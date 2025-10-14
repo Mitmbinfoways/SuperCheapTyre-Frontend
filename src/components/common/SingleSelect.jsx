@@ -14,9 +14,8 @@ export default function SingleSelect({
 }) {
     const [isOpen, setIsOpen] = useState(false)
     const [finalValue, setFinalValue] = useState(null)
-
     const dropdownRef = useRef(null)
-    
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -31,18 +30,13 @@ export default function SingleSelect({
     }, [])
 
     const isPrimitive = (val) => {
-        if (val === null) {
-            return
-        }
-
-        if (typeof val == "object" || typeof val == "function") {
-            return false
-        } else {
-            return true
-        }
+        if (val === null) return
+        return !(typeof val === "object" || typeof val === "function")
     }
 
-    const normalizedOptions = options.map((opt) => (isPrimitive(opt) ? { value: opt, label: opt } : opt))
+    const normalizedOptions = options.map((opt) =>
+        isPrimitive(opt) ? { value: opt, label: opt } : opt
+    )
 
     const renderValue = () => {
         const selectedOption = normalizedOptions.find((opt) => opt.value === value)
@@ -51,22 +45,18 @@ export default function SingleSelect({
 
     useEffect(() => {
         setFinalValue(!value ? defaultValue : value)
-    }, [value])
+    }, [value, defaultValue])
 
     return (
-        <div
-            className={`relative w-full ${className}`}
-            ref={dropdownRef}
-        >
+        <div className={`relative w-full ${className}`} ref={dropdownRef}>
             <div
-                className={`w-full p-2 border rounded-md bg-white cursor-pointer flex items-center justify-between ${selectStyle} ${
-                    !finalValue ? "text-gray-400" : "text-black"
-                } ${disabled ? "!bg-gray-100" : ""}`}
+                className={`w-full p-2 backdrop-blur-lg bg-white/30 cursor-pointer flex items-center justify-between ${selectStyle} ${disabled ? "!bg-gray-100/50" : ""}`}
                 onClick={() => !disabled && setIsOpen(!isOpen)}
             >
-                <span className="">{renderValue()}</span>
+                <span>{renderValue()}</span>
                 <svg
-                    className={`w-5 h-5 text-gray-950 transition-transform ${isOpen ? "transform rotate-180" : ""}`}
+                    className={`w-5 h-5 text-gray-950 transition-transform ${isOpen ? "transform rotate-180" : ""
+                        }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -80,18 +70,22 @@ export default function SingleSelect({
                     />
                 </svg>
             </div>
+
             {isOpen && (
-                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                <div className="absolute z-50 w-full mt-1 backdrop-blur-lg bg-[#e5e2ea]/80 border border-white/20 rounded-xl shadow-lg">
                     {normalizedOptions.map((option) => (
                         <div
                             key={option.value}
-                            className={`px-4 py-2 hover:bg-red-500 cursor-pointer ${optionStyle}`}
+                            className={`group px-4 py-2 hover:bg-red-500/80 cursor-pointer transition-all duration-200 ${optionStyle}`}
                             onClick={() => {
                                 onChange(option.value)
                                 setIsOpen(false)
                             }}
                         >
-                            <span className={`text-gray-700 hover:text-white ${finalValue === option.value ? "font-semibold" : ""}`}>
+                            <span
+                                className={`${finalValue === option.value ? "font-semibold" : ""
+                                    } text-black group-hover:text-white`}
+                            >
                                 {option.label}
                             </span>
                         </div>

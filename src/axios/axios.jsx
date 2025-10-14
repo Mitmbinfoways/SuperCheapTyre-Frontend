@@ -7,12 +7,36 @@ const axiosInstance = axios.create({
   },
 });
 
-export const getTyres = async (data) => {
-  return axiosInstance.get(`/api/v1/product`);
+export const getTyres = async (params = {}) => {
+  // Extract page and limit from params, or set defaults
+  const { page, limit, ...otherParams } = params;
+  
+  // Create query parameters
+  const queryParams = new URLSearchParams();
+  
+  // Add pagination parameters if provided
+  if (page !== undefined) queryParams.append('page', page);
+  if (limit !== undefined) queryParams.append('limit', limit);
+  
+  // Add other parameters
+  Object.keys(otherParams).forEach(key => {
+    if (otherParams[key] !== undefined) {
+      queryParams.append(key, otherParams[key]);
+    }
+  });
+  
+  // Construct the URL with query parameters
+  const url = `/api/v1/product${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+  
+  return axiosInstance.get(url);
 };
 
 export const getTyreById = async (id) => {
   return axiosInstance.get(`/api/v1/product/${id}`);
+};
+
+export const getSimilarProducts = async (id) => {
+  return axiosInstance.get(`/api/v1/product/${id}/similar`);
 };
 
 export const CreateContact = async (payload) => {
@@ -59,3 +83,5 @@ export const createAppointment = async (data) => {
 export const createOrder = async (data) => {
   return axiosInstance.post("/api/v1/order" , data);
 };
+
+export default axiosInstance;

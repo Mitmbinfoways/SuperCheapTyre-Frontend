@@ -164,7 +164,7 @@ const Header = () => {
             <div className="flex items-center space-x-3 sm:space-x-4 pt-4 border-t border-gray-700 w-full justify-center">
               <button className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"><Search size={18} className="sm:w-5 sm:h-5" /></button>
               <a 
-                href="https://www.google.com/maps/place/114+Hammond+Rd,+Dandenong+South+VIC+3175" 
+                href="https://maps.app.goo.gl/8MCfDBfNa6dqdQY9A" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"

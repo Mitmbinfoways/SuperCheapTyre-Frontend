@@ -1,41 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Link from './ui/Link';
+import { getSimilarProducts } from '../../axios/axios';
+import { getTyreImageUrl } from '../../Utils/Utils';
+import Loader from '../common/Loader';
 
 const SimilarProducts = () => {
-  const similarProducts = [
-    {
-      id: 1,
-      brand: 'Achilles',
-      image: '/home/product.svg',
-      ratingImage: '/images/img_group_1496.svg',
-      description: '165/65R13 4\nPlatinum 7 77H BSW',
-      size: '165/65R13'
-    },
-    {
-      id: 2,
-      brand: 'Achilles',
-      image: '/home/product.svg',
-      ratingImage: '/images/img_group_1496.svg',
-      description: '165/65R13 4\nPlatinum 7 77H BSW',
-      size: '165/65R13'
-    },
-    {
-      id: 3,
-      brand: 'Achilles',
-      image: '/home/product.svg',
-      ratingImage: '/images/img_group_1496.svg',
-      description: '165/65R13 4\nPlatinum 7 77H BSW',
-      size: '165/65R13'
-    },
-    {
-      id: 4,
-      brand: 'Achilles',
-      image: '/home/product.svg',
-      ratingImage: '/images/img_group_1496.svg',
-      description: '165/65R13 4\nPlatinum 7 77H BSW',
-      size: '165/65R13'
-    }
-  ];
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSimilarProducts = async () => {
+      if (!id) return;
+      
+      try {
+        setLoading(true);
+        const response = await getSimilarProducts(id);
+        // Map the API response to match the component's expected structure
+        const mappedProducts = response.data.data.map(product => ({
+          id: product._id,
+          brand: product.brand,
+          image: getTyreImageUrl(product.images?.[0]) || '/home/product.svg',
+          description: product.description || `${product.tyreSpecifications?.width || ''}/${product.tyreSpecifications?.profile || ''}${product.tyreSpecifications?.speedRating || ''}${product.tyreSpecifications?.diameter || ''}`,
+          size: product.tyreSpecifications ? `${product.tyreSpecifications.width || ''}/${product.tyreSpecifications.profile || ''}${product.tyreSpecifications.speedRating || ''}${product.tyreSpecifications.diameter || ''}`.trim() : 'N/A'
+        }));
+        setSimilarProducts(mappedProducts);
+      } catch (err) {
+        setError('Failed to load similar products');
+        console.error('Error fetching similar products:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSimilarProducts();
+  }, [id]);
+
+  if (loading) {
+    return <Loader label="Loading similar products..." />;
+  }
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
 
   return (
     <section className="w-full bg-[#f5f5f5] py-[20px] sm:py-[25px] md:py-[30px] lg:py-[40px]">
@@ -50,10 +60,7 @@ const SimilarProducts = () => {
                     Similar Tyres
                   </h2>
                   <Link 
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {}}
+                    href="/tyres"
                     className="text-[12px] sm:text-[13px] md:text-[14px] font-normal leading-[16px] sm:leading-[17px] md:leading-[18px] font-['Lexend'] text-black underline mt-[8px] sm:mt-[10px] md:mt-[12px] hover:text-[#ed1c24] transition-colors"
                   >
                     View more
@@ -65,7 +72,8 @@ const SimilarProducts = () => {
                   {similarProducts?.map((product) => (
                     <div 
                       key={product?.id}
-                      className="flex flex-col justify-end items-start w-full border border-[#c8c8c8] rounded-[10px] bg-white p-[20px] sm:p-[24px] md:p-[26px] lg:p-[28px_30px] hover:shadow-lg transition-shadow"
+                      onClick={() => navigate(`/productdetails/${product.id}`)}
+                      className="flex flex-col justify-end items-start w-full border border-[#c8c8c8] rounded-[10px] bg-white p-[20px] sm:p-[24px] md:p-[26px] lg:p-[28px_30px] hover:shadow-lg transition-shadow cursor-pointer"
                     >
                       {/* Product Image and Rating */}
                       <div className="flex flex-col gap-[6px] items-center w-full mb-[20px] sm:mb-[24px] md:mb-[26px] lg:mb-[28px]">
@@ -76,15 +84,11 @@ const SimilarProducts = () => {
                         />                     
                       </div>
                       {/* Product Brand */}
-                      <Link 
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => {}}
-                        className="text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] tracking-[1px] font-['Lexend'] text-[#ed1c24] underline hover:opacity-80 transition-opacity"
+                      <div 
+                          className="text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] tracking-[1px] font-['Lexend'] text-[#ed1c24] underline hover:opacity-80 transition-opacity"
                       >
                         {product?.brand}
-                      </Link>
+                      </div>
 
                       {/* Product Details */}
                       <div className="flex flex-col gap-[4px] w-full mt-[6px]">

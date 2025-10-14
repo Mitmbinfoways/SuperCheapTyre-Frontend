@@ -89,7 +89,7 @@ const CenterList = ({ items }) => {
   return (
     <div className="space-y-6">
       {items.map((it, idx) => (
-        <div key={idx} className="text-center">
+        <div key={idx} className="text-start">
           <div className="w-full max-w-md mx-auto h-56 sm:h-64 bg-gray-50 rounded-xl flex items-center justify-center p-2">
             {it.image ? (
               <img src={it.imageUrl || getBlogImageUrl(it.image)} alt={`center-${idx}`} className="block max-h-full max-w-full object-contain" />

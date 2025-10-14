@@ -48,13 +48,14 @@ const BuyTyre = () => {
         {/* <section className="relative bg-primary-dark text-white pt-[100px] sm:pt-0 inset-0 bg-gradient-to-b from-transparent via-transparent to-black/100" > */}
             <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 ">
                 {/* Search Form */}
-                <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-6xl mx-auto bg-no-repeat bg-cover bg-center relative z-50 lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2" style={{ backgroundImage: `url(${bg})` }}>
+                <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-6xl mx-auto bg-no-repeat bg-cover bg-center relative z-40 lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2" style={{ backgroundImage: `url(${bg})` }}>
                     <h3 className="text-black text-lg sm:text-xl lg:text-2xl font-bold text-center sm:text-left p-2">SEARCH FOR TYRES</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 sm:mt-2">
                         <div className="relative">
                             <SingleSelect
                                 options={widthOptions}
                                 value={width}
+                                
                                 onChange={setWidth}
                                 selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
                             />

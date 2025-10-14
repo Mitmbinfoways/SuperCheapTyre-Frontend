@@ -35,8 +35,6 @@ const HeroSection = () => {
     return <div className="text-center py-10">No product found.</div>;
   }
 
-
-
   return (
     <section className="w-full bg-[#f5f5f5] py-[12px] sm:py-[16px] md:py-[20px] lg:py-[24px]">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -56,9 +54,7 @@ const HeroSection = () => {
                 {/* Main Product Image */}
                 <div className="flex justify-center items-center w-full border border-[#6e6d6d] rounded-[20px] bg-white p-[48px] sm:p-[60px] md:p-[80px] lg:p-[96px_36px]">
                   <img
-                    // src="/home/tirecard2.svg" 
                     src={getTyreImageUrl(product.images?.[0])}
-                    // alt="Apollo Amazer 4G Life Tyre - Main Product View"
                     alt={product.name}
                     className="w-full max-w-[480px] h-auto object-contain"
                   />
@@ -67,36 +63,14 @@ const HeroSection = () => {
                 {/* Thumbnail Images */}
                 <div className="flex gap-[16px] sm:gap-[24px] md:gap-[28px] lg:gap-[32px] w-full justify-center">
                   {product.images?.map((img, index) => (
-                    <div className="flex justify-center items-center w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px] border border-[#6e6d6d] rounded-[20px] bg-white p-[4px]">
-                      {/* <img 
-                      src="/productdetails/productdetails1.svg" 
-                      alt="Apollo Amazer 4G Life - Side View" 
-                      className="w-[76%] h-auto object-contain"
-                    /> */}
-
+                    <div key={index} className="flex justify-center items-center w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px] border border-[#6e6d6d] rounded-[20px] bg-white p-[4px]">
                       <img
-                        key={index}
                         src={getTyreImageUrl(img)}
                         alt={`${product.name} ${index + 1}`}
                         className="w-28 h-32 object-contain"
                       />
-
                     </div>
                   ))}
-                  {/* <div className="flex justify-center items-center w-[100px] sm:w-[120px] md:w-[140px] lg:w-auto border border-[#6e6d6d] rounded-[20px] bg-white p-[14px]">
-                    <img 
-                      src="/productdetails/productdetails2.svg" 
-                      alt="Apollo Amazer 4G Life - Front View" 
-                      className="w-[108px] h-[108px] object-contain"
-                    />
-                  </div>
-                  <div className="flex justify-center items-center w-[100px] sm:w-[120px] md:w-[140px] lg:w-auto border border-[#6e6d6d] rounded-[20px] bg-white p-[14px]">
-                    <img 
-                      src="/productdetails/productdetails3.svg" 
-                      alt="Apollo Amazer 4G Life - Detail View" 
-                      className="w-[108px] h-[108px] object-contain"
-                    />
-                  </div> */}
                 </div>
               </div>
 
@@ -106,7 +80,6 @@ const HeroSection = () => {
                 <div className="flex flex-col w-full">
                   <div className="flex justify-start items-center w-full py-[6px]">
                     <h2 className="text-[20px] sm:text-[23px] md:text-[25px] lg:text-[27px] font-medium leading-[25px] sm:leading-[29px] md:leading-[32px] lg:leading-[34px] font-['Lexend'] text-black">
-                      {/* Apollo Amazer 4G Life */}
                       {product.name}
                     </h2>
                   </div>
@@ -120,7 +93,6 @@ const HeroSection = () => {
 
                 {/* Product Description */}
                 <p className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#6e6d6d] w-full mt-[6px]">
-                  {/* The new attractive asymmetric tread design offers superior handling and braking performances on both dry and wet surfaces. */}
                   {product.description}
                 </p>
 

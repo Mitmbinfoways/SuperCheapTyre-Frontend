@@ -51,7 +51,7 @@ const FilterSidebar = () => {
       <div className="grid sm:grid-cols-2 lg:grid-cols-1 grid-cols-1 gap-6">
         {filterOptions.map((option) => (
           <div key={option.key} className="">
-            <div className="text-xs sm:text-sm text-black mb-1"> 
+            <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
               {option.label}
             </div>
             <div className="relative">
