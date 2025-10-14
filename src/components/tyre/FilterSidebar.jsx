@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import SingleSelect from '../common/SingleSelect';
 
 const FilterSidebar = () => {
   const filterOptions = [
@@ -27,8 +28,8 @@ const FilterSidebar = () => {
     price: 'All Price',
   });
 
-  const handleChange = (key) => (e) => {
-    setSelected((prev) => ({ ...prev, [key]: e.target.value }));
+  const handleChange = (key) => (value) => {
+    setSelected((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleApply = () => {
@@ -36,6 +37,11 @@ const FilterSidebar = () => {
     // eslint-disable-next-line no-console
     console.log('Applied filters:', selected);
     alert('Filters applied (demo):\n' + JSON.stringify(selected, null, 2));
+  };
+
+  // Convert arrays to options format for SingleSelect
+  const getSelectOptions = (options) => {
+    return options.map(opt => ({ value: opt, label: opt }));
   };
 
   return (
@@ -49,18 +55,12 @@ const FilterSidebar = () => {
               {option.label}
             </div>
             <div className="relative">
-              <select
+              <SingleSelect
+                options={getSelectOptions(demoOptions[option.key])}
                 value={selected[option.key]}
                 onChange={handleChange(option.key)}
-                className="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-              >
-                {demoOptions[option.key].map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-dark" />
+                selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
+              />
             </div>
           </div>
         ))}

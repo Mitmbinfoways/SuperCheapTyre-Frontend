@@ -21,7 +21,7 @@ const Header = () => {
       }
     };
     window.addEventListener('storage', onStorage);
-    
+
     // Also check cart items directly to ensure consistency
     const updateCartCount = () => {
       const cartItems = secureGetItem('cartItems', []);
@@ -30,13 +30,13 @@ const Header = () => {
       // Also update localStorage to keep it in sync
       localStorage.setItem('cartCount', String(count));
     };
-    
+
     // Update immediately on mount
     updateCartCount();
-    
+
     // Set up polling for updates
     const interval = setInterval(updateCartCount, 500);
-    
+
     return () => {
       window.removeEventListener('storage', onStorage);
       clearInterval(interval);
@@ -57,11 +57,16 @@ const Header = () => {
             <div className="bg-[#000000] text-white text-xs sm:text-sm">
               <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex justify-end items-center h-10 sm:h-12">
                 <div className="flex items-center gap-3">
-
                   <div className="flex items-center space-x-3">
-                    <FaPhoneAlt size={14} className="sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">(03) 9793 6190</span>
+                    <a
+                      href="tel:(03)97936190"
+                      className="flex items-center space-x-2 text-white hover:text-gray-300 cursor-pointer"
+                    >
+                      <FaPhoneAlt size={14} className="sm:w-4 sm:h-4" />
+                      <span className="text-xs sm:text-sm">(03) 9793 6190</span>
+                    </a>
                   </div>
+
                   {/* <HiMoon size={20} className="ml-2" /> */}
                 </div>
               </div>
@@ -78,7 +83,14 @@ const Header = () => {
                   <IoMdSearch size={24} />
                 </div>
               </div>
-              <button className="p-2 xl:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm"><FaLocationDot size={20} className="xl:w-5 xl:h-5" /></button>
+              <a 
+                href="https://www.google.com/maps/place/114+Hammond+Rd,+Dandenong+South+VIC+3175" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 xl:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm"
+              >
+                <FaLocationDot size={20} className="xl:w-5 xl:h-5" />
+              </a>
               <NavLink to="/cart" className="relative p-2 xl:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
                 <FaShoppingCart size={20} className="xl:w-5 xl:h-5" />
                 {cartCount > 0 && (
@@ -94,13 +106,12 @@ const Header = () => {
                 <nav className="flex gap-3 items-center justify-center">
                   {navLinks.map((link) => {
                     const to = link.href || '#';
-                    return  (
+                    return (
                       <NavLink
                         key={link.name}
                         to={to}
                         className={({ isActive }) =>
-                          `text-base pb-3 xl:text-lg font-medium px-5 transition-colors hover:text-primary ${
-                            isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')
+                          `text-base pb-3 xl:text-lg font-medium px-5 transition-colors hover:text-primary ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')
                           }`
                         }
                         end={link.name === 'Home'}
@@ -129,7 +140,7 @@ const Header = () => {
       {isMenuOpen && (
         <div className="lg:hidden bg-dark text-white absolute top-full left-0 w-full z-50 shadow-lg">
           <nav className="flex flex-col items-center space-y-3 sm:space-y-4 py-6 sm:py-8">
-                {navLinks.map((link) => {
+            {navLinks.map((link) => {
               const to = link.href || '#';
               return to === '#' ? (
                 <span key={link.name} className="text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg opacity-50 cursor-not-allowed">
@@ -140,8 +151,7 @@ const Header = () => {
                   key={link.name}
                   to={to}
                   className={({ isActive }) =>
-                    `text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-800 ${
-                      isActive && (to !== '#' ? 'text-primary' : '')
+                    `text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-800 ${isActive && (to !== '#' ? 'text-primary' : '')
                     }`
                   }
                   end={link.name === 'Home'}
@@ -153,7 +163,14 @@ const Header = () => {
             })}
             <div className="flex items-center space-x-3 sm:space-x-4 pt-4 border-t border-gray-700 w-full justify-center">
               <button className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"><Search size={18} className="sm:w-5 sm:h-5" /></button>
-              <button className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"><MdLocationPin size={18} className="sm:w-5 sm:h-5" /></button>
+              <a 
+                href="https://www.google.com/maps/place/114+Hammond+Rd,+Dandenong+South+VIC+3175" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"
+              >
+                <MdLocationPin size={18} className="sm:w-5 sm:h-5" />
+              </a>
               <NavLink to="/cart" className="relative p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors">
                 <FaShoppingCart size={18} className="sm:w-5 sm:h-5" />
                 {cartCount > 0 && (

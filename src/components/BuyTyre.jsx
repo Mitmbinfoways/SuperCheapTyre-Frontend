@@ -1,10 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import img from '/home/Grouptyre.png'
 import bg from '/home/bg.png'
-
-
+import SingleSelect from './common/SingleSelect';
 
 const BuyTyre = () => {
+    const [width, setWidth] = useState('');
+    const [profile, setProfile] = useState('');
+    const [diameter, setDiameter] = useState('');
+    const [brand, setBrand] = useState('');
+
+    const widthOptions = [
+        { value: '', label: 'Select a Width' },
+        { value: '165', label: '165' },
+        { value: '175', label: '175' },
+        { value: '185', label: '185' },
+        { value: '195', label: '195' },
+        { value: '205', label: '205' }
+    ];
+
+    const profileOptions = [
+        { value: '', label: 'Select a Profile' },
+        { value: '55', label: '55' },
+        { value: '60', label: '60' },
+        { value: '65', label: '65' },
+        { value: '70', label: '70' }
+    ];
+
+    const diameterOptions = [
+        { value: '', label: 'Select a Diameter' },
+        { value: '14', label: '14' },
+        { value: '15', label: '15' },
+        { value: '16', label: '16' },
+        { value: '17', label: '17' }
+    ];
+
+    const brandOptions = [
+        { value: '', label: 'Select a Brand' },
+        { value: 'Michelin', label: 'Michelin' },
+        { value: 'Goodyear', label: 'Goodyear' },
+        { value: 'Pirelli', label: 'Pirelli' },
+        { value: 'Continental', label: 'Continental' },
+        { value: 'Bridgestone', label: 'Bridgestone' }
+    ];
+
     return (
         <section className="relative bg-primary-dark text-white pt-[100px] sm:pt-0" style={{background: "linear-gradient(to bottom, #ED1C24,#141414)"}}>
         {/* <section className="relative bg-primary-dark text-white pt-[100px] sm:pt-0 inset-0 bg-gradient-to-b from-transparent via-transparent to-black/100" > */}
@@ -14,62 +52,36 @@ const BuyTyre = () => {
                     <h3 className="text-black text-lg sm:text-xl lg:text-2xl font-bold text-center sm:text-left p-2">SEARCH FOR TYRES</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 sm:mt-2">
                         <div className="relative">
-                            <select defaultValue="" className="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white">
-                                <option value="" >Select a Width</option>
-                                <option value="165">165</option>
-                                <option value="175">175</option>
-                                <option value="185">185</option>
-                                <option value="195">195</option>
-                                <option value="205">205</option>
-                            </select>
-                            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-black">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                                </svg>
-                            </span>
+                            <SingleSelect
+                                options={widthOptions}
+                                value={width}
+                                onChange={setWidth}
+                                selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
+                            />
                         </div>
                         <div className="relative">
-                            <select defaultValue="" className="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white">
-                                <option value="" >Select a Profile</option>
-                                <option value="55">55</option>
-                                <option value="60">60</option>
-                                <option value="65">65</option>
-                                <option value="70">70</option>
-                            </select>
-                            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-black">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                                </svg>
-                            </span>
+                            <SingleSelect
+                                options={profileOptions}
+                                value={profile}
+                                onChange={setProfile}
+                                selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
+                            />
                         </div>
                         <div className="relative">
-                            <select defaultValue="" className="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white">
-                                <option value="" >Select a Diameter</option>
-                                <option value="14">14</option>
-                                <option value="15">15</option>
-                                <option value="16">16</option>
-                                <option value="17">17</option>
-                            </select>
-                            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-black">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                                </svg>
-                            </span>
+                            <SingleSelect
+                                options={diameterOptions}
+                                value={diameter}
+                                onChange={setDiameter}
+                                selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
+                            />
                         </div>
                         <div className="relative">
-                            <select defaultValue="" className="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white">
-                                <option value="">Select a Brand</option>
-                                <option value="Michelin">Michelin</option>
-                                <option value="Goodyear">Goodyear</option>
-                                <option value="Pirelli">Pirelli</option>
-                                <option value="Continental">Continental</option>
-                                <option value="Bridgestone">Bridgestone</option>
-                            </select>
-                            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-black">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
-                                </svg>
-                            </span>
+                            <SingleSelect
+                                options={brandOptions}
+                                value={brand}
+                                onChange={setBrand}
+                                selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
+                            />
                         </div>
                         <button className="bg-red-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-red-700 active:scale-95 transition-all duration-200 text-base sm:text-lg col-span-1 sm:col-span-2 lg:col-span-1">
                             Select

@@ -1,27 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { images } from '../assets/data';
 import { ChevronDown } from 'lucide-react';
 import img from '/home/tyrebanner1.png'
 import BuyTyre from './BuyTyre';
+import SingleSelect from './common/SingleSelect';
 
 const SearchForm = () => {
+    const [width, setWidth] = useState('');
+    const [profile, setProfile] = useState('');
+    const [diameter, setDiameter] = useState('');
+    const [brand, setBrand] = useState('');
+
+    const widthOptions = [
+        { value: '', label: 'Select a Width' }
+    ];
+
+    const profileOptions = [
+        { value: '', label: 'Select a Profile' }
+    ];
+
+    const diameterOptions = [
+        { value: '', label: 'Select a Diameter' }
+    ];
+
+    const brandOptions = [
+        { value: '', label: 'Select a Brand' }
+    ];
+
     return (
         <div className="relative mt-2 sm:mt-6 md:mt-8 pointer-events-auto">
             <div className="relative bg-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 z-10">
                 <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-dark mb-4 sm:mb-6 text-center md:text-left">SEARCH FOR TYRES</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-center">
-                    {['Select a Width', 'Select a Profile', 'Select a Diameter', 'Select a Brand'].map((placeholder) => (
-                        <div key={placeholder} className="relative">
-                            <select className="w-full h-12 sm:h-14 px-3 sm:px-4 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base">
-                                <option>{placeholder}</option>
-                            </select>
-                            <ChevronDown className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                        </div>
-                    ))}
+                {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-center">
+                    <div className="relative">
+                        <SingleSelect
+                            options={widthOptions}
+                            value={width}
+                            onChange={setWidth}
+                            selectStyle="w-full h-12 sm:h-14 px-3 sm:px-4 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
+                        />
+                    </div>
+                    <div className="relative">
+                        <SingleSelect
+                            options={profileOptions}
+                            value={profile}
+                            onChange={setProfile}
+                            selectStyle="w-full h-12 sm:h-14 px-3 sm:px-4 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
+                        />
+                    </div>
+                    <div className="relative">
+                        <SingleSelect
+                            options={diameterOptions}
+                            value={diameter}
+                            onChange={setDiameter}
+                            selectStyle="w-full h-12 sm:h-14 px-3 sm:px-4 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
+                        />
+                    </div>
+                    <div className="relative">
+                        <SingleSelect
+                            options={brandOptions}
+                            value={brand}
+                            onChange={setBrand}
+                            selectStyle="w-full h-12 sm:h-14 px-3 sm:px-4 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
+                        />
+                    </div>
                     <button className="w-full h-12 sm:h-14 bg-primary text-white font-semibold text-sm sm:text-base lg:text-xl rounded-lg hover:bg-red-700 transition-colors col-span-1 sm:col-span-2 lg:col-span-1">
                         Select
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );
