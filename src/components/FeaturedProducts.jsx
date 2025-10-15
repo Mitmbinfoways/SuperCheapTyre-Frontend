@@ -23,8 +23,8 @@ const ProductCard = ({ product, onClick }) => (
       </div>
   
       {/* Info */}
-      <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start">{product.brand}</h3>
-      <p className="text-start text-sm text-text-secondary font-roboto">{product.name}</p>
+      <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start">{product.name}</h3>
+      <p className="text-start text-sm text-text-secondary font-roboto">{product.brand}</p>
       <p className="text-text-secondary text-xs sm:text-sm whitespace-pre-line my-1 sm:my-1 leading-relaxed text-start line-clamp-1">
         {product.description}
       </p>

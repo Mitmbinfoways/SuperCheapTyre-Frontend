@@ -72,7 +72,7 @@ export default function SingleSelect({
             </div>
 
             {isOpen && (
-                <div className="absolute z-50 w-full mt-1 backdrop-blur-lg bg-[#e5e2ea]/80 border border-white/20 rounded-xl shadow-lg">
+                <div className="absolute z-50 w-full mt-1 backdrop-blur-lg bg-[#e5e2ea]/80 border border-white/20 rounded-xl overflow-hidden shadow-lg">
                     {normalizedOptions.map((option) => (
                         <div
                             key={option.value}
