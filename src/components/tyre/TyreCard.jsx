@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
+import { Toast } from '../../Utils/Toast';
 
 const TyreCard = ({
   id,
@@ -56,7 +56,7 @@ const TyreCard = ({
     }
     secureSetItem('cartItems', cart);
     localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));
-    toast.success('Added to cart');
+    Toast({ message: 'Added to cart', type: 'success' });
   };
 
   return (

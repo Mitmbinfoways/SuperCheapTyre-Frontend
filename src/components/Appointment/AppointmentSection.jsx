@@ -6,6 +6,7 @@ import { getTimeslot, getGetHolidays, getAppointmentSlots } from '../../axios/ax
 import Loader from '../common/Loader';
 import { loadStripe } from '@stripe/stripe-js';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
+import { Toast } from '../../Utils/Toast';
 
 const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) => {
   const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -155,14 +156,7 @@ const TimePicker = ({ selectedTime, setSelectedTime, showError, slots, loading }
   // Show toast when error is displayed
   useEffect(() => {
     if (showError) {
-      toast.error("Please select a time slot.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      Toast({ message: "Please select a time slot.", type: "error" });
     }
   }, [showError]);
 
@@ -263,7 +257,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       const cart = secureGetItem('cartItems', []);
 
       if (!cart.length) {
-        toast.error('Please add at least one tyre to cart');
+        Toast({ message: 'Please add at least one tyre to cart', type: 'error' });
         navigate('/tyres');
         return;
       }
@@ -313,7 +307,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       }
     } catch (error) {
       console.error('Payment error:', error);
-      toast.error(error.message || 'Payment initialization failed. Please try again.');
+      Toast({ message: error.message || 'Payment initialization failed. Please try again.', type: 'error' });
     }
   };
 
@@ -405,11 +399,17 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         <div>
           <label className="text-base font-normal mb-2 block">Phone No.</label>
           <input
-            type="number"
+            type="tel"
             placeholder="Enter your Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+            onKeyPress={(e) => {
+              // Allow only numbers (0-9)
+              if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+                e.preventDefault();
+              }
+            }}
             className={` no-arrows w-full p-2 placeholder:text-[#6F6F6F] border text-sm border-[#7E7E7E] rounded-lg bg-transparent focus:outline-none focus:ring-1 ${errors.phone && touched.phone ? 'border-[#FF0000] focus:ring-[#FF0000]' : 'border-border-gray focus:ring-brand-red'}`}
           />
           {errors.phone && touched.phone && (

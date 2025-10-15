@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Toast } from '../../Utils/Toast';
 
 const Cancel = () => {
   const navigate = useNavigate();

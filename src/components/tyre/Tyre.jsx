@@ -56,6 +56,14 @@ function Tyre() {
     fetchTyres();
   }, [currentPage, pageSize]);
 
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [currentPage]);
+
   if (loading) {
     return <Loader label="Loading tyres..." />;
   }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { secureGetItem, secureRemoveItem } from "../../Utils/encryption";
 import { createAppointment, createOrder } from "../../axios/axios";
+import { Toast } from '../../Utils/Toast';
 
 const Success = () => {
   const navigate = useNavigate();
@@ -62,6 +63,10 @@ const Success = () => {
           date: appointmentData.date,
           slotId: selectedSlotId,
           timeSlotId: timeSlotId,
+          firstname: appointmentData.firstName,
+          lastname: appointmentData.lastName,
+          phone: appointmentData.phone,
+          email: appointmentData.email,
         },
         customer: {
           name: `${appointmentData.firstName} ${appointmentData.lastName}`,
@@ -104,7 +109,7 @@ const Success = () => {
       console.error("Error creating appointment/order:", error);
       toast.error(
         error.message ||
-          "Failed to create appointment and order. Please contact support."
+        "Failed to create appointment and order. Please contact support."
       );
     } finally {
       setIsLoading(false);
@@ -197,9 +202,8 @@ const Success = () => {
             <button
               onClick={handleGoHome}
               disabled={isLoading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ED1C24] hover:bg-[#c8141d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ED1C24] ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ED1C24] hover:bg-[#c8141d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ED1C24] ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {isLoading ? "Processing..." : "Go to Home"}
             </button>

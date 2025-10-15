@@ -6,6 +6,7 @@ import { cva } from "class-variance-authority";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Toast } from '../../Utils/Toast';
 
 // Local utility to merge Tailwind classes
 function cn(...inputs) {
@@ -143,7 +144,15 @@ export const EnquirySection = () => {
         const nextErrors = { name: "", mobile: "", email: "", message: "" };
         if (!formData.name.trim()) nextErrors.name = "Name is required";
         if (!formData.mobile.trim()) nextErrors.mobile = "Mobile is required";
-        if (!formData.email.trim()) nextErrors.email = "Email is required";
+        if (!formData.email.trim()) {
+            nextErrors.email = "Email is required";
+        } else {
+            // Email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                nextErrors.email = "Please enter a valid email address";
+            }
+        }
         if (!formData.message.trim()) nextErrors.message = "Message is required";
         setErrors(nextErrors);
         return !Object.values(nextErrors).some(Boolean);
@@ -160,7 +169,7 @@ export const EnquirySection = () => {
                 email: formData.email,
                 message: formData.message,
             });
-            toast.success("Successfully submitted", { position: "top-right" });
+            Toast({ message: "Successfully submitted", type: "success" });
             setFormData({ name: "", mobile: "", email: "", message: "" });
         } catch (err) {
             // no failure toast per requirement
@@ -335,11 +344,18 @@ export const EnquirySection = () => {
                                 Mobile
                             </Label>
                             <Input
+                                type="tel"
                                 name="mobile"
                                 placeholder="Enter your Mobile Number"
-                                className="h-12 sm:h-[52px] rounded-lg border border-solid border-[#7e7e7e] [font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-sm tracking-[0] leading-[normal] placeholder:text-[#6f6f6f]"
+                                className=" no-arrows h-12 sm:h-[52px] rounded-lg border border-solid border-[#7e7e7e] [font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-sm tracking-[0] leading-[normal] placeholder:text-[#6f6f6f]"
                                 value={formData.mobile}
                                 onChange={handleChange}
+                                onKeyPress={(e) => {
+                                    // Allow only numbers (0-9)
+                                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                             {errors.mobile ? (
                                 <p className="text-red-600 text-xs mt-1">{errors.mobile}</p>
@@ -352,6 +368,7 @@ export const EnquirySection = () => {
                                 Email
                             </Label>
                             <Input
+                                type="email"
                                 name="email"
                                 placeholder="Enter your Email"
                                 className="h-12 sm:h-[52px] rounded-lg border border-solid border-[#7e7e7e] [font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-sm tracking-[0] leading-[normal] placeholder:text-[#6f6f6f]"

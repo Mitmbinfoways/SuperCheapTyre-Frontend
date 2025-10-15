@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { ArrowRight } from 'lucide-react';
 import { secureGetItem } from '../../Utils/encryption';
+import { Toast } from '../../Utils/Toast';
 
 const SummaryRow = ({ label, value, isDiscount = false }) => (
   <div className="flex justify-between items-center">
@@ -20,7 +20,7 @@ const OrderSummary = ({ totals }) => {
   const handleCheckout = () => {
     const cart = secureGetItem('cartItems', []);
     if (!cart.length) {
-      toast.error('Please add at least one item to cart');
+      Toast({ message: 'Please add at least one item to cart', type: 'error' });
       navigate('/tyres');
       return;
     }

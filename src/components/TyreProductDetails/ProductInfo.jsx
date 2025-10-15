@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import Button from './ui/Button';
 import QuantityInput from './ui/QuantityInput';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { getTyreImageUrl } from '../../Utils/Utils';
+import { Toast } from '../../Utils/Toast';
 
 const ProductInfo = (product) => {
   const [quantity, setQuantity] = useState(1);
@@ -50,7 +50,7 @@ const ProductInfo = (product) => {
     }
     secureSetItem('cartItems', cart);
     localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));
-    toast.success('Added to cart');
+    Toast({ message: 'Added to cart', type: 'success' });
   };
 
   return (

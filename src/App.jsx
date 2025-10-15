@@ -20,12 +20,23 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function ScrollToTopOnRouteChange() {
-  const location = useLocation();
+  const pathname = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-  }, [location.pathname]);
+    const handleClick = (e) => {
+      const target = e.target.closest("a");
+      if (target && target.getAttribute("href") === window.location.pathname) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [pathname]);
+
   return null;
-}
+};
 
 function App() {
   return (
@@ -38,17 +49,17 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
-        <Route path="/privacy" element={<PrivacyPolicy/>} />
-        <Route path="/terms" element={<Terms/>} />
-        <Route path='/contactus' element={<ContactUs/>}/>
-        <Route path='/productdetails/:id' element={<ProductDetail/>}/>
-        <Route path='/cart' element={<Cart/>}/>
-        <Route path='/appointment' element={<Appointment/>}/>
-        <Route path='/success' element={<Success/>}/>
-        <Route path='/cancel' element={<Cancel/>}/>
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path='/contactus' element={<ContactUs />} />
+        <Route path='/productdetails/:id' element={<ProductDetail />} />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/appointment' element={<Appointment />} />
+        <Route path='/success' element={<Success />} />
+        <Route path='/cancel' element={<Cancel />} />
       </Routes>
       <Footer />
-      <ToastContainer position="top-right" newestOnTop />
+      <ToastContainer />
     </div>
   );
 }

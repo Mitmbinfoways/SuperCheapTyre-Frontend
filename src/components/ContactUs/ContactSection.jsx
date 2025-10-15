@@ -6,14 +6,19 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const Card = React.forwardRef(function Card({ className, ...props }, ref) {
+const Card = React.forwardRef(function Card({ className, href, ...props }, ref) {
+  const Element = href ? 'a' : 'div';
+  
   return (
-    <div
+    <Element
       ref={ref}
+      href={href}
       className={cn(
         "rounded-xl border bg-card text-card-foreground shadow",
         className,
+        href && "cursor-pointer"
       )}
+      {...(href ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       {...props}
     />
   );
@@ -33,10 +38,11 @@ export const ContactSection = () => {
       content: "(03) 9794 2222\n24/7 Emergency Line",
       icon: "/contactus/call.svg",
       delay: "200ms",
+      href: "tel:(03)97942222",
     },
     {
       title: "Hours",
-      content: "Mon-Fri: 7AM-6PM\nSat: 8AM-4PM",
+      content: "Mon-Fri: 9AM-5PM\nSat: 9AM-3PM",
       icon: "/contactus/clock.svg",
       delay: "400ms",
     },
@@ -45,6 +51,7 @@ export const ContactSection = () => {
       content: "Australia",
       icon: "/contactus/location.svg",
       delay: "600ms",
+      href: "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D"
     },
   ];
 
@@ -61,10 +68,11 @@ export const ContactSection = () => {
           Contact Supercheaptyres Dandenong
         </h2>
 
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6 max-w-full md:max-w-[960px] w-full px-2 md:px-0 py-10">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6 max-w-full md:max-w-[960px] w-full px-2 md:px-0 py-10 cursor-pointer">
           {contactCards.map((card, index) => (
             <Card
               key={index}
+              href={card.href}
               className={`translate-y-[-1rem] animate-fade-in w-full xs:w-[240px] sm:w-[260px] md:w-[280px] h-auto min-h-[180px] sm:min-h-[190px] md:min-h-[205px] bg-[#ff0009] rounded-[16px] sm:rounded-[18px] md:rounded-[20px] border border-[#bfbfbf] overflow-hidden`}
               style={{ "--animation-delay": card.delay }}
             >
