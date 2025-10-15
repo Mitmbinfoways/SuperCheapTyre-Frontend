@@ -10,6 +10,7 @@ export const images = {
   searchTiresLeft: "https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/229b/af0a/50355bea1f20d33642e795ed68c570bb?Expires=1759104000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Z5qwNx7Smzy6Gu2NMjHuUWACUpmyeUYZwO~G2KVDnvpNwUQ8grsz12H0ef9rjrfQAqS13-lZakBCmfv73JCjUru5OwLCwVyzpRHNSxH9gcxxoX88Iwutm1iwObRnzNAVPwUjsjL4bbssvmCu5hhdulrqseXtpCv5s4f3ZyND8C~1yPOV2IJ5wLvYHprLzn1sOqCbpooePVe8xmEHZARJ6M3iythWwDRmp3taHPKg8lmwk5q3pxGuV0hkaFh2vlKjNi62yTptDOA~zpFvv405V5~YncKiiSX1eRc7b2ok2e49ybGC5ktYBYSHZZoiIhi9j1X2jxwPCQEljjMsK0qfSw__",
   buyTyreTires: "https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/c9fc/733c/ad763a2b66d97e75cde4857b2a7e440b?Expires=1759104000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ikYcXFDdh6mEGk2r15oaIaRMcCAAPK7TCeoq9VwzbwZ-F9QZ-8LGQnGkaD1W1MvexTYY4P3U3y08HhP0vtJpQpRqV8xayLGtRTiVdi9xXXTTlOAj2ibB~ayf9BHGVIRzHitHlC78P35Jes0w5hAjO6tn-z2M4DF6w9m0Z0dqxT-nb2gZKXJgKtzfBHJMZg2bZ61SBJldN~5OJF21N0QcitZr5zfJKJpyAsLI-0Ptg-0O4-YdDTNjFHXFm7XxRZ7A~iM4MD5rdydEO-FiQ7geORj2Qo2VANiXgHP0xt-Gq1MQI8nB41T4xguxSjZ0wizYPQ3O~tA2hW1BbSDR9Xp17Q__",
   whyChooseUsBg: "/home/whychooseusbg.svg",
+  whyChooseUsvideo: "/home/homegif.mp4",
   videoBg: "/home/videobg.svg",
   appointmentBg: "/home/appointmentbg.svg",
   payment: {

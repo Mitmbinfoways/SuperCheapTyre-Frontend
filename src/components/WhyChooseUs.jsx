@@ -4,8 +4,21 @@ import { images, whyChooseUsItems } from '../assets/data';
 const WhyChooseUs = () => {
     return (
         <section className="relative py-12 sm:py-16 md:py-20 bg-white">
-            <div className="absolute inset-0">
+            {/* <div className="absolute inset-0">
                 <img src={images.whyChooseUsBg} alt="Mechanic working on a car" className="w-full h-full object-cover opacity-100 rounded-2xl border border-black" />
+            </div> */}
+            <div className="absolute inset-0">
+                {/* Replaced static image with autoplaying video */}
+                <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    className="w-full h-full object-cover opacity-100 rounded-2xl border border-black"
+                >
+                    <source src={images.whyChooseUsvideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
             </div>
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
                 <div className="flex justify-center mb-8 sm:mb-12 md:mb-16">
