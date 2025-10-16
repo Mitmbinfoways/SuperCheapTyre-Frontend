@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { images } from '../assets/data';
 import { ChevronDown } from 'lucide-react';
 import img from '/home/tyrebanner1.png'
+import mobile from '/home/mobilebanner.png';
 import BuyTyre from './BuyTyre';
 import SingleSelect from './common/SingleSelect';
 
@@ -79,12 +80,13 @@ const Hero = () => {
     <div className='h-fit'>
     <section className="relative bg-dark text-white overflow-hidden w-full ">
       <div className="">
-        <img src={img} alt="Ford Ranger" className="w-full h-full object-cover object-[60%_center] sm:object-center lg:object-right"/>
+        <img src={img} alt="Ford Ranger" className="w-full h-full hidden md:block object-cover object-[60%_center] sm:object-center lg:object-right"/>
+        <img src={mobile} alt="Ford Ranger" className="w-full h-full md:hidden object-cover object-[60%_center] sm:object-center lg:object-right"/>
         <div className="absolute inset-0 bg-black/30 sm:bg-black/10"></div>
       </div>
 
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10 h-full">
-        <div className="grid lg:grid-cols-2 items-center h-full py-8 sm:py-12">
+        <div className="grid lg:grid-cols-2 items-center h-full pb-8 sm:py-12">
           <div className="relative text-center lg:text-left">
             {/* Left side content can be added here if needed */}
           </div>

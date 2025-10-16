@@ -7,7 +7,7 @@ import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { ImInstagram } from "react-icons/im";
 const Footer = () => {
     return (
-        <footer className="bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20">
+        <footer className="relative z-50 bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20]">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-4">
                     {/* Logo and Social */}

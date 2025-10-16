@@ -14,7 +14,7 @@ import { getTyreImageUrl } from '../Utils/Utils';
 import Loader from './common/Loader';
 
 const ProductCard = ({ product, onClick }) => (
-    <div onClick={onClick} className="flex-shrink-0 w-64 sm:w-72 bg-light rounded-2xl sm:rounded-3xl shadow-lg text-center p-4 sm:p-6 mx-2 sm:mx-4 h-[25rem] relative cursor-pointer">
+    <div onClick={onClick} className="flex-shrink-0 w-64 sm:w-72 bg-light rounded-2xl sm:rounded-3xl shadow-lg text-center p-4 sm:p-6 mx-auto sm:mx-4 h-[25rem] relative cursor-pointer">
       
       {/* Image */}
       <div className="relative h-40 sm:h-48 md:h-52 flex items-center justify-center mb-3 sm:mb-4">
@@ -92,22 +92,23 @@ const FeaturedProducts = () => {
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-8 sm:mb-10 md:mb-12 text-center sm:text-left">Featured Products</h2>
                 <div className="relative overflow-visible">
                     <Swiper
-                        slidesPerView={1.15}
+                        slidesPerView={1}
                         spaceBetween={0}
                         freeMode={false}
+                        // centeredSlides={true}
                         // pagination={{ clickable: true }}
                         navigation={{ prevEl: '.feat-prev', nextEl: '.feat-next' }}
                         breakpoints={{
-                            640: { slidesPerView: 2.2, spaceBetween: 16 },
-                            768: { slidesPerView: 2.6, spaceBetween: 20 },
-                            1024: { slidesPerView: 3.2, spaceBetween: 24 },
+                            640: { slidesPerView: 2, spaceBetween: 16 },
+                            768: { slidesPerView: 3, spaceBetween: 20 },
+                            1024: { slidesPerView: 3, spaceBetween: 24 },
                             1280: { slidesPerView: 4, spaceBetween: 24 },
                         }}
                         modules={[FreeMode, Pagination, Navigation]}
                         className="!pb-10"
                     >
                         {(loading ? [] : products).map((product, index) => (
-                            <SwiperSlide key={product.id || index} className="!h-auto">
+                            <SwiperSlide key={product.id || index} className="!h-auto flex items-center">
                                 <ProductCard 
                                   product={product} 
                                   onClick={() => navigate(`/productdetails/${product.id}`)}

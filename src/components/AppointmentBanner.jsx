@@ -1,6 +1,6 @@
 import React from 'react';
 import { images } from '../assets/data';
-import img from '/home/appointment.svg';
+import img from '/home/appointmentgirl.png';
 import { Link } from 'react-router-dom';
 
 const AppointmentBanner = () => {
@@ -13,7 +13,7 @@ const AppointmentBanner = () => {
       />
       <div className="relative max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
         {/* Tyre image anchored to container */}
-        <div className="pointer-events-none absolute bottom-0 -top-36 -right-0 sm:-right-10 sm:-top-36 sm:bottom-auto z-0">
+        <div className="pointer-events-none absolute bottom-0 -top-36 -right-0 sm:-right-20 sm:-top-48 sm:bottom-auto z-0">
           <img
             src={img}
             alt="Two tires"

@@ -273,6 +273,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         time: payload.appointment.time
       };
 
+      console.log(appointmentData)
+
       secureSetItem('appointmentData', appointmentData);
       // Store cart items for use after payment
       secureSetItem('cartItemsForOrder', cart);

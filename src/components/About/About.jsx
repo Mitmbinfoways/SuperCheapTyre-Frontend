@@ -36,7 +36,7 @@ export const About = () => {
     >
      
       {/* Main Content Sections */}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full space-y-8 pb-8">
 
         {/* About Us Section */}
         <div className="w-full">
@@ -44,7 +44,7 @@ export const About = () => {
         </div>
 
         {/* Mission Statement Section with side image */}
-        <div className="w-full py-8 px-3 sm:px-4 lg:px-8">
+        <div className="w-full px-3 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch gap-4 sm:gap-6 min-h-[320px] sm:min-h-[360px] md:min-h-[400px]">
             <div className="order-2 lg:order-none lg:col-span-8">
               <div className="h-full w-full">
@@ -55,9 +55,9 @@ export const About = () => {
               <div className="h-full w-full">
                 <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden">
                   <img
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover aspect-[2/1]"
                     width={1200}
-                    height={800}
+                    height={600}
                     alt={decorativeImages[0].alt}
                     src={decorativeImages[0].src}
                   />
@@ -68,7 +68,7 @@ export const About = () => {
         </div>
 
         {/* Company Overview Section with side image */}
-        <div className="w-full py-8 px-3 sm:px-4 lg:px-8">
+        <div className="w-full  px-3 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch gap-4 sm:gap-6 min-h-[320px] sm:min-h-[360px] md:min-h-[400px]">
             <div className="order-1 lg:order-none lg:col-span-4 flex items-stretch">
               <div className="h-full w-full">
@@ -92,7 +92,7 @@ export const About = () => {
         </div>
 
         {/* Video Section with side image */}
-        <div className="w-full py-8 px-3 sm:px-4 lg:px-8">
+        <div className="w-full px-3 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12  items-stretch gap-4 sm:gap-6  min-h-[320px] sm:min-h-[360px] md:min-h-[400px]">
             <div className="order-2 lg:order-none lg:col-span-8">
               <div className="h-full w-full">
@@ -116,7 +116,7 @@ export const About = () => {
         </div>
 
         {/* Experience Expertise Section with side image */}
-        <div className="w-full py-8 px-3 sm:px-4 lg:px-8">
+        <div className="w-full  px-3 sm:px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch gap-4 sm:gap-6 min-h-[320px] sm:min-h-[360px] md:min-h-[400px]">
             <div className="order-1 lg:order-none lg:col-span-4 flex items-stretch">
               <div className="h-full w-full">

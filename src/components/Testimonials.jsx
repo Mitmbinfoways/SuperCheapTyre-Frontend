@@ -97,7 +97,7 @@ const Testimonials = () => {
                         </div>
 
                         {/* Pagination container (external) */}
-                        <div className="testimonials-pagination swiper-pagination static mt-6 flex justify-center"></div>
+                        <div className="testimonials-pagination swiper-pagination !relative flex justify-center"></div>
 
                         <div className="mt-6 sm:mt-8 flex items-center justify-center lg:justify-between">
                             {/* <div className="hidden lg:flex space-x-2">
