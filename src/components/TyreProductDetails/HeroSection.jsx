@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductInfo from './ProductInfo';
 import { getTyreById } from '../../axios/axios';
 import { getTyreImageUrl } from '../../Utils/Utils';
+import { formatCurrency } from '../../Utils/Utils';
 import { useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
 
@@ -89,7 +90,7 @@ const HeroSection = () => {
                     High-performance tyres
                   </p>
                   <p className="text-[20px] sm:text-[22px] md:text-[24px] font-medium leading-[25px] sm:leading-[27px] md:leading-[30px] font-['Lexend'] text-[#ff0000] mt-[8px]">
-                    ${product.price}
+                    {formatCurrency(product.price)}
                   </p>
                 </div>
 

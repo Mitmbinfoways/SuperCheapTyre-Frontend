@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
+import { formatCurrency } from '../../Utils/Utils';
 
 const TyreCard = ({
   id,
@@ -91,7 +92,7 @@ const TyreCard = ({
         </div> */}
 
         <div className="text-lg font-lexend font-medium text-black pb-5">
-          ${price}
+          {formatCurrency(price)}
         </div>
       </div>
 

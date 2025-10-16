@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { getTimeslot, getGetHolidays, getAppointmentSlots } from '../../axios/axios';
 import Loader from '../common/Loader';
 import { loadStripe } from '@stripe/stripe-js';
-import { secureGetItem, secureSetItem } from '../../Utils/encryption';
+import { secureGetItem, secureSetItem, secureRemoveItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
 
 const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) => {
@@ -147,7 +147,20 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
       {showError && (
         <p className="text-xs text-[#FF0000] mt-3">Please select a date.</p>
       )}
-      <p className="text-xs sm:text-sm text-[#7A7A7A] mt-3 text-nowrap sm:mt-5 text-center sm:text-left">Appointments can be booked for 45 minutes only.</p>
+      <div className="text-xs sm:text-sm text-[#7A7A7A] mt-3 text-nowrap sm:mt-5 text-center sm:text-left">Appointments can be booked for 45 minutes only.</div>
+            {/* Legend for time slot status */}
+      <div className="col-span-1 sm:col-span-2 flex py-3">
+        <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-white border border-[#7E7E7E] rounded mr-2"></div>
+            <span className="text-xs">Available</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-[#D7D7D7] border border-[#B0B0B0] rounded mr-2"></div>
+            <span className="text-xs">Booked</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -209,6 +222,11 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
   const [phone, setPhone] = useState('');
   const [remarks, setRemarks] = useState('');
   const [touched, setTouched] = useState({});
+  // Get payment option from localStorage
+  const [paymentOption, setPaymentOption] = useState(() => {
+    const savedOption = secureGetItem('selectedPaymentOption', 'full');
+    return savedOption;
+  });
 
   const formatAppointmentDate = (date) => {
     if (!date) return '';
@@ -234,6 +252,9 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
   const appointmentString = selectedDate && selectedTime ?
     `${formatAppointmentDate(selectedDate)} at ${selectedTime}` :
     'No appointment selected';
+
+  // Get payment option text for display
+  const paymentOptionText = paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)';
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^[0-9+()\-\s]{7,}$/;
@@ -270,7 +291,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         phone: payload.phone,
         remarks: payload.remarks,
         date: payload.appointment.date, // This is now in ISO format (YYYY-MM-DD)
-        time: payload.appointment.time
+        time: payload.appointment.time,
+        paymentOption: paymentOption // Include the payment option
       };
 
       console.log(appointmentData)
@@ -286,7 +308,18 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         quantity: item.quantity || 1,
       }));
 
-      const body = { Product: transformedCart };
+      // Calculate total based on payment option
+      const subtotal = transformedCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const totalAmount = paymentOption === 'full' ? subtotal : subtotal * 0.25;
+
+      // Update cart items with the correct amount based on payment option
+      const paymentCart = transformedCart.map(item => ({
+        ...item,
+        // Adjust price per item based on payment option
+        price: paymentOption === 'full' ? item.price : item.price * 0.25
+      }));
+
+      const body = { Product: paymentCart };
 
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/payment`, {
         method: "POST",
@@ -350,6 +383,12 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
           <p className="text-xs text-[#FF0000] leading-relaxed tracking-wide">
             <span className="text-[#FF0000]">Selected Appointment:</span><br />
             {appointmentString}
+          </p>
+        </div>
+        
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <span className="font-medium">Payment Option:</span> {paymentOptionText}
           </p>
         </div>
 
@@ -552,6 +591,13 @@ const AppointmentSection = () => {
       fetchSlotsForDate(selectedDate);
     }
   }, [selectedDate, timeSlotId]);
+
+  const handleGoHome = () => {
+    localStorage.removeItem("appointmentCreated");
+    localStorage.removeItem("cartItemsForOrder");
+    secureRemoveItem("selectedPaymentOption"); // Clean up the payment option
+    navigate("/");
+  };
 
   return (
     <section className="py-10 px-4">

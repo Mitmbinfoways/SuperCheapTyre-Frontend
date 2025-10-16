@@ -10,118 +10,13 @@ const Success = () => {
   const [isLoading, setIsLoading] = useState(false);
   const hasRunRef = useRef(false);
 
-  // const createAppointmentAndOrder = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const appointmentData = secureGetItem("appointmentData", {});
-  //     const cartItems = secureGetItem("cartItemsForOrder", []);
-
-  //     if (!appointmentData || !appointmentData.date || !appointmentData.time) {
-  //       throw new Error("Appointment data not found");
-  //     }
-
-  //     const timeSlotId = localStorage.getItem("timeSlotId");
-  //     const selectedSlotId = localStorage.getItem("selectedSlotId");
-
-  //     if (!timeSlotId || !selectedSlotId) {
-  //       throw new Error("Time slot data not found");
-  //     }
-
-  //     // Create appointment
-  //     const appointmentPayload = {
-  //       firstname: appointmentData.firstName,
-  //       lastname: appointmentData.lastName,
-  //       phone: appointmentData.phone,
-  //       email: appointmentData.email,
-  //       date: appointmentData.date,
-  //       slotId: selectedSlotId,
-  //       timeSlotId: timeSlotId,
-  //       notes: appointmentData.remarks,
-  //       status: "confirmed",
-  //     };
-
-  //     const appointmentResponse = await createAppointment(appointmentPayload);
-
-  //     if (appointmentResponse?.data?.statusCode !== 201) {
-  //       throw new Error("Failed to create appointment");
-  //     }
-
-  //     const orderPayload = {
-  //       items: cartItems.map((item) => ({
-  //         id: item._id || item.id,
-  //         quantity: item.quantity,
-  //       })),
-  //       subtotal: cartItems.reduce(
-  //         (sum, item) => sum + item.price * item.quantity,
-  //         0
-  //       ),
-  //       total: cartItems.reduce(
-  //         (sum, item) => sum + item.price * item.quantity,
-  //         0
-  //       ),
-  //       appointment: {
-  //         date: appointmentData.date,
-  //         slotId: selectedSlotId,
-  //         timeSlotId: timeSlotId,
-  //         firstname: appointmentData.firstName,
-  //         lastname: appointmentData.lastName,
-  //         phone: appointmentData.phone,
-  //         email: appointmentData.email,
-  //       },
-  //       customer: {
-  //         name: `${appointmentData.firstName} ${appointmentData.lastName}`,
-  //         phone: appointmentData.phone,
-  //         email: appointmentData.email,
-  //       },
-  //       payment: {
-  //         method: "stripe",
-  //         status: "completed",
-  //         amount: cartItems.reduce(
-  //           (sum, item) => sum + item.price * item.quantity,
-  //           0
-  //         ),
-  //       },
-  //     };
-
-  //     const orderResponse = await createOrder(orderPayload);
-
-  //     if (orderResponse?.data?.statusCode !== 201) {
-  //       throw new Error("Failed to create order");
-  //     }
-
-  //     secureRemoveItem("cartItems");
-  //     secureRemoveItem("cartItemsForOrder");
-  //     secureRemoveItem("appointmentData");
-  //     localStorage.removeItem("timeSlotId");
-  //     localStorage.removeItem("selectedSlotId");
-
-  //     window.dispatchEvent(
-  //       new StorageEvent("storage", {
-  //         key: "cartCount",
-  //         newValue: "0",
-  //       })
-  //     );
-
-  //     toast.success(
-  //       "Payment successful! Your appointment and order have been confirmed."
-  //     );
-  //   } catch (error) {
-  //     console.error("Error creating appointment/order:", error);
-  //     toast.error(
-  //       error.message ||
-  //       "Failed to create appointment and order. Please contact support."
-  //     );
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-
   const createAppointmentAndOrder = async () => {
     try {
       setIsLoading(true);
       const appointmentData = secureGetItem("appointmentData", {});
       const cartItems = secureGetItem("cartItemsForOrder", []);
+      // Get the payment option
+      const paymentOption = appointmentData.paymentOption || 'full';
 
       if (!appointmentData || !appointmentData.date || !appointmentData.time) {
         throw new Error("Appointment data not found");
@@ -134,10 +29,14 @@ const Success = () => {
         throw new Error("Time slot data not found");
       }
 
-      const totalAmount = cartItems.reduce(
+      // Calculate amount based on payment option
+      const subtotal = cartItems.reduce(
         (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
         0
       );
+      
+      // Apply payment option logic
+      const totalAmount = paymentOption === 'full' ? subtotal : subtotal * 0.25;
 
       const appointmentPayload = {
         firstname: appointmentData.firstName,
@@ -168,8 +67,8 @@ const Success = () => {
           id: item._id || item.id,
           quantity: item.quantity,
         })),
-        subtotal: totalAmount,
-        total: totalAmount,
+        subtotal: Number(subtotal),
+        total: Number(totalAmount), // Use the calculated amount based on payment option
         appointmentId,
         customer: {
           name: `${appointmentData.firstName} ${appointmentData.lastName}`,
@@ -178,8 +77,9 @@ const Success = () => {
         },
         payment: {
           method: "stripe",
-          status: "completed",
-          amount: totalAmount,
+          status: paymentOption,
+          amount: Number(totalAmount), // Use the calculated amount based on payment option
+          // option: paymentOption // Include the payment option in payment details
         },
       };
 
@@ -194,6 +94,7 @@ const Success = () => {
       secureRemoveItem("appointmentData");
       localStorage.removeItem("timeSlotId");
       localStorage.removeItem("selectedSlotId");
+      secureRemoveItem("selectedPaymentOption"); // Clean up the payment option
 
       window.dispatchEvent(
         new StorageEvent("storage", {
@@ -283,6 +184,9 @@ const Success = () => {
                     <p>
                       Thank you for your payment. Your appointment details have
                       been sent to your email.
+                    </p>
+                    <p className="mt-2 font-medium">
+                      Payment Option: {secureGetItem("appointmentData", {}).paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)'}
                     </p>
                   </div>
                 </div>

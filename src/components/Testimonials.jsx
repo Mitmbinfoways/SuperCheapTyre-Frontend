@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { images, testimonials } from '../assets/data';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Pagination, Navigation } from 'swiper/modules';
+import { FreeMode, Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
@@ -62,7 +62,12 @@ const Testimonials = () => {
                                 slidesPerView={1}
                                 spaceBetween={20}
                                 // freeMode
+                                autoplay={{
+                                    delay: 2500,
+                                    disableOnInteraction: false,
+                                }}
                                 pagination={{ clickable: true }}
+                                loop={true}
                                 navigation={{ prevEl: '.testi-prev', nextEl: '.testi-next' }}
                                 breakpoints={{
                                     640: { slidesPerView: 1, spaceBetween: 10 },
@@ -76,7 +81,7 @@ const Testimonials = () => {
                                         swiper.params.pagination.el = el;
                                     }
                                 }}
-                                modules={[FreeMode, Pagination, Navigation]}
+                                modules={[FreeMode, Pagination, Navigation, Autoplay]}
                                 className="testimonial-swiper"
                             >
                                 {testimonials.map((item, index) => (

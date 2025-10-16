@@ -18,7 +18,7 @@ const Footer = () => {
                         </p>
                         <div className="flex space-x-3 sm:space-x-4 justify-center sm:justify-start">
                             <a href="https://www.facebook.com/Supercheaptyre" className="p-2 bg-white rounded-full"><FaFacebookF size={18} className="sm:w-5 sm:h-5 text-black" /></a>
-                            <a href="#" className="p-2 bg-white rounded-full"><FaTwitter size={18} className="sm:w-5 sm:h-5 text-black" /></a>
+                            {/* <a href="#" className="p-2 bg-white rounded-full"><FaTwitter size={18} className="sm:w-5 sm:h-5 text-black" /></a> */}
                             <a href="https://www.instagram.com/supercheaptyres/" className="p-2 bg-white rounded-full"><ImInstagram size={18} className="sm:w-5 sm:h-5 text-black rounded-sm" /></a>
                         </div>
                     </div>

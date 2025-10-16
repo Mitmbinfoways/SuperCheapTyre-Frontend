@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { RiDeleteBin5Fill, RiDeleteBinFill, RiDeleteBinLine } from "react-icons/ri";
+import { formatCurrency } from '../../Utils/Utils';
+
 const CartItem = ({ item, onQuantityChange, onRemove }) => {
   const navigate = useNavigate();
   return (
@@ -16,7 +18,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
             <p className=" flex font-lexend text-sm mt-1 text-[#8C8C8C] gap-1"><p className='text-[#888888] font-bold'>Size:</p> {item.size}</p>
             <p className="font-roboto text-[#8C8C8C] text-base">{item.description}</p>
           </div>
-          <p className="font-satoshi font-bold text-2xl mt-2 sm:mt-0 text-[#000000]">${item.price}</p>
+          <p className="font-satoshi font-bold text-2xl mt-2 sm:mt-0 text-[#000000]">{formatCurrency(item.price)}</p>
         </div>
         <div className="flex flex-col justify-between items-start sm:items-end">
           <button onClick={() => onRemove(item.id)} className="text-primary hover:text-red-700">

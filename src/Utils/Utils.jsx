@@ -28,3 +28,12 @@ export function formatDateTime(isoString) {
         return '';
     }
 }
+
+/**
+ * Format currency value as Australian Dollars (AUD)
+ * @param {number} amount - The amount to format
+ * @returns {string} Formatted currency string with AU$ prefix
+ */
+export function formatCurrency(amount) {
+    return `AU$${Number(amount).toFixed(2)}`;
+}

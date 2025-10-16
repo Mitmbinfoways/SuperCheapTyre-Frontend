@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { gethomedata } from "../axios/axios";
-import { getTyreImageUrl } from "../Utils/Utils";
+import { getTyreImageUrl, formatCurrency } from "../Utils/Utils";
 import Loader from './common/Loader';
 
 const TireCard = ({ image, name, price, onClick }) => (
@@ -37,7 +37,7 @@ const TireShowcase = () => {
         const mapItem = (item) => ({
           id: item._id,
           name: item.name || item.brand,
-          price: typeof item.price === 'number' ? `$ ${item.price}` : '',
+          price: typeof item.price === 'number' ? formatCurrency(item.price) : '',
           image: getTyreImageUrl(item.images?.[0])
         });
 

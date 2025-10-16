@@ -17,7 +17,7 @@ const FilterSidebar = () => {
     size: ['All Size', '175/65 R14', '185/65 R15', '195/60 R15', '205/55 R16', '215/60 R16', '225/45 R17'],
     type: ['All Type', 'Summer', 'Winter', 'All-Season', 'Performance'],
     rimStyle: ['All Rim Style', 'Steel', 'Alloy', 'Chrome', 'Matte Black'],
-    price: ['All Price', 'Under $100', '$100 - $200', '$200 - $300', 'Above $300'],
+    price: ['All Price', 'Under AU$100', 'AU$100 - AU$200', 'AU$200 - AU$300', 'Above AU$300'],
   };
 
   const [selected, setSelected] = useState({
