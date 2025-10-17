@@ -16,6 +16,7 @@ import Cart from './components/Cart/Cart';
 import Appointment from './components/Appointment/Appointment';
 import Success from './components/Appointment/Success';
 import Cancel from './components/Appointment/Cancel';
+import NotFound from './components/common/NotFound';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -57,6 +58,8 @@ function App() {
         <Route path='/appointment' element={<Appointment />} />
         <Route path='/success' element={<Success />} />
         <Route path='/cancel' element={<Cancel />} />
+        {/* Catch-all route for 404 page */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
       <ToastContainer />
