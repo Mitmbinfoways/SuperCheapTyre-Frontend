@@ -17,7 +17,7 @@ const AppointmentBanner = () => {
           <img
             src={img}
             alt="Two tires"
-            className="w-40 xs:w-48 sm:w-60 md:w-72 lg:w-96 xl:w-[460px] h-[454px] object-contain drop-shadow-xl"
+            className="w-40 xs:w-48 sm:w-60 md:w-72 lg:w-96 xl:w-[460px] sm:h-[454px] h-[554px]  object-contain drop-shadow-xl"
           />
         </div>
 
