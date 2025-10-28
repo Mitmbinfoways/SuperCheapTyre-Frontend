@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BreadcrumbSection from './BreadcrumbSection';
-import FilterSidebar from './FilterSidebar';
+import WheelFilterSidebar from './WheelFilterSidebar';
 import TyreGrid from './TyreGrid';
 import Pagination from './Pagination';
 import HeroBanner from './HeroBanner';
@@ -9,7 +9,7 @@ import { getTyres } from '../../axios/axios';
 import { getTyreImageUrl } from '../../Utils/Utils';
 import Loader from '../common/Loader';
 
-function Tyre() {
+function Wheels() {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,35 +19,33 @@ function Tyre() {
   const [pageSize] = useState(6); // Set page size to 6 as in original
 
   // Get filter values from URL query parameters
-  const width = searchParams.get('width') || '';
-  const profile = searchParams.get('profile') || '';
-  const diameter = searchParams.get('diameter') || '';
   const brand = searchParams.get('brand') || '';
-  const loadRating = searchParams.get('loadRating') || '';
-  const speedRating = searchParams.get('speedRating') || '';
+  const size = searchParams.get('size') || '';
+  const color = searchParams.get('color') || '';
+  const diameter = searchParams.get('diameter') || '';
+  const fitments = searchParams.get('fitments') || '';
   const price = searchParams.get('price') || '';
 
   // Fetch data from API with axios and pagination
   useEffect(() => {
-    const fetchTyres = async () => {
+    const fetchWheels = async () => {
       try {
         setLoading(true);
         setError(null);
         
         // Build API parameters
-        const apiParams = { 
+        const apiParams = {
           page: currentPage, 
           limit: pageSize,
-          category: 'tyre' // Filter tyres on the backend
+          category: 'wheel' // Filter wheels on the backend
         };
         
         // Add filter parameters if they exist
-        if (width) apiParams.width = width;
-        if (profile) apiParams.profile = profile;
-        if (diameter) apiParams.diameter = diameter;
         if (brand) apiParams.brand = brand;
-        if (loadRating) apiParams.loadRating = loadRating;
-        if (speedRating) apiParams.speedRating = speedRating;
+        if (size) apiParams.size = size;
+        if (color) apiParams.color = color;
+        if (diameter) apiParams.diameter = diameter;
+        if (fitments) apiParams.fitments = fitments;
         if (price) apiParams.sortBy = price; // price is for sorting
         
         const response = await getTyres(apiParams);
@@ -63,9 +61,9 @@ function Tyre() {
             image: getTyreImageUrl(item.images?.[0]), // fallback image
             brand: item.brand,
             name: item.name,
-            size: item.tyreSpecifications
-              ? `${item.tyreSpecifications.width}/${item.tyreSpecifications.profile}${" "}${item.tyreSpecifications.diameter}${" "}${item.tyreSpecifications.loadRating}${item.tyreSpecifications.speedRating}`
-              : "",
+            size: item.wheelSpecifications
+              ? `${item.wheelSpecifications.size}" ${item.wheelSpecifications.diameter}"`
+              : "N/A",
             price: item.price,
             rating: 4, // API doesn't return rating → you can adjust
             stock: item.stock || 0, // Add stock information
@@ -79,7 +77,7 @@ function Tyre() {
           setError("Product not found");
         }
       } catch (error) {
-        console.error("Error fetching tyres:", error);
+        console.error("Error fetching wheels:", error);
         setProducts([]);
         setTotalPages(1);
         setError("Product not found");
@@ -88,8 +86,8 @@ function Tyre() {
       }
     };
 
-    fetchTyres();
-  }, [currentPage, pageSize, width, profile, diameter, brand, loadRating, speedRating, price]);
+    fetchWheels();
+  }, [currentPage, pageSize, brand, size, color, diameter, fitments, price]);
 
   // Scroll to top when page changes
   useEffect(() => {
@@ -100,7 +98,7 @@ function Tyre() {
   }, [currentPage]);
 
   if (loading) {
-    return <Loader label="Loading tyres..." />;
+    return <Loader label="Loading wheels..." />;
   }
 
   // Show error message if there's an error and no products to display
@@ -108,22 +106,22 @@ function Tyre() {
     return (
       <main className="bg-[#F3F3F3]">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
-          <BreadcrumbSection category="tyre" />
+          <BreadcrumbSection category="wheel" />
           <div className="py-6 sm:py-8">
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
               {/* Left Sidebar */}
               <div className="w-full lg:w-auto lg:flex-shrink-0">
-                <FilterSidebar />
+                <WheelFilterSidebar />
               </div>
 
               {/* Right Content */}
               <div className="flex-1">
                 <div className="mb-6 sm:mb-8">
                   <h2 className="text-2xl sm:text-3xl font-lexend font-regular text-black py-3 pb-8">
-                    Tyres
+                    Wheels
                   </h2>
                   <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                    The new attractive asymmetric tread design offers superior handling and braking performances on both dry and wet surfaces.
+                    Browse our wide selection of high-quality wheels for your vehicle.
                   </p>
                 </div>
 
@@ -147,7 +145,7 @@ function Tyre() {
                   </div>
                   <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">Sorry, no products were found</h3>
                   <p className="text-base font-lexend text-gray-600 max-w-md text-center mb-6">
-                    We couldn't find any tyres matching your current selection. Please try adjusting your filters or check back later.
+                    We couldn't find any wheels matching your current selection. Please try adjusting your filters or check back later.
                   </p>
                   <button 
                     onClick={() => window.location.reload()} 
@@ -177,22 +175,22 @@ function Tyre() {
   return (
     <main className="bg-[#F3F3F3]">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
-        <BreadcrumbSection category="tyre" />
+        <BreadcrumbSection category="wheel" />
         <div className="py-6 sm:py-8">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Left Sidebar */}
             <div className="w-full lg:w-auto lg:flex-shrink-0">
-              <FilterSidebar />
+              <WheelFilterSidebar />
             </div>
 
             {/* Right Content */}
             <div className="flex-1">
               <div className="mb-6 sm:mb-8">
                 <h2 className="text-2xl sm:text-3xl font-lexend font-regular text-black py-3 pb-8">
-                  Tyres
+                  Wheels
                 </h2>
                 <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                  The new attractive asymmetric tread design offers superior handling and braking performances on both dry and wet surfaces.
+                  Browse our wide selection of high-quality wheels for your vehicle.
                 </p>
               </div>
 
@@ -216,4 +214,4 @@ function Tyre() {
   );
 }
 
-export default Tyre;
+export default Wheels;

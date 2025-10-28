@@ -4,34 +4,24 @@ import QuantityInput from './ui/QuantityInput';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { getTyreImageUrl } from '../../Utils/Utils';
 import { Toast } from '../../Utils/Toast';
-import WheelProductInfo from './WheelProductInfo';
 
-const ProductInfo = (product) => {
-  // Check if this is a wheel product
-  const isWheelProduct = product.product.category === 'wheel';
-  
-  // If it's a wheel product, render the wheel-specific component
-  if (isWheelProduct) {
-    return <WheelProductInfo product={product.product} />;
-  }
-
-  // Otherwise, render the tyre-specific component (existing logic)
+const WheelProductInfo = (product) => {
   const [quantity, setQuantity] = useState(1);
 
   const specifications = [
     { label: 'Brand :', value: product.product.brand, icon: '/productdetails/brand.svg' },
     {
       label: 'Size :',
-      value: product.product.tyreSpecifications
-        ? `${product.product.tyreSpecifications.width}/${product.product.tyreSpecifications.profile}${" "}${product.product.tyreSpecifications.diameter}${" "}${product.product.tyreSpecifications.loadRating}${product.product.tyreSpecifications.speedRating}`
+      value: product.product.wheelSpecifications
+        ? `${product.product.wheelSpecifications.size}"`
         : 'N/A',
       icon: '/productdetails/size.svg'
     },
+    { label: 'Diameter :', value: product.product.wheelSpecifications?.diameter || 'N/A', icon: '/productdetails/size.svg' },
+    { label: 'Color :', value: product.product.wheelSpecifications?.color || 'N/A', icon: '/productdetails/tread.svg' },
+    { label: 'Fitments :', value: product.product.wheelSpecifications?.fitments || 'N/A', icon: '/productdetails/bolt.svg' },
+    // { label: 'Staggered Options :', value: product.product.wheelSpecifications?.staggeredOptions || 'N/A', icon: '/productdetails/offset.svg' },
     { label: 'Stock :', value: product.product.stock, icon: '/productdetails/stock.svg' },
-    // { label: 'Bolt pattern :', value: 'Bolt pattern', icon: '/productdetails/bolt.svg' },
-    // { label: 'Offset :', value: 'offset', icon: '/productdetails/Offset.svg' },
-    { label: 'Tread type :', value: product.product.tyreSpecifications?.pattern || 'N/A', icon: '/productdetails/tread.svg' },
-    
   ];
 
   const handleQuantityChange = (newQuantity) => {
@@ -53,14 +43,14 @@ const ProductInfo = (product) => {
       cart.push({
         id: productId,
         image: product.product.images?.[0] ? getTyreImageUrl(product.product.images[0]) : '/cart/carttyre.svg',
-        name: product.product.name || 'Tyre',
+        name: product.product.name || 'Wheel',
         brand: product.product.brand,
-        size: product.product.tyreSpecifications
-          ? `${product.product.tyreSpecifications.width}/${product.product.tyreSpecifications.profile}${product.product.tyreSpecifications.speedRating}${product.product.tyreSpecifications.diameter}`
+        size: product.product.wheelSpecifications
+          ? `${product.product.wheelSpecifications.size}" ${product.product.wheelSpecifications.diameter}"`
           : 'N/A',
         price: product.product.price || 0,
         quantity,
-        description: `${product.product.brand || ''} ${product.product.name || ''}`.trim() || 'Tyre Product'
+        description: `${product.product.brand || ''} ${product.product.name || ''}`.trim() || 'Wheel Product'
       });
     }
     secureSetItem('cartItems', cart);
@@ -73,11 +63,6 @@ const ProductInfo = (product) => {
       <div className="flex flex-col gap-[8px] sm:gap-[12px] md:gap-[14px] lg:gap-[16px] w-full">
         {/* Product Specifications */}
         <div className="flex flex-col w-full">
-          {/* Specification Header */}
-          {/* <div className="flex justify-center items-center w-auto border border-white mb-[-2px]">
-                
-              </div> */}
-
           {/* Specifications List */}
           <div className="border border-[#e0e0e0] rounded-[14px] bg-white px-[16px] sm:px-[18px] md:px-[20px] lg:px-[22px] py-[10px]">
             <h3 className="text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] text-black py-[12px] px-[6px]">
@@ -135,7 +120,6 @@ const ProductInfo = (product) => {
           </div>
         </div>
 
-
         {/* Add to Cart Button */}
         <Button
           text="Add To Cart"
@@ -162,4 +146,4 @@ const ProductInfo = (product) => {
   );
 };
 
-export default ProductInfo;
+export default WheelProductInfo;

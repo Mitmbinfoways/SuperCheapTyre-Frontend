@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { images } from '../assets/data';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import img from '/home/tyrebanner1.png'
 import mobile from '/home/mobilebanner.png';
-import BuyTyre from './BuyTyre';
+import BuyTyre from './BuyTyre'; 
 import SingleSelect from './common/SingleSelect';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { getBanners } from '../axios/axios';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const SearchForm = () => {
     const [width, setWidth] = useState('');
@@ -76,13 +84,122 @@ const SearchForm = () => {
 
 
 const Hero = () => {
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBanners();
+  }, []);
+
+  const fetchBanners = async () => {
+    try {
+      setLoading(true);
+      const response = await getBanners();
+      console.log('Banner API Response:', response.data);
+      if (response.data && response.data.data) {
+        const activeBanners = response.data.data.filter(
+          banner => banner.isActive && !banner.isDelete
+        );
+        console.log('Active Banners:', activeBanners);
+        setBanners(activeBanners);
+      }
+    } catch (error) {
+      console.error('Error fetching banners:', error);
+      // Fallback to empty array on error
+      setBanners([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getImageUrl = (imagePath) => {
+    const baseURL = import.meta.env.VITE_BASE_URL;
+    const fullUrl = `${baseURL}${imagePath}`;
+    console.log('Image URL:', fullUrl);
+    return fullUrl;
+  };
+
   return (
     <div className='h-fit'>
     <section className="relative bg-dark text-white overflow-hidden w-full ">
-      <div className="">
-        <img src={img} alt="Ford Ranger" className="w-full h-full hidden md:block object-cover object-[60%_center] sm:object-center lg:object-right"/>
-        <img src={mobile} alt="Ford Ranger" className="w-full h-full md:hidden object-cover object-[60%_center] sm:object-center lg:object-right"/>
-        <div className="absolute inset-0 bg-black/30 sm:bg-black/10"></div>
+      <div className="relative">
+        {loading ? (
+          <div className="w-full h-[400px] md:h-[600px] bg-gray-800 flex items-center justify-center">
+            <div className="text-white text-xl">Loading...</div>
+          </div>
+        ) : banners.length > 0 ? (
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={0}
+              slidesPerView={1}
+              navigation={{
+                prevEl: '.hero-prev',
+                nextEl: '.hero-next',
+              }}
+              pagination={{ clickable: true }}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              loop={banners.length > 1}
+              className="hero-carousel w-full h-[400px] md:h-[600px]"
+            >
+              {banners.map((banner) => (
+                <SwiperSlide key={banner._id}>
+                  <div className="relative w-full h-[400px] md:h-[600px]">
+                    <img
+                      src={getImageUrl(banner.laptopImage)}
+                      alt="Banner"
+                      className="w-full h-[400px] md:h-[600px] hidden md:block object-cover object-center"
+                      onError={(e) => {
+                        console.error('Failed to load laptop image:', e.target.src);
+                        e.target.style.display = 'none';
+                      }}
+                      onLoad={() => console.log('Laptop image loaded:', banner.laptopImage)}
+                    />
+                    <img
+                      src={getImageUrl(banner.mobileImage)}
+                      alt="Banner"
+                      className="w-full h-[400px] md:h-[600px] md:hidden object-cover object-center"
+                      onError={(e) => {
+                        console.error('Failed to load mobile image:', e.target.src);
+                        e.target.style.display = 'none';
+                      }}
+                      onLoad={() => console.log('Mobile image loaded:', banner.mobileImage)}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Custom Navigation Arrows */}
+            {banners.length > 1 && (
+              <>
+                <button className="hero-prev hidden sm:flex absolute left-4 md:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-20 p-2 bg-transparent rounded-full hover:bg-gray-100">
+                  <ChevronLeft className="text-primary" />
+                </button>
+                <button className="hero-next hidden sm:flex absolute right-4 md:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-20 p-2 bg-transparent rounded-full hover:bg-gray-100">
+                  <ChevronRight className="text-primary" />
+                </button>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="relative w-full h-[400px] md:h-[600px]">
+            <img 
+              src={img} 
+              alt="Super Cheap Tyres Banner" 
+              className="w-full h-[400px] md:h-[600px] hidden md:block object-cover object-center"
+            />
+            <img 
+              src={mobile} 
+              alt="Super Cheap Tyres Banner" 
+              className="w-full h-[400px] md:h-[600px] md:hidden object-cover object-center"
+            />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black/30 sm:bg-black/10 pointer-events-none"></div>
       </div>
 
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10 h-full">

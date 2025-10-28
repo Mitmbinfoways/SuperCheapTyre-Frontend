@@ -142,8 +142,8 @@ const Blog = () => {
                     </div>
                     <div className={`${imageFirst ? '' : 'md:order-1'}`}>
                       <div className="text-xs text-gray-500 mb-2">{post.date} · {post.author}</div>
-                      <h4 className="text-2xl font-semibold text-black">{post.title}</h4>
-                      <p className="mt-3 text-gray-600 text-sm sm:text-base">{post.excerpt}</p>
+                      <h4 className="text-2xl font-semibold text-black line-clamp-2">{post.title}</h4>
+                      <p className="mt-3 text-gray-600 text-sm sm:text-base line-clamp-2">{post.excerpt}</p>
                       <button onClick={() => openPost(post)} className="mt-4 inline-flex items-center text-[#ED1C24] text-sm font-medium">Read more →</button>
                     </div>
                   </div>

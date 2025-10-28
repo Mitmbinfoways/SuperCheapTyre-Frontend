@@ -26,6 +26,7 @@ export const images = {
 export const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Tyres', href: '/tyres' },
+  { name: 'Wheels', href: '/wheels' },
   { name: 'Book An Appointment', href: '/appointment' },
   { name: 'Blog', href: '/blog' },
   // { name: 'Services', href: '#' },

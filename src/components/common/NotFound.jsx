@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../Header';
-import Footer from '../Footer';
 
 const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
+      
       <div className="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8 sm:p-10 transition-all duration-300 hover:shadow-2xl">
           <div className="text-center">
@@ -44,7 +42,7 @@ const NotFound = () => {
           </div>
         </div>
       </div>
-      <Footer />
+  
     </div>
   );
 };

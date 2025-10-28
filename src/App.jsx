@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import Tyre from './components/tyre/Tyre';
+import Wheels from './components/tyre/Wheels';
 import About from './components/About/About';
 import Blog from './components/Blog/Blog';
 import BlogList from './components/Blog/BlogList';
@@ -47,6 +48,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/tyres" element={<Tyre />} />
+        <Route path="/wheels" element={<Wheels />} />
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} />

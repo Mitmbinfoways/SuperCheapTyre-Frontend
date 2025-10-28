@@ -9,11 +9,11 @@ const Success = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const hasRunRef = useRef(false);
+  const appointmentData = secureGetItem("appointmentData", {});
 
   const createAppointmentAndOrder = async () => {
     try {
       setIsLoading(true);
-      const appointmentData = secureGetItem("appointmentData", {});
       const cartItems = secureGetItem("cartItemsForOrder", []);
       // Get the payment option
       const paymentOption = appointmentData.paymentOption || 'full';
@@ -34,7 +34,7 @@ const Success = () => {
         (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
         0
       );
-      
+
       // Apply payment option logic
       const totalAmount = paymentOption === 'full' ? subtotal : subtotal * 0.25;
 
@@ -185,9 +185,9 @@ const Success = () => {
                       Thank you for your payment. Your appointment details have
                       been sent to your email.
                     </p>
-                    <p className="mt-2 font-medium">
-                      Payment Option: {secureGetItem("appointmentData", {}).paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)'}
-                    </p>
+                    {/* <p className="mt-2 font-medium">
+                      Payment Option: {appointmentData.paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)'}
+                    </p> */}
                   </div>
                 </div>
               </div>

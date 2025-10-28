@@ -96,3 +96,67 @@ html, body {
 .no-arrows[type='number'] {
   -moz-appearance: textfield; /* Firefox */
 }
+
+/* Hero Banner Carousel Styles */
+.hero-carousel .swiper-slide {
+  height: 400px;
+}
+
+@media (min-width: 768px) {
+  .hero-carousel .swiper-slide {
+    height: 600px;
+  }
+}
+
+/* Custom Hero Navigation Arrows */
+.hero-prev,
+.hero-next {
+  color: #ef4444 !important;
+  background-color: transparent !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  transition: all 0.3s !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.hero-prev:hover,
+.hero-next:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.hero-prev svg,
+.hero-next svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.hero-carousel .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.hero-carousel .swiper-pagination-bullet-active {
+  background-color: #ef4444;
+  width: 32px;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .hero-prev,
+  .hero-next {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .hero-prev svg,
+  .hero-next svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}

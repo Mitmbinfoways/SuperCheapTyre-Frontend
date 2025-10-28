@@ -84,4 +84,8 @@ export const createOrder = async (data) => {
   return axiosInstance.post("/api/v1/order" , data);
 };
 
+export const getBanners = async () => {
+  return axiosInstance.get(`/api/v1/banner`);
+};
+
 export default axiosInstance;

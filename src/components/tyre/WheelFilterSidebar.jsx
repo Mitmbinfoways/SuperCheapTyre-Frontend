@@ -4,16 +4,15 @@ import { ChevronDown } from 'lucide-react';
 import SingleSelect from '../common/SingleSelect';
 import axiosInstance from '../../axios/axios';
 
-const FilterSidebar = () => {
+const WheelFilterSidebar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   
   // State for filter options from API
   const [brandOptions, setBrandOptions] = useState([{ value: '', label: 'All Brand' }]);
-  const [widthOptions, setWidthOptions] = useState([{ value: '', label: 'All Width' }]);
-  const [profileOptions, setProfileOptions] = useState([{ value: '', label: 'All Profile' }]);
+  const [sizeOptions, setSizeOptions] = useState([{ value: '', label: 'All Size' }]);
+  const [colorOptions, setColorOptions] = useState([{ value: '', label: 'All Color' }]);
   const [diameterOptions, setDiameterOptions] = useState([{ value: '', label: 'All Diameter' }]);
-  const [loadRatingOptions, setLoadRatingOptions] = useState([{ value: '', label: 'All Load Rating' }]);
-  const [speedRatingOptions, setSpeedRatingOptions] = useState([{ value: '', label: 'All Speed Rating' }]);
+  const [fitmentOptions, setFitmentOptions] = useState([{ value: '', label: 'All Fitments' }]);
   const [loading, setLoading] = useState(true);
 
   // Price sorting options
@@ -26,11 +25,10 @@ const FilterSidebar = () => {
   // Initialize selected values from URL parameters
   const [selected, setSelected] = useState({
     brand: searchParams.get('brand') || '',
-    width: searchParams.get('width') || '',
-    profile: searchParams.get('profile') || '',
+    size: searchParams.get('size') || '',
+    color: searchParams.get('color') || '',
     diameter: searchParams.get('diameter') || '',
-    loadRating: searchParams.get('loadRating') || '',
-    speedRating: searchParams.get('speedRating') || '',
+    fitments: searchParams.get('fitments') || '',
     price: searchParams.get('price') || '',
   });
 
@@ -39,9 +37,9 @@ const FilterSidebar = () => {
     try {
       const response = await axiosInstance.get('/api/v1/brand');
       if (response.data.statusCode === 200) {
-        // Filter brands by category 'tyre' and map to options
+        // Filter brands by category 'wheel' and map to options
         const brands = response.data.data.items
-          .filter(brand => brand.category === 'tyre')
+          .filter(brand => brand.category === 'wheel')
           .map(brand => ({
             value: brand.name,
             label: brand.name
@@ -53,56 +51,47 @@ const FilterSidebar = () => {
     }
   };
 
-  // Fetch master filters (width, profile, diameter) from API
+  // Fetch master filters (wheels data) from API
   const fetchMasterFilters = async () => {
     try {
       const response = await axiosInstance.get('/api/v1/masterFilter');
       if (response.data.statusCode === 200 && response.data.data.items.length > 0) {
-        const tyreData = response.data.data.items[0].tyres;
+        const wheelData = response.data.data.items[0].wheels;
 
-        // Set width options
-        if (tyreData.width && tyreData.width.length > 0) {
-          const widths = tyreData.width.map(item => ({
+        // Set size options
+        if (wheelData.size && wheelData.size.length > 0) {
+          const sizes = wheelData.size.map(item => ({
             value: item.name,
             label: item.name
           }));
-          setWidthOptions([{ value: '', label: 'All Width' }, ...widths]);
+          setSizeOptions([{ value: '', label: 'All Size' }, ...sizes]);
         }
 
-        // Set profile options
-        if (tyreData.profile && tyreData.profile.length > 0) {
-          const profiles = tyreData.profile.map(item => ({
+        // Set color options
+        if (wheelData.color && wheelData.color.length > 0) {
+          const colors = wheelData.color.map(item => ({
             value: item.name,
             label: item.name
           }));
-          setProfileOptions([{ value: '', label: 'All Profile' }, ...profiles]);
+          setColorOptions([{ value: '', label: 'All Color' }, ...colors]);
         }
 
         // Set diameter options
-        if (tyreData.diameter && tyreData.diameter.length > 0) {
-          const diameters = tyreData.diameter.map(item => ({
+        if (wheelData.diameter && wheelData.diameter.length > 0) {
+          const diameters = wheelData.diameter.map(item => ({
             value: item.name,
             label: item.name
           }));
           setDiameterOptions([{ value: '', label: 'All Diameter' }, ...diameters]);
         }
 
-        // Set load rating options
-        if (tyreData.loadRating && tyreData.loadRating.length > 0) {
-          const loadRatings = tyreData.loadRating.map(item => ({
+        // Set fitments options
+        if (wheelData.fitments && wheelData.fitments.length > 0) {
+          const fitments = wheelData.fitments.map(item => ({
             value: item.name,
             label: item.name
           }));
-          setLoadRatingOptions([{ value: '', label: 'All Load Rating' }, ...loadRatings]);
-        }
-
-        // Set speed rating options
-        if (tyreData.speedRating && tyreData.speedRating.length > 0) {
-          const speedRatings = tyreData.speedRating.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setSpeedRatingOptions([{ value: '', label: 'All Speed Rating' }, ...speedRatings]);
+          setFitmentOptions([{ value: '', label: 'All Fitments' }, ...fitments]);
         }
       }
     } catch (error) {
@@ -124,11 +113,10 @@ const FilterSidebar = () => {
   useEffect(() => {
     setSelected({
       brand: searchParams.get('brand') || '',
-      width: searchParams.get('width') || '',
-      profile: searchParams.get('profile') || '',
+      size: searchParams.get('size') || '',
+      color: searchParams.get('color') || '',
       diameter: searchParams.get('diameter') || '',
-      loadRating: searchParams.get('loadRating') || '',
-      speedRating: searchParams.get('speedRating') || '',
+      fitments: searchParams.get('fitments') || '',
       price: searchParams.get('price') || '',
     });
   }, [searchParams]);
@@ -170,31 +158,31 @@ const FilterSidebar = () => {
           </div>
         </div>
 
-        {/* Width Filter */}
+        {/* Size Filter */}
         <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
-            Width
+            Size
           </div>
           <div className="relative">
             <SingleSelect
-              options={widthOptions}
-              value={selected.width}
-              onChange={handleChange('width')}
+              options={sizeOptions}
+              value={selected.size}
+              onChange={handleChange('size')}
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
         </div>
 
-        {/* Profile Filter */}
+        {/* Color Filter */}
         <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
-            Profile
+            Color
           </div>
           <div className="relative">
             <SingleSelect
-              options={profileOptions}
-              value={selected.profile}
-              onChange={handleChange('profile')}
+              options={colorOptions}
+              value={selected.color}
+              onChange={handleChange('color')}
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
@@ -215,31 +203,16 @@ const FilterSidebar = () => {
           </div>
         </div>
 
-        {/* Load Rating Filter */}
+        {/* Fitments Filter */}
         <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
-            Load Rating
+            Fitments
           </div>
           <div className="relative">
             <SingleSelect
-              options={loadRatingOptions}
-              value={selected.loadRating}
-              onChange={handleChange('loadRating')}
-              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-            />
-          </div>
-        </div>
-
-        {/* Speed Rating Filter */}
-        <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
-            Speed Rating
-          </div>
-          <div className="relative">
-            <SingleSelect
-              options={speedRatingOptions}
-              value={selected.speedRating}
-              onChange={handleChange('speedRating')}
+              options={fitmentOptions}
+              value={selected.fitments}
+              onChange={handleChange('fitments')}
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
@@ -268,4 +241,4 @@ const FilterSidebar = () => {
   );
 };
 
-export default FilterSidebar;
+export default WheelFilterSidebar;

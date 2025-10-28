@@ -13,7 +13,7 @@ const TireCard = ({ image, name, price, onClick }) => (
         className="w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl"
       />
     </div>
-    <p className="font-medium text-sm sm:text-lg md:text-xl">{name}</p>
+    <p className="font-medium text-sm sm:text-lg md:text-xl line-clamp-1">{name}</p>
     <p className="font-medium text-xs sm:text-sm md:text-base my-2">{price}</p>
     <p className="text-xs text-[#E0E0E0] mt-1">View Details</p>
   </div>
@@ -103,7 +103,7 @@ const TireShowcase = () => {
                     />
                   </div>
                   <div className="text-white mb-8">
-                    <p className="font-medium text-sm sm:text-lg md:text-xl">{p.name}</p>
+                    <p className="font-medium text-sm sm:text-lg md:text-xl line-clamp-2">{p.name}</p>
                     <p className="font-medium text-xs sm:text-sm md:text-base">{p.price}</p>
                     <p className="text-xs text-[#E0E0E0] mt-1">View Details</p>
                   </div>
@@ -126,7 +126,7 @@ const TireShowcase = () => {
                     />
                   </div>
                   <div className="text-white mb-8">
-                    <p className="font-medium text-sm sm:text-lg md:text-xl">{popularProduct.name}</p>
+                    <p className="font-medium text-sm sm:text-lg md:text-xl line-clamp-2">{popularProduct.name}</p>
                     <p className="font-medium text-xs sm:text-sm md:text-base">{popularProduct.price}</p>
                     <p className="text-xs text-[#E0E0E0] mt-1">View Details</p>
                   </div>

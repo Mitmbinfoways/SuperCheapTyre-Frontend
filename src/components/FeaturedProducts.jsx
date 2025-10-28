@@ -21,9 +21,21 @@ const ProductCard = ({ product, onClick }) => (
         <div className="absolute inset-0 bg-black/5 rounded-full blur-xl"></div>
         <img src={product.image} alt={product.name} className="max-h-full max-w-full object-contain" />
       </div>
+
+      {/* Stock Badge */}
+      {product.stock === 0 && (
+        <div className="absolute top-3 right-3 bg-[#ED1C24] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
+          Out of Stock
+        </div>
+      )}
+      {product.stock >= 1 && product.stock <= 5 && (
+        <div className="absolute top-3 right-3 bg-[#FFC107] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
+          Low Stock
+        </div>
+      )}
   
       {/* Info */}
-      <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start">{product.name}</h3>
+      <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start line-clamp-1">{product.name}</h3>
       <p className="text-start text-sm text-text-secondary font-roboto">{product.brand}</p>
       <p className="text-text-secondary text-xs sm:text-sm whitespace-pre-line my-1 sm:my-1 leading-relaxed text-start line-clamp-1">
         {product.description}
@@ -33,7 +45,15 @@ const ProductCard = ({ product, onClick }) => (
       </p>
   
       {/* Button (half in/out) */}
-      <button onClick={onClick} className="absolute w-9/12 sm:w-3/4 md:w-2/3  left-1/2 bottom-0 translate-x-[-50%] translate-y-1/2 bg-primary text-white font-bold py-2 sm:py-3 px-8 sm:px-12 md:px-8 rounded-full hover:bg-red-700 transition-colors text-sm sm:text-base shadow-md">
+      <button 
+        onClick={onClick} 
+        disabled={product.stock === 0}
+        className={`absolute w-9/12 sm:w-3/4 md:w-2/3 left-1/2 bottom-0 translate-x-[-50%] translate-y-1/2 font-bold py-2 sm:py-3 px-8 sm:px-12 md:px-8 rounded-full transition-colors text-sm sm:text-base shadow-md ${
+          product.stock === 0
+            ? 'bg-[#D7D7D7] text-white cursor-not-allowed'
+            : 'bg-primary text-white hover:bg-red-700'
+        }`}
+      >
         Buy Now
       </button>
     </div>
@@ -52,14 +72,28 @@ const FeaturedProducts = () => {
             try {
                 const res = await gethomedata();
                 const apiProducts = res?.data?.data?.productData || [];
-                const mapped = apiProducts.map((item) => ({
-                    id: item._id,
-                    name: item.name ,
-                    brand: item.brand,
-                    description: item.description || '',
-                    size: item.tyreSpecifications ? `${item.tyreSpecifications.width || ''}/${item.tyreSpecifications.profile || ''}${item.tyreSpecifications.speedRating || ''}${item.tyreSpecifications.diameter || ''}`.trim() : '',
-                    image: getTyreImageUrl(item.images?.[0])
-                }));
+                const mapped = apiProducts.map((item) => {
+                    // Handle different product categories
+                    let size = '';
+                    if (item.category === 'wheel' && item.wheelSpecifications) {
+                        // Wheel product
+                        size = `${item.wheelSpecifications.size || ''}" ${item.wheelSpecifications.diameter || ''}"`;
+                    } else if (item.tyreSpecifications) {
+                        // Tyre product
+                        size = `${item.tyreSpecifications.width || ''}/${item.tyreSpecifications.profile || ''}${" "}${item.tyreSpecifications.diameter || ''}${" "}${item.tyreSpecifications.loadRating || ''}${item.tyreSpecifications.speedRating || ''}`;
+                    }
+                    
+                    return {
+                        id: item._id,
+                        name: item.name,
+                        brand: item.brand,
+                        description: item.description || '',
+                        size: size.trim(),
+                        image: getTyreImageUrl(item.images?.[0]),
+                        category: item.category, // Store category for navigation
+                        stock: item.stock || 0 // Add stock information
+                    };
+                });
                 setProducts(mapped);
             } catch (e) {
                 setProducts([]);

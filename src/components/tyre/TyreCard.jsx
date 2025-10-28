@@ -12,9 +12,10 @@ const TyreCard = ({
   size,
   price,
   rating,
+  stock = 0, // Add stock prop with default value
 }) => {
   const navigate = useNavigate();
-  
+
   // Use either id or _id for consistency
   const productId = id || _id;
 
@@ -32,7 +33,7 @@ const TyreCard = ({
       />
     ));
   };
-    
+
   const handleCardClick = () => {
     navigate(`/productdetails/${id}`); // Pass the id in URL
   };
@@ -44,13 +45,13 @@ const TyreCard = ({
     if (existingIndex >= 0) {
       cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
     } else {
-      cart.push({ 
-        id: productId, 
-        image, 
-        name: name || brand || 'Tyre', 
-        brand, 
-        size, 
-        price, 
+      cart.push({
+        id: productId,
+        image,
+        name: name || brand || 'Tyre',
+        brand,
+        size,
+        price,
         quantity: 1,
         description: `${brand || ''} ${name || ''}`.trim() || 'Tyre Product'
       });
@@ -77,10 +78,21 @@ const TyreCard = ({
         />
       </div>
 
+      {stock === 0 && (
+        <div className="absolute -top-5 right-3 bg-[#ED1C24] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
+          Out of Stock
+        </div>
+      )}
+      {stock >= 1 && stock <= 5 && (
+        <div className="absolute -top-5 right-3 bg-[#FFC107] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
+          Low Stock
+        </div>
+      )}
+
       {/* Product Info */}
       <div className="">
         <div className="space-y-1">
-          <h3 className="text-xl font-lexend font-medium text-[#ED1C24]">{name}</h3>
+          <h3 className="text-xl font-lexend font-medium text-[#ED1C24] line-clamp-2">{name}</h3>
           <p className="text-sm text-[#7A7A7A] font-roboto">{brand}</p>
           <p className="text-sm text-[#7A7A7A] font-roboto">
             <span className="font-bold">Size:</span> <span className="font-normal">{size}</span>
@@ -96,11 +108,17 @@ const TyreCard = ({
         </div>
       </div>
 
-      {/* Add to Cart Button */}
+
+
+      {/* Add to Cart Button - Disabled when out of stock */}
       <div className=" flex items-center absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 justify-center space-x-4">
         <button
-          className="bg-[#ED1C24]  text-white rounded-lg sm:py-3 py-2 sm:px-8 px-4 text-nowrap font-lexend font-medium text-sm hover:bg-red-700 transition-colors"
+          className={`text-white rounded-lg sm:py-3 py-2 sm:px-8 px-4 text-nowrap font-lexend font-medium text-sm transition-colors ${stock === 0
+            ? 'bg-[#D7D7D7]  cursor-not-allowed'
+            : 'bg-[#ED1C24]  hover:bg-red-700 cursor-pointer'
+            }`}
           onClick={handleAddToCart}
+          disabled={stock === 0}
         >
           Add To Cart
         </button>

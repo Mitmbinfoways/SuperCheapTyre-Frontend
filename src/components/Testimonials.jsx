@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { images, testimonials } from '../assets/data';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -49,6 +49,15 @@ const TestimonialCard = ({ testimonial }) => (
 
 const Testimonials = () => {
     // Use class selectors for Navigation to avoid ref timing issues
+    const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+    const handlePlayVideo = () => {
+        setIsVideoOpen(true);
+    };
+
+    const handleCloseVideo = () => {
+        setIsVideoOpen(false);
+    };
 
     return (
         <section className="bg-light py-12 sm:py-16 md:py-20">
@@ -116,13 +125,29 @@ const Testimonials = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="relative w-full h-64 sm:h-80 md:h-[31rem] rounded-xl sm:rounded-2xl overflow-hidden group cursor-pointer mb-8 shadow-2xl">
-                        <img src={images.videoBg} alt="Tyre world" className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white/80 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <PlayCircleIcon className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-dark" />
-                            </div>
-                        </div>
+                    <div className="relative w-full h-64 sm:h-80 md:h-[31rem] rounded-xl sm:rounded-2xl overflow-hidden mb-8 shadow-2xl">
+                        {!isVideoOpen ? (
+                            <>
+                                <img src={images.videoBg} alt="Tyre world" className="w-full h-full object-cover" />
+                                <div 
+                                    className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer group"
+                                    onClick={handlePlayVideo}
+                                >
+                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white/80 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <PlayCircleIcon className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-dark" />
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <video
+                                className="w-full h-full object-cover"
+                                controls
+                                autoPlay
+                                src="/home/tyreshowcasevideo.mp4"
+                            >
+                                Your browser does not support the video tag.
+                            </video>
+                        )}
                     </div>
                 </div>
             </div>

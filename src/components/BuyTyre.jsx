@@ -1,74 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import img from '/home/Grouptyre.png'
 import bg from '/home/bg.png'
 import SingleSelect from './common/SingleSelect';
+import axiosInstance from '../axios/axios';
 
 const BuyTyre = () => {
+    const navigate = useNavigate();
     const [width, setWidth] = useState('');
     const [profile, setProfile] = useState('');
     const [diameter, setDiameter] = useState('');
     const [brand, setBrand] = useState('');
 
-    const widthOptions = [
-        { value: '', label: 'Select a Width' },
-        { value: '165', label: '165' },
-        { value: '175', label: '175' },
-        { value: '185', label: '185' },
-        { value: '195', label: '195' },
-        { value: '205', label: '205' }
-    ];
+    // State for API data
+    const [widthOptions, setWidthOptions] = useState([{ value: '', label: 'Select a Width' }]);
+    const [profileOptions, setProfileOptions] = useState([{ value: '', label: 'Select a Profile' }]);
+    const [diameterOptions, setDiameterOptions] = useState([{ value: '', label: 'Select a Diameter' }]);
+    const [brandOptions, setBrandOptions] = useState([{ value: '', label: 'Select a Brand' }]);
+    const [loading, setLoading] = useState(true);
 
-    const profileOptions = [
-        { value: '', label: 'Select a Profile' },
-        { value: '55', label: '55' },
-        { value: '60', label: '60' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '65', label: '65' },
-        { value: '70', label: '70' }
-    ];
+    // Fetch brands from API
+    const fetchBrands = async () => {
+        try {
+            const response = await axiosInstance.get('/api/v1/brand');
+            if (response.data.statusCode === 200) {
+                const brands = response.data.data.items
+                .filter(brand => brand.category === 'tyre')
+                .map(brand => ({
+                    value: brand.name,
+                    label: brand.name
+                }));
+                setBrandOptions([{ value: '', label: 'Select a Brand' }, ...brands]);
+            }
+        } catch (error) {
+            console.error('Error fetching brands:', error);
+        }
+    };
 
-    const diameterOptions = [
-        { value: '', label: 'Select a Diameter' },
-        { value: '14', label: '14' },
-        { value: '15', label: '15' },
-        { value: '16', label: '16' },
-        { value: '17', label: '17' }
-    ];
+    // Fetch master filters (width, profile, diameter) from API
+    const fetchMasterFilters = async () => {
+        try {
+            const response = await axiosInstance.get('/api/v1/masterFilter');
+            if (response.data.statusCode === 200 && response.data.data.items.length > 0) {
+                const tyreData = response.data.data.items[0].tyres;
 
-    const brandOptions = [
-        { value: '', label: 'Select a Brand' },
-        { value: 'Michelin', label: 'Michelin' },
-        { value: 'Goodyear', label: 'Goodyear' },
-        { value: 'Pirelli', label: 'Pirelli' },
-        { value: 'Continental', label: 'Continental' },
-        { value: 'Bridgestone', label: 'Bridgestone' }
-    ];
+                // Set width options
+                if (tyreData.width && tyreData.width.length > 0) {
+                    const widths = tyreData.width.map(item => ({
+                        value: item.name,
+                        label: item.name
+                    }));
+                    setWidthOptions([{ value: '', label: 'Select a Width' }, ...widths]);
+                }
+
+                // Set profile options
+                if (tyreData.profile && tyreData.profile.length > 0) {
+                    const profiles = tyreData.profile.map(item => ({
+                        value: item.name,
+                        label: item.name
+                    }));
+                    setProfileOptions([{ value: '', label: 'Select a Profile' }, ...profiles]);
+                }
+
+                // Set diameter options
+                if (tyreData.diameter && tyreData.diameter.length > 0) {
+                    const diameters = tyreData.diameter.map(item => ({
+                        value: item.name,
+                        label: item.name
+                    }));
+                    setDiameterOptions([{ value: '', label: 'Select a Diameter' }, ...diameters]);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching master filters:', error);
+        }
+    };
+
+    // Fetch data on component mount
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            await Promise.all([fetchBrands(), fetchMasterFilters()]);
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
+
+    // Handle search/filter button click
+    const handleSearch = () => {
+        // Build query parameters from selected values
+        const params = new URLSearchParams();
+        
+        if (width) params.append('width', width);
+        if (profile) params.append('profile', profile);
+        if (diameter) params.append('diameter', diameter);
+        if (brand) params.append('brand', brand);
+        
+        // Navigate to tyres page with query parameters
+        const queryString = params.toString();
+        navigate(`/tyres${queryString ? `?${queryString}` : ''}`);
+    };
 
     return (
         <section className="relative bg-primary-dark text-white pt-[25px] sm:pt-5" style={{background: "linear-gradient(to bottom, #ED1C24,#141414)"}}>
@@ -111,7 +142,10 @@ const BuyTyre = () => {
                                 selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
                             />
                         </div>
-                        <button className="bg-red-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-red-700 active:scale-95 transition-all duration-200 text-base sm:text-lg col-span-1 sm:col-span-2 lg:col-span-1">
+                        <button 
+                            onClick={handleSearch}
+                            className="bg-red-600 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 lg:px-8 rounded-md hover:bg-red-700 active:scale-95 transition-all duration-200 text-base sm:text-lg col-span-1 sm:col-span-2 lg:col-span-1"
+                        >
                             Select
                         </button>
                     </div>
