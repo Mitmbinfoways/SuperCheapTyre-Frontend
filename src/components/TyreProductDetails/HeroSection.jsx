@@ -12,6 +12,8 @@ const HeroSection = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0); // New state for tracking selected image
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
+  const [modalImageIndex, setModalImageIndex] = useState(0); // State for modal image index
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -31,6 +33,31 @@ const HeroSection = () => {
 
     if (id) fetchProduct();
   }, [id]); // 👈 added id
+
+  // Function to open modal with selected image
+  const openModal = (index) => {
+    setModalImageIndex(index);
+    setShowModal(true);
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // Function to navigate to next image in modal
+  const nextImage = () => {
+    setModalImageIndex((prevIndex) => 
+      prevIndex < product.images.length - 1 ? prevIndex + 1 : 0
+    );
+  };
+
+  // Function to navigate to previous image in modal
+  const prevImage = () => {
+    setModalImageIndex((prevIndex) => 
+      prevIndex > 0 ? prevIndex - 1 : product.images.length - 1
+    );
+  };
 
   if (loading) {
     return <Loader label="Loading product..." />;
@@ -60,7 +87,10 @@ const HeroSection = () => {
               {/* Left Side - Product Images */}
               <div className="flex flex-col gap-[12px] sm:gap-[16px] md:gap-[20px] lg:gap-[22px] w-full lg:w-[40%] items-center">
                 {/* Main Product Image */}
-                <div className="flex justify-center items-center w-full border border-[#6e6d6d] rounded-[20px] bg-white p-[48px] sm:p-[60px] md:p-[80px] lg:p-[96px_36px]">
+                <div 
+                  className="flex justify-center items-center w-full border border-[#6e6d6d] rounded-[20px] bg-white p-[48px] sm:p-[60px] md:p-[80px] lg:p-[96px_36px] cursor-pointer"
+                  onClick={() => openModal(selectedImageIndex)}
+                >
                   <img
                     src={getTyreImageUrl(product.images?.[selectedImageIndex])} // Updated to use selectedImageIndex
                     alt={product.name}
@@ -119,6 +149,67 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {showModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={closeModal}
+        >
+          <div 
+            className="relative max-w-4xl w-full max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the image
+          >
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 z-10 hover:bg-opacity-75 transition"
+              onClick={closeModal}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Previous Button */}
+            {product.images.length > 1 && (
+              <button
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10 hover:bg-opacity-75 transition"
+                onClick={prevImage}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Next Button */}
+            {product.images.length > 1 && (
+              <button
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10 hover:bg-opacity-75 transition"
+                onClick={nextImage}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Main Modal Image */}
+            <img
+              src={getTyreImageUrl(product.images?.[modalImageIndex])}
+              alt={`${product.name} - Large View`}
+              className="w-full max-h-[80vh] object-contain"
+            />
+
+            {/* Image Counter */}
+            {product.images.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black bg-opacity-50 rounded-full px-3 py-1 text-sm">
+                {modalImageIndex + 1} / {product.images.length}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 };

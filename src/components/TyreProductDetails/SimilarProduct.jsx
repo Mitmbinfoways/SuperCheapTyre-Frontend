@@ -113,7 +113,7 @@ const SimilarProducts = ({ productCategory }) => {
                       </div>
                       {/* Product Brand */}
                       <div
-                        className="text-[18px] line-clamp-2 sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] tracking-[1px] font-['Lexend'] text-[#ed1c24] underline hover:opacity-80 transition-opacity"
+                        className="text-[18px] line-clamp-1 sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] tracking-[1px] font-['Lexend'] text-[#ed1c24] underline hover:opacity-80 transition-opacity"
                       >
                         {product?.name}
                       </div>

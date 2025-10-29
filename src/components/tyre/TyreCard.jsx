@@ -92,7 +92,7 @@ const TyreCard = ({
       {/* Product Info */}
       <div className="">
         <div className="space-y-1">
-          <h3 className="text-xl font-lexend font-medium text-[#ED1C24] line-clamp-2">{name}</h3>
+          <h3 className="text-xl font-lexend font-medium text-[#ED1C24] line-clamp-1">{name}</h3>
           <p className="text-sm text-[#7A7A7A] font-roboto">{brand}</p>
           <p className="text-sm text-[#7A7A7A] font-roboto">
             <span className="font-bold">Size:</span> <span className="font-normal">{size}</span>
