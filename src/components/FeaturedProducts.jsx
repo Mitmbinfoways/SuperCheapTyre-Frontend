@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 // Swiper imports
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Pagination, Navigation } from 'swiper/modules';
+import { FreeMode, Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
@@ -129,6 +129,11 @@ const FeaturedProducts = () => {
                         slidesPerView={1}
                         spaceBetween={0}
                         freeMode={false}
+                        autoplay={{
+                            delay: 2500,
+                            disableOnInteraction: false
+                        }}
+                        loop={true}
                         // centeredSlides={true}
                         // pagination={{ clickable: true }}
                         navigation={{ prevEl: '.feat-prev', nextEl: '.feat-next' }}
@@ -138,7 +143,7 @@ const FeaturedProducts = () => {
                             1024: { slidesPerView: 3, spaceBetween: 24 },
                             1280: { slidesPerView: 4, spaceBetween: 24 },
                         }}
-                        modules={[FreeMode, Pagination, Navigation]}
+                        modules={[FreeMode, Pagination, Navigation,Autoplay]}
                         className="!pb-10"
                     >
                         {(loading ? [] : products).map((product, index) => (
