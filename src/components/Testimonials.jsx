@@ -64,7 +64,7 @@ const GoogleReviews = () => {
         initService();
       } else {
         const script = document.createElement("script");
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`;
+        script.src = `https://places.googleapis.com/v1/places/${PLACE_ID}?fields=displayName,rating,userRatingCount,reviews&key=${API_KEY}`;
         script.async = true;
         script.defer = true;
         script.onload = initService;
