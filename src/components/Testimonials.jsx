@@ -8,7 +8,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import img from "/home/true.png";
 
-// ⭐ Star and verification icons
 const SolidStar = ({ size = 20, className = "" }) => (
   <svg
     width={size}
@@ -28,7 +27,7 @@ const StarRating = ({ rating }) => (
       <SolidStar
         key={i}
         size={20}
-        className={i < rating ? "text-star-yellow" : "text-gray-300"}
+        className={i < rating ? "text-yellow-400" : "text-gray-300"}
       />
     ))}
   </div>
@@ -44,9 +43,8 @@ const VerificationIcon = ({ size = 16 }) => (
   />
 );
 
-// 🧾 Testimonial Card
 const TestimonialCard = ({ testimonial }) => (
-  <div className="bg-white space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-[#A6A6A6] shadow-[0_8px_24px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)]">
+  <div className="bg-white space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg">
     <div className="flex items-center">
       <img
         src={testimonial.avatar}
@@ -54,29 +52,29 @@ const TestimonialCard = ({ testimonial }) => (
         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4"
       />
       <div>
-        <p className="font-semibold font-open-sans text-brand-blue text-sm sm:text-base">
+        <p className="font-semibold text-blue-900 text-sm sm:text-base">
           {testimonial.author}
         </p>
-        <div className="flex items-center text-xs sm:text-sm text-text-secondary">
+        <div className="flex items-center text-xs sm:text-sm text-gray-500">
           <VerificationIcon size={14} />
-          <span className="font-open-sans ml-1 italic">Verified customer</span>
+          <span className="ml-1 italic">Verified customer</span>
         </div>
       </div>
     </div>
     <StarRating rating={testimonial.rating} />
-    <p className="text-brand-blue font-open-sans text-sm sm:text-base md:text-lg leading-relaxed">
+    <p className="text-blue-900 text-sm sm:text-base md:text-lg leading-relaxed">
       {testimonial.text}
     </p>
   </div>
 );
 
-// 🌟 Google Reviews using new Places API (v1)
+
 const GoogleReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const PLACE_ID = "ChIJQzrFzMET1moRS49ybPsZaG8"; // 🔹 Replace with your own
+  const PLACE_ID = "ChIJQzrFzMET1moRS49ybPsZaG8";
   const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
@@ -89,12 +87,15 @@ const GoogleReviews = () => {
     const fetchReviews = async () => {
       try {
         const url = `https://places.googleapis.com/v1/places/${PLACE_ID}?fields=displayName,rating,userRatingCount,reviews&key=${API_KEY}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const response = await fetch(url, {
+          headers: { "X-Goog-FieldMask": "displayName,reviews" },
+        });
 
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        console.log(data)
-        if (data.reviews) {
+        console.log("Google Place Data:", data);
+
+        if (data.reviews && Array.isArray(data.reviews)) {
           const formatted = data.reviews.map((r) => ({
             author_name: r.authorAttribution?.displayName || "Anonymous",
             profile_photo_url: r.authorAttribution?.photoUri || "",
@@ -110,7 +111,7 @@ const GoogleReviews = () => {
         }
       } catch (err) {
         console.error("Failed to fetch Google reviews:", err);
-        setError("Failed to fetch Google reviews");
+        setError("Failed to fetch Google reviews. Check your API key & Place ID.");
       } finally {
         setLoading(false);
       }
@@ -119,18 +120,19 @@ const GoogleReviews = () => {
     fetchReviews();
   }, [API_KEY, PLACE_ID]);
 
-  if (loading) return <p className="text-center py-4">Loading Google reviews...</p>;
+  if (loading)
+    return <p className="text-center py-4 text-gray-600">Loading Google reviews...</p>;
   if (error)
     return <p className="text-center py-4 text-red-500">{error}</p>;
   if (reviews.length === 0)
-    return <p className="text-center py-4">No Google reviews available.</p>;
+    return <p className="text-center py-4 text-gray-600">No Google reviews available.</p>;
 
   return (
     <div className="space-y-4">
       {reviews.map((review, i) => (
         <div
           key={i}
-          className="bg-white space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-[#A6A6A6] shadow-[0_8px_24px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)]"
+          className="bg-white space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg"
         >
           <div className="flex items-center">
             {review.profile_photo_url && (
@@ -141,17 +143,17 @@ const GoogleReviews = () => {
               />
             )}
             <div>
-              <p className="font-semibold font-open-sans text-brand-blue text-sm sm:text-base">
+              <p className="font-semibold text-blue-900 text-sm sm:text-base">
                 {review.author_name}
               </p>
-              <div className="flex items-center text-xs sm:text-sm text-text-secondary">
+              <div className="flex items-center text-xs sm:text-sm text-gray-500">
                 <VerificationIcon size={14} />
-                <span className="font-open-sans ml-1 italic">Google Review</span>
+                <span className="ml-1 italic">Google Review</span>
               </div>
             </div>
           </div>
           <StarRating rating={review.rating} />
-          <p className="text-brand-blue font-open-sans text-sm sm:text-base md:text-lg leading-relaxed">
+          <p className="text-blue-900 text-sm sm:text-base md:text-lg leading-relaxed">
             {review.text}
           </p>
           <p className="text-gray-500 text-xs sm:text-sm mt-2">
@@ -163,28 +165,35 @@ const GoogleReviews = () => {
   );
 };
 
-// ▶️ Play icon
+/* -------------------------------------------------------------------------- */
+/* ▶️ PLAY ICON                                                               */
+/* -------------------------------------------------------------------------- */
+
 const PlayCircleIcon = (props) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
   </svg>
 );
 
-// 💬 Main Testimonials Section
+/* -------------------------------------------------------------------------- */
+/* 💬 MAIN TESTIMONIAL SECTION                                                */
+/* -------------------------------------------------------------------------- */
+
 const Testimonials = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("testimonials");
 
   return (
-    <section className="bg-light py-12 sm:py-16 md:py-20">
+    <section className="bg-gray-50 py-12 sm:py-16 md:py-20">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 sm:gap-12 md:gap-16 items-center">
+          {/* LEFT SIDE */}
           <div className="relative">
-            <h2 className="font-lexend text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-6 sm:mb-8 text-center lg:text-left">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-6 sm:mb-8 text-center lg:text-left">
               What Customers Say About Us
             </h2>
 
-            {/* 🔹 Tab Buttons */}
+            {/* TABS */}
             <div className="flex border-b border-gray-200 mb-6">
               <button
                 className={`py-2 px-4 font-semibold ${
@@ -208,7 +217,7 @@ const Testimonials = () => {
               </button>
             </div>
 
-            {/* 🔹 Tab Content */}
+            {/* CONTENT */}
             <div className="relative">
               {activeTab === "testimonials" ? (
                 <Swiper
@@ -216,19 +225,13 @@ const Testimonials = () => {
                   spaceBetween={20}
                   autoplay={{ delay: 2500, disableOnInteraction: false }}
                   pagination={{ clickable: true }}
-                  loop={true}
-                  navigation={{ prevEl: ".testi-prev", nextEl: ".testi-next" }}
-                  breakpoints={{
-                    640: { slidesPerView: 1, spaceBetween: 10 },
-                    768: { slidesPerView: 1, spaceBetween: 20 },
-                    1024: { slidesPerView: 2, spaceBetween: 30 },
-                  }}
-                  onBeforeInit={(swiper) => {
-                    const el = document.querySelector(".testimonials-pagination");
-                    if (el) swiper.params.pagination.el = el;
-                  }}
+                  loop
                   modules={[FreeMode, Pagination, Navigation, Autoplay]}
                   className="testimonial-swiper"
+                  breakpoints={{
+                    640: { slidesPerView: 1, spaceBetween: 10 },
+                    1024: { slidesPerView: 2, spaceBetween: 30 },
+                  }}
                 >
                   {testimonials.map((item, index) => (
                     <SwiperSlide key={index} className="!h-auto">
@@ -244,34 +247,30 @@ const Testimonials = () => {
                 </div>
               )}
 
-              {/* Pagination */}
-              {activeTab === "testimonials" && (
-                <div className="testimonials-pagination swiper-pagination !relative flex justify-center mt-4"></div>
-              )}
-
+              {/* BUTTON */}
               <div className="mt-6 sm:mt-8 flex items-center justify-center lg:justify-between">
-                <button className="bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-20 mx-auto rounded-lg hover:bg-red-700 transition-colors text-sm">
+                <button className="bg-primary text-white font-semibold py-2 sm:py-3 px-6 sm:px-20 rounded-lg hover:bg-red-700 transition-colors text-sm">
                   Read All Reviews
                 </button>
               </div>
             </div>
           </div>
 
-          {/* 🎥 Video Section */}
-          <div className="relative w-full h-64 sm:h-80 md:h-[31rem] rounded-xl sm:rounded-2xl overflow-hidden mb-8 shadow-2xl">
+          {/* VIDEO */}
+          <div className="relative w-full h-64 sm:h-80 md:h-[31rem] rounded-xl overflow-hidden shadow-2xl">
             {!isVideoOpen ? (
               <>
                 <img
                   src={images.videoBg}
-                  alt="Tyre world"
+                  alt="Video background"
                   className="w-full h-full object-cover"
                 />
                 <div
                   className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer group"
                   onClick={() => setIsVideoOpen(true)}
                 >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white/80 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <PlayCircleIcon className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-dark" />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/80 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <PlayCircleIcon className="w-12 h-12 sm:w-16 text-dark" />
                   </div>
                 </div>
               </>
