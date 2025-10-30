@@ -119,7 +119,7 @@ const Testimonials = () => {
             relativeTime: review.relativePublishTimeDescription || "",
             isGoogleReview: true,
           }));
-
+          console.log(place.reviews);
           setTestimonials(googleReviews);
         }
       } catch (error) {
