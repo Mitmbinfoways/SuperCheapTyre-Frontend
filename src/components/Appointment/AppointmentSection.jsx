@@ -295,8 +295,6 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         paymentOption: paymentOption // Include the payment option
       };
 
-      console.log(appointmentData)
-
       secureSetItem('appointmentData', appointmentData);
       // Store cart items for use after payment
       secureSetItem('cartItemsForOrder', cart);
@@ -532,7 +530,6 @@ const AppointmentSection = () => {
       const dateString = `${year}-${month}-${day}`;
 
       const res = await getAppointmentSlots(dateString, timeSlotId);
-      console.log(res.data.data);
       const slotsData = res?.data?.data?.slots || [];
 
       // Map all slots including unavailable ones with label and isAvailable

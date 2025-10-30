@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { images, testimonials } from '../assets/data';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -47,9 +47,118 @@ const TestimonialCard = ({ testimonial }) => (
     </div>
 );
 
+// Google Reviews Component
+const GoogleReviews = () => {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Use environment variables for security
+  const PLACE_ID = "ChIJQzrFzMET1moRS49ybPsZaG8"; // Replace with your actual Place ID
+  const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "YOUR_API_KEY"; // Use environment variable
+
+  useEffect(() => {
+    // Load Google Maps JS API if not already loaded
+    const loadScript = () => {
+      if (window.google && window.google.maps && window.google.maps.places) {
+        initService();
+      } else {
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        script.onload = initService;
+        script.onerror = () => {
+          setError("Failed to load Google Maps API");
+          setLoading(false);
+        };
+        document.body.appendChild(script);
+      }
+    };
+
+    const initService = () => {
+      const service = new window.google.maps.places.PlacesService(
+        document.createElement("div") // no map rendered
+      );
+
+      service.getDetails(
+        {
+          placeId: PLACE_ID,
+          fields: ["name", "rating", "user_ratings_total", "reviews"],
+        },
+        (place, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            setReviews(place.reviews || []);
+            console.log(place.reviews)
+          } else {
+            setError("Failed to fetch Google reviews");
+            console.error("Google Places API error:", status);
+          }
+          setLoading(false);
+        }
+      );
+    };
+
+    // Only load if we have an API key
+    if (API_KEY && API_KEY !== "YOUR_API_KEY") {
+      loadScript();
+    } else {
+      setError("Google Maps API key not configured");
+      setLoading(false);
+    }
+  }, [API_KEY, PLACE_ID]);
+
+  if (loading) return <p className="text-center py-4">Loading Google reviews...</p>;
+  if (error) {
+    console.error("Google Reviews Error:", error);
+    return <p className="text-center py-4 text-red-500">Error loading Google reviews</p>;
+  }
+  if (reviews.length === 0) return <p className="text-center py-4">No Google reviews available.</p>;
+
+  return (
+    <div className="space-y-4">
+      {reviews.map((review, index) => (
+        <div
+          key={index}
+          className="bg-white space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-[#A6A6A6] shadow-[0_8px_24px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)]"
+        >
+          <div className="flex items-center">
+            {review.profile_photo_url && (
+              <img
+                src={review.profile_photo_url}
+                alt={review.author_name}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4"
+              />
+            )}
+            <div>
+              <p className="font-semibold font-open-sans text-brand-blue text-sm sm:text-base">
+                {review.author_name}
+              </p>
+              <div className="flex items-center text-xs sm:text-sm text-text-secondary">
+                <VerificationIcon size={14} />
+                <span className="font-open-sans ml-1 italic">Google Review</span>
+              </div>
+            </div>
+          </div>
+          <div className="">
+            <StarRating rating={review.rating} />
+          </div>
+          <p className="text-brand-blue font-open-sans text-sm sm:text-base md:text-lg leading-relaxed">
+            {review.text}
+          </p>
+          <p className="text-gray-500 text-xs sm:text-sm mt-2">
+            {review.relative_time_description}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const Testimonials = () => {
     // Use class selectors for Navigation to avoid ref timing issues
     const [isVideoOpen, setIsVideoOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState('testimonials'); // 'testimonials' or 'google'
 
     const handlePlayVideo = () => {
         setIsVideoOpen(true);
@@ -66,63 +175,75 @@ const Testimonials = () => {
                     <div className="relative">
                         <h2 className="font-lexend text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-6 sm:mb-8 text-center lg:text-left">What Customers Say About Us</h2>
 
-                        <div className="relative">
-                            <Swiper
-                                slidesPerView={1}
-                                spaceBetween={20}
-                                // freeMode
-                                autoplay={{
-                                    delay: 2500,
-                                    disableOnInteraction: false,
-                                }}
-                                pagination={{ clickable: true }}
-                                loop={true}
-                                navigation={{ prevEl: '.testi-prev', nextEl: '.testi-next' }}
-                                breakpoints={{
-                                    640: { slidesPerView: 1, spaceBetween: 10 },
-                                    768: { slidesPerView: 1, spaceBetween: 20 },
-                                    1024: { slidesPerView: 2, spaceBetween: 30 },
-                                }}
-                                onBeforeInit={(swiper) => {
-                                    // Attach external pagination element via ref before init
-                                    const el = document.querySelector('.testimonials-pagination');
-                                    if (el) {
-                                        swiper.params.pagination.el = el;
-                                    }
-                                }}
-                                modules={[FreeMode, Pagination, Navigation, Autoplay]}
-                                className="testimonial-swiper"
+                        {/* Tab Navigation */}
+                        <div className="flex border-b border-gray-200 mb-6">
+                            <button
+                                className={`py-2 px-4 font-semibold ${activeTab === 'testimonials' ? 'border-b-2 border-primary text-primary' : 'text-gray-500'}`}
+                                onClick={() => setActiveTab('testimonials')}
                             >
-                                {testimonials.map((item, index) => (
-                                    <SwiperSlide key={index} className="!h-auto">
-                                        <div className="w-full max-w-[600px] mx-auto p-3">
-                                            <TestimonialCard testimonial={item} />
-                                        </div>
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
-
-                            {/* <button className="testi-prev hidden sm:flex absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-                                <ChevronLeft className="text-primary" />
+                                Testimonials
                             </button>
-                            <button className="testi-next hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
-                                <ChevronRight className="text-primary" />
-                            </button> */}
+                            <button
+                                className={`py-2 px-4 font-semibold ${activeTab === 'google' ? 'border-b-2 border-primary text-primary' : 'text-gray-500'}`}
+                                onClick={() => setActiveTab('google')}
+                            >
+                                Google Reviews
+                            </button>
                         </div>
 
-                        {/* Pagination container (external) */}
-                        <div className="testimonials-pagination swiper-pagination !relative flex justify-center"></div>
+                        {/* Tab Content */}
+                        <div className="relative">
+                            {activeTab === 'testimonials' ? (
+                                <Swiper
+                                    slidesPerView={1}
+                                    spaceBetween={20}
+                                    // freeMode
+                                    autoplay={{
+                                        delay: 2500,
+                                        disableOnInteraction: false,
+                                    }}
+                                    pagination={{ clickable: true }}
+                                    loop={true}
+                                    navigation={{ prevEl: '.testi-prev', nextEl: '.testi-next' }}
+                                    breakpoints={{
+                                        640: { slidesPerView: 1, spaceBetween: 10 },
+                                        768: { slidesPerView: 1, spaceBetween: 20 },
+                                        1024: { slidesPerView: 2, spaceBetween: 30 },
+                                    }}
+                                    onBeforeInit={(swiper) => {
+                                        // Attach external pagination element via ref before init
+                                        const el = document.querySelector('.testimonials-pagination');
+                                        if (el) {
+                                            swiper.params.pagination.el = el;
+                                        }
+                                    }}
+                                    modules={[FreeMode, Pagination, Navigation, Autoplay]}
+                                    className="testimonial-swiper"
+                                >
+                                    {testimonials.map((item, index) => (
+                                        <SwiperSlide key={index} className="!h-auto">
+                                            <div className="w-full max-w-[600px] mx-auto p-3">
+                                                <TestimonialCard testimonial={item} />
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            ) : (
+                                <div className="max-h-[500px] overflow-y-auto pr-2">
+                                    <GoogleReviews />
+                                </div>
+                            )}
 
-                        <div className="mt-6 sm:mt-8 flex items-center justify-center lg:justify-between">
-                            {/* <div className="hidden lg:flex space-x-2">
-                                <span className="w-2 h-2 sm:w-3 sm:h-3 bg-dark rounded-full"></span>
-                                <span className="w-2 h-2 sm:w-3 sm:h-3 bg-gray-300 rounded-full"></span>
-                                <span className="w-2 h-2 sm:w-3 sm:h-3 bg-gray-300 rounded-full"></span>
-                                <span className="w-2 h-2 sm:w-3 sm:h-3 bg-gray-300 rounded-full"></span>
-                            </div> */}
-                            <button className="bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-20 mx-auto rounded-lg hover:bg-red-700 transition-colors text-sm">
-                                Read All Reviews
-                            </button>
+                            {/* Pagination container (external) */}
+                            {activeTab === 'testimonials' && (
+                                <div className="testimonials-pagination swiper-pagination !relative flex justify-center mt-4"></div>
+                            )}
+
+                            <div className="mt-6 sm:mt-8 flex items-center justify-center lg:justify-between">
+                                <button className="bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-20 mx-auto rounded-lg hover:bg-red-700 transition-colors text-sm">
+                                    Read All Reviews
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div className="relative w-full h-64 sm:h-80 md:h-[31rem] rounded-xl sm:rounded-2xl overflow-hidden mb-8 shadow-2xl">

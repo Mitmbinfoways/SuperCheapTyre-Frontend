@@ -95,12 +95,10 @@ const Hero = () => {
     try {
       setLoading(true);
       const response = await getBanners();
-      console.log('Banner API Response:', response.data);
       if (response.data && response.data.data) {
         const activeBanners = response.data.data.filter(
           banner => banner.isActive && !banner.isDelete
         );
-        console.log('Active Banners:', activeBanners);
         setBanners(activeBanners);
       }
     } catch (error) {
@@ -115,7 +113,6 @@ const Hero = () => {
   const getImageUrl = (imagePath) => {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const fullUrl = `${baseURL}${imagePath}`;
-    console.log('Image URL:', fullUrl);
     return fullUrl;
   };
 
@@ -156,7 +153,6 @@ const Hero = () => {
                         console.error('Failed to load laptop image:', e.target.src);
                         e.target.style.display = 'none';
                       }}
-                      onLoad={() => console.log('Laptop image loaded:', banner.laptopImage)}
                     />
                     <img
                       src={getImageUrl(banner.mobileImage)}
@@ -166,7 +162,6 @@ const Hero = () => {
                         console.error('Failed to load mobile image:', e.target.src);
                         e.target.style.display = 'none';
                       }}
-                      onLoad={() => console.log('Mobile image loaded:', banner.mobileImage)}
                     />
                   </div>
                 </SwiperSlide>

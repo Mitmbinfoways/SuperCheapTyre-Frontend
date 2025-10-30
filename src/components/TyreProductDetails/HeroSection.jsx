@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ProductInfo from './ProductInfo';
 import { getTyreById } from '../../axios/axios';
 import { getTyreImageUrl } from '../../Utils/Utils';
 import { formatCurrency } from '../../Utils/Utils';
 import { useParams } from 'react-router-dom';
 import Loader from '../common/Loader';
+// Import Swiper components and modules
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Thumbs } from 'swiper/modules';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 const HeroSection = () => {
 
@@ -14,14 +23,13 @@ const HeroSection = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0); // New state for tracking selected image
   const [showModal, setShowModal] = useState(false); // State for modal visibility
   const [modalImageIndex, setModalImageIndex] = useState(0); // State for modal image index
+  const [thumbsSwiper, setThumbsSwiper] = useState(null); // State for thumbnail Swiper instance
+  const mainSwiperRef = useRef(null); // Ref for main Swiper instance
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await getTyreById(id);
-        console.log('Product API Response:', response.data);
-        // Log the actual product data to see the ID field
-        console.log('Product data:', response.data?.data);
         setProduct(response.data?.data);
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -59,6 +67,32 @@ const HeroSection = () => {
     );
   };
 
+  // Handle slide change in main Swiper
+  const handleSlideChange = (swiper) => {
+    setSelectedImageIndex(swiper.activeIndex);
+  };
+
+  // Handle thumbnail click
+  const handleThumbnailClick = (index) => {
+    setSelectedImageIndex(index);
+    if (mainSwiperRef.current && mainSwiperRef.current.swiper) {
+      mainSwiperRef.current.swiper.slideTo(index);
+    }
+  };
+
+  // Navigation functions for main Swiper
+  const goToNextSlide = () => {
+    if (mainSwiperRef.current && mainSwiperRef.current.swiper) {
+      mainSwiperRef.current.swiper.slideNext();
+    }
+  };
+
+  const goToPrevSlide = () => {
+    if (mainSwiperRef.current && mainSwiperRef.current.swiper) {
+      mainSwiperRef.current.swiper.slidePrev();
+    }
+  };
+
   if (loading) {
     return <Loader label="Loading product..." />;
   }
@@ -86,35 +120,94 @@ const HeroSection = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-6 lg:gap-8">
               {/* Left Side - Product Images */}
               <div className="flex flex-col gap-[12px] sm:gap-[16px] md:gap-[20px] lg:gap-[22px] w-full lg:w-[40%] items-center">
-                {/* Main Product Image */}
-                <div 
-                  className="flex justify-center items-center w-full border border-[#6e6d6d] rounded-[20px] bg-white p-[48px] sm:p-[60px] md:p-[80px] lg:p-[96px_36px] cursor-pointer"
-                  onClick={() => openModal(selectedImageIndex)}
-                >
-                  <img
-                    src={getTyreImageUrl(product.images?.[selectedImageIndex])} // Updated to use selectedImageIndex
-                    alt={product.name}
-                    className="w-full max-w-[480px] h-auto object-contain"
-                  />
+                {/* Main Product Image Carousel */}
+                <div className="flex justify-center items-center w-full border border-[#6e6d6d] rounded-[20px] bg-white p-[48px] sm:p-[60px] md:p-[80px] lg:p-[96px_36px] relative">
+                  {/* Navigation Arrows */}
+                  {product.images?.length > 1 && (
+                    <>
+                      <button 
+                        className="absolute left-4 z-10 bg-white bg-opacity-80 rounded-full p-2 shadow-md hover:bg-opacity-100 transition-all"
+                        onClick={goToPrevSlide}
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="text-[#ed1c24] w-6 h-6" />
+                      </button>
+                      <button 
+                        className="absolute right-4 z-10 bg-white bg-opacity-80 rounded-full p-2 shadow-md hover:bg-opacity-100 transition-all"
+                        onClick={goToNextSlide}
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="text-[#ed1c24] w-6 h-6" />
+                      </button>
+                    </>
+                  )}
+                  
+                  <Swiper
+                    ref={mainSwiperRef}
+                    modules={[Navigation, Thumbs]}
+                    spaceBetween={0}
+                    slidesPerView={1}
+                    onSlideChange={handleSlideChange}
+                    thumbs={{ swiper: thumbsSwiper }}
+                    className="w-full max-w-[480px] h-auto cursor-pointer"
+                    onClick={() => openModal(selectedImageIndex)}
+                  >
+                    {product.images?.map((img, index) => (
+                      <SwiperSlide key={index}>
+                        <img
+                          src={getTyreImageUrl(img)}
+                          alt={`${product.name} ${index + 1}`}
+                          className="w-full h-auto object-contain"
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
 
-                {/* Thumbnail Images */}
-                <div className="flex gap-[16px] sm:gap-[24px] md:gap-[28px] lg:gap-[32px] w-full justify-center">
-                  {product.images?.map((img, index) => (
-                    <div 
-                      key={index} 
-                      className={`flex justify-center items-center w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px] border rounded-[20px] bg-white p-[4px] cursor-pointer ${
-                        selectedImageIndex === index ? 'border-[#ed1c24]' : 'border-[#6e6d6d]' // Highlight selected thumbnail
-                      }`}
-                      onClick={() => setSelectedImageIndex(index)} // Set selected image on click
-                    >
-                      <img
-                        src={getTyreImageUrl(img)}
-                        alt={`${product.name} ${index + 1}`}
-                        className="w-28 h-32 object-contain"
-                      />
-                    </div>
-                  ))}
+                {/* Thumbnail Images Carousel */}
+                <div className="w-full">
+                  <Swiper
+                    modules={[Navigation, Thumbs]}
+                    spaceBetween={16}
+                    slidesPerView="auto"
+                    onSwiper={setThumbsSwiper}
+                    className="w-full"
+                    breakpoints={{
+                      320: {
+                        slidesPerView: 3,
+                        spaceBetween: 16,
+                      },
+                      640: {
+                        slidesPerView: 3,
+                        spaceBetween: 16,
+                      },
+                      768: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                      },
+                      1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 24,
+                      },
+                    }}
+                  >
+                    {product.images?.map((img, index) => (
+                      <SwiperSlide key={index} className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px]">
+                        <div 
+                          className={`flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer ${
+                            selectedImageIndex === index ? 'border-[#ed1c24]' : 'border-[#6e6d6d]'
+                          }`}
+                          onClick={() => handleThumbnailClick(index)}
+                        >
+                          <img
+                            src={getTyreImageUrl(img)}
+                            alt={`${product.name} ${index + 1}`}
+                            className="w-28 h-32 object-contain"
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
               </div>
 

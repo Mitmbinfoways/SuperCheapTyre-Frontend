@@ -51,7 +51,6 @@ function Tyre() {
         if (price) apiParams.sortBy = price; // price is for sorting
         
         const response = await getTyres(apiParams);
-        console.log("API Response:", response.data);
 
         // extract and map response
         const items = response.data?.data?.items || [];
