@@ -48,8 +48,8 @@ const VerificationIcon = ({ size = 16 }) => (
 );
 
 const TestimonialCard = ({ testimonial, isGoogleReview = false }) => (
-  <div className="bg-white h-full space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg">
-    <div className="flex items-center">
+  <div className="bg-white h-full space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg flex flex-col">
+    <div className="flex items-center flex-shrink-0">
       <img
         src={
           testimonial.avatar ||
@@ -73,14 +73,14 @@ const TestimonialCard = ({ testimonial, isGoogleReview = false }) => (
         </div>
       </div>
     </div>
-    <div>
+    <div className="flex-shrink-0">
       <StarRating rating={testimonial.rating} />
     </div>
-    <p className="text-blue-900 text-sm sm:text-base md:text-lg leading-relaxed">
+    <p className="text-blue-900 text-sm sm:text-base md:text-lg leading-relaxed flex-grow">
       {testimonial.text}
     </p>
     {isGoogleReview && testimonial.relativeTime && (
-      <p className="text-xs text-gray-500 italic">{testimonial.relativeTime}</p>
+      <p className="text-xs text-gray-500 italic flex-shrink-0">{testimonial.relativeTime}</p>
     )}
   </div>
 );
@@ -164,8 +164,8 @@ const Testimonials = () => {
               className="testimonial-swiper"
             >
               {testimonials?.map((item, index) => (
-                <SwiperSlide key={index} className="!h-auto">
-                  <div className="w-full max-w-[600px] mx-auto p-3">
+                <SwiperSlide key={index} className="!h-auto flex">
+                  <div className="w-full max-w-[600px] mx-auto p-3 flex-grow">
                     <TestimonialCard testimonial={item} />
                   </div>
                 </SwiperSlide>
