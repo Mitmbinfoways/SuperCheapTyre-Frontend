@@ -64,7 +64,7 @@ const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Configuration - Replace with your Google Places API details
-  const GOOGLE_PLACE_ID = "ChIJpyiwa4Zw44kRBQSGWKv4wgA"; // Replace with your business Place ID
+  const GOOGLE_PLACE_ID = "ChIJQzrFzMET1moRS49ybPsZaG8"; // Replace with your business Place ID
   const GOOGLE_API_KEY = "YOUR_API_KEY_HERE"; // Replace with your API key
 
   useEffect(() => {
