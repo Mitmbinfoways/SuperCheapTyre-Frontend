@@ -47,9 +47,12 @@ const VerificationIcon = ({ size = 16 }) => (
   </svg>
 );
 
-const TestimonialCard = ({ testimonial, isGoogleReview = false }) => (
-  <div className="bg-white h-full space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg flex flex-col">
-    <div className="flex items-center flex-shrink-0">
+const TestimonialCard = ({ testimonial, isGoogleReview = false, onClick }) => (
+  <div 
+    className="bg-white h-full space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+    onClick={onClick}
+  >
+    <div className="flex items-center">
       <img
         src={
           testimonial.avatar ||
@@ -73,22 +76,85 @@ const TestimonialCard = ({ testimonial, isGoogleReview = false }) => (
         </div>
       </div>
     </div>
-    <div className="flex-shrink-0">
+    <div>
       <StarRating rating={testimonial.rating} />
     </div>
-    <p className="text-blue-900 text-sm sm:text-base md:text-lg leading-relaxed flex-grow">
+    <p className="text-blue-900 text-sm sm:text-base md:text-lg leading-relaxed line-clamp-5">
       {testimonial.text}
     </p>
     {isGoogleReview && testimonial.relativeTime && (
-      <p className="text-xs text-gray-500 italic flex-shrink-0">{testimonial.relativeTime}</p>
+      <p className="text-xs text-gray-500 italic">{testimonial.relativeTime}</p>
     )}
   </div>
 );
+
+const TestimonialModal = ({ testimonial, isOpen, onClose, isGoogleReview = false }) => {
+  if (!isOpen || !testimonial) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-xl font-bold text-blue-900">Customer Review</h3>
+            <button 
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+            >
+              &times;
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <img
+                src={
+                  testimonial.avatar ||
+                  testimonial.authorPhoto ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    testimonial.author
+                  )}&background=random`
+                }
+                alt={testimonial.author}
+                className="w-12 h-12 rounded-full mr-4 object-cover"
+              />
+              <div>
+                <p className="font-semibold text-blue-900 text-base">
+                  {testimonial.author}
+                </p>
+                <div className="flex items-center text-sm text-gray-600">
+                  <VerificationIcon size={14} />
+                  <span className="ml-1 italic">
+                    {isGoogleReview ? "Google Review" : "Verified customer"}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <StarRating rating={testimonial.rating} />
+            </div>
+            
+            <p className="text-blue-900 text-base md:text-lg leading-relaxed">
+              {testimonial.text}
+            </p>
+            
+            {isGoogleReview && testimonial.relativeTime && (
+              <p className="text-sm text-gray-500 italic">{testimonial.relativeTime}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedTestimonial, setSelectedTestimonial] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const GOOGLE_PLACE_ID = "ChIJ-zBzY_YT1moRjVAieKugY9c";
 
@@ -136,6 +202,36 @@ const Testimonials = () => {
     setIsVideoOpen(true);
   };
 
+  const openModal = (testimonial) => {
+    setSelectedTestimonial(testimonial);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTestimonial(null);
+  };
+
+  // Close modal when pressing Escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('keydown', handleEscape);
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen]);
+
   return (
     <section className="bg-light py-12 sm:py-16 md:py-20">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -164,9 +260,12 @@ const Testimonials = () => {
               className="testimonial-swiper"
             >
               {testimonials?.map((item, index) => (
-                <SwiperSlide key={index} className="!h-auto flex">
-                  <div className="w-full max-w-[600px] mx-auto p-3 flex-grow">
-                    <TestimonialCard testimonial={item} />
+                <SwiperSlide key={index} className="!h-auto">
+                  <div className="w-full max-w-[600px] mx-auto p-3">
+                    <TestimonialCard 
+                      testimonial={item} 
+                      onClick={() => openModal(item)}
+                    />
                   </div>
                 </SwiperSlide>
               ))}
@@ -212,6 +311,14 @@ const Testimonials = () => {
           </div>
         </div>
       </div>
+      
+      {/* Testimonial Modal */}
+      <TestimonialModal 
+        testimonial={selectedTestimonial}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        isGoogleReview={selectedTestimonial?.isGoogleReview}
+      />
     </section>
   );
 };
