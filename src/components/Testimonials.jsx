@@ -90,7 +90,7 @@ const Testimonials = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const GOOGLE_PLACE_ID = "ChIJQzrFzMET1moRS49ybPsZaG8";
+  const GOOGLE_PLACE_ID = "ChIJ-zBzY_YT1moRjVAieKugY9c";
 
   useEffect(() => {
     const loadGoogleReviews = async () => {
