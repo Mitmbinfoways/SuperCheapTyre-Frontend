@@ -138,7 +138,7 @@ const TyreCard = ({
               {brand}
             </p>
             {isPopular && (
-              <p className="w-full">
+              <p>
                 <Badge label="Popular" color="blue" />
               </p>
             )}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import BreadcrumbSection from './BreadcrumbSection';
-import WheelFilterSidebar from './WheelFilterSidebar';
-import TyreGrid from './TyreGrid';
-import Pagination from './Pagination';
-import HeroBanner from './HeroBanner';
-import { getTyres } from '../../axios/axios';
-import { getTyreImageUrl } from '../../Utils/Utils';
-import Loader from '../common/Loader';
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import BreadcrumbSection from "./BreadcrumbSection";
+import WheelFilterSidebar from "./WheelFilterSidebar";
+import TyreGrid from "./TyreGrid";
+import Pagination from "./Pagination";
+import HeroBanner from "./HeroBanner";
+import { getTyres } from "../../axios/axios";
+import { getTyreImageUrl } from "../../Utils/Utils";
+import Loader from "../common/Loader";
 
 function Wheels() {
   const [searchParams] = useSearchParams();
@@ -19,12 +19,12 @@ function Wheels() {
   const [pageSize] = useState(6); // Set page size to 6 as in original
 
   // Get filter values from URL query parameters
-  const brand = searchParams.get('brand') || '';
-  const size = searchParams.get('size') || '';
-  const color = searchParams.get('color') || '';
-  const diameter = searchParams.get('diameter') || '';
-  const fitments = searchParams.get('fitments') || '';
-  const price = searchParams.get('price') || '';
+  const brand = searchParams.get("brand") || "";
+  const size = searchParams.get("size") || "";
+  const color = searchParams.get("color") || "";
+  const diameter = searchParams.get("diameter") || "";
+  const fitments = searchParams.get("fitments") || "";
+  const price = searchParams.get("price") || "";
 
   // Fetch data from API with axios and pagination
   useEffect(() => {
@@ -32,14 +32,15 @@ function Wheels() {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Build API parameters
         const apiParams = {
-          page: currentPage, 
+          page: currentPage,
           limit: pageSize,
-          category: 'wheel' // Filter wheels on the backend
+          category: "wheel",
+          isActive: true,
         };
-        
+
         // Add filter parameters if they exist
         if (brand) apiParams.brand = brand;
         if (size) apiParams.size = size;
@@ -47,7 +48,7 @@ function Wheels() {
         if (diameter) apiParams.diameter = diameter;
         if (fitments) apiParams.fitments = fitments;
         if (price) apiParams.sortBy = price; // price is for sorting
-        
+
         const response = await getTyres(apiParams);
 
         // extract and map response
@@ -55,22 +56,22 @@ function Wheels() {
         const pagination = response.data?.data?.pagination || {};
 
         const mappedProducts = items.map((item) => ({
-            id: item._id,
-            _id: item._id, // Also pass _id for compatibility
-            image: getTyreImageUrl(item.images?.[0]), // fallback image
-            brand: item.brand,
-            name: item.name,
-            size: item.wheelSpecifications
-              ? `${item.wheelSpecifications.size}" ${item.wheelSpecifications.diameter}"`
-              : "N/A",
-            price: item.price,
-            rating: 4, // API doesn't return rating → you can adjust
-            stock: item.stock || 0, // Add stock information
-          }));
+          id: item._id,
+          _id: item._id, // Also pass _id for compatibility
+          image: getTyreImageUrl(item.images?.[0]), // fallback image
+          brand: item.brand,
+          name: item.name,
+          size: item.wheelSpecifications
+            ? `${item.wheelSpecifications.size}" ${item.wheelSpecifications.diameter}"`
+            : "N/A",
+          price: item.price,
+          rating: 4, // API doesn't return rating → you can adjust
+          stock: item.stock || 0, // Add stock information
+        }));
 
         setProducts(mappedProducts);
         setTotalPages(pagination.totalPages || 1);
-        
+
         // Set error state if no products are found
         if (mappedProducts.length === 0) {
           setError("Product not found");
@@ -92,7 +93,7 @@ function Wheels() {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [currentPage]);
 
@@ -120,34 +121,38 @@ function Wheels() {
                     Wheels
                   </h2>
                   <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                    Browse our wide selection of high-quality wheels for your vehicle.
+                    Browse our wide selection of high-quality wheels for your
+                    vehicle.
                   </p>
                 </div>
 
                 {/* Error Message */}
                 <div className="flex flex-col items-center justify-center py-16 px-4">
                   <div className="mb-6">
-                    <svg 
-                      className="w-24 h-24 text-[#ED1C24] mx-auto" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24" 
+                    <svg
+                      className="w-24 h-24 text-[#ED1C24] mx-auto"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth="1.5" 
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       ></path>
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">Sorry, no products were found</h3>
+                  <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">
+                    Sorry, no products were found
+                  </h3>
                   <p className="text-base font-lexend text-gray-600 max-w-md text-center mb-6">
-                    We couldn't find any wheels matching your current selection. Please try adjusting your filters or check back later.
+                    We couldn't find any wheels matching your current selection.
+                    Please try adjusting your filters or check back later.
                   </p>
-                  <button 
-                    onClick={() => window.location.reload()} 
+                  <button
+                    onClick={() => window.location.reload()}
                     className="px-6 py-3 bg-[#ED1C24] text-white font-lexend font-medium rounded-lg hover:bg-[#d11920] transition-colors duration-300"
                   >
                     Refresh Page
@@ -189,7 +194,8 @@ function Wheels() {
                   Wheels
                 </h2>
                 <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                  Browse our wide selection of high-quality wheels for your vehicle.
+                  Browse our wide selection of high-quality wheels for your
+                  vehicle.
                 </p>
               </div>
 

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import BreadcrumbSection from './BreadcrumbSection';
-import FilterSidebar from './FilterSidebar';
-import TyreGrid from './TyreGrid';
-import Pagination from './Pagination';
-import HeroBanner from './HeroBanner';
-import { getTyres } from '../../axios/axios';
-import { getTyreImageUrl } from '../../Utils/Utils';
-import Loader from '../common/Loader';
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import BreadcrumbSection from "./BreadcrumbSection";
+import FilterSidebar from "./FilterSidebar";
+import TyreGrid from "./TyreGrid";
+import Pagination from "./Pagination";
+import HeroBanner from "./HeroBanner";
+import { getTyres } from "../../axios/axios";
+import { getTyreImageUrl } from "../../Utils/Utils";
+import Loader from "../common/Loader";
 
 function Tyre() {
   const [searchParams] = useSearchParams();
@@ -19,13 +19,13 @@ function Tyre() {
   const [pageSize] = useState(6); // Set page size to 6 as in original
 
   // Get filter values from URL query parameters
-  const width = searchParams.get('width') || '';
-  const profile = searchParams.get('profile') || '';
-  const diameter = searchParams.get('diameter') || '';
-  const brand = searchParams.get('brand') || '';
-  const loadRating = searchParams.get('loadRating') || '';
-  const speedRating = searchParams.get('speedRating') || '';
-  const price = searchParams.get('price') || '';
+  const width = searchParams.get("width") || "";
+  const profile = searchParams.get("profile") || "";
+  const diameter = searchParams.get("diameter") || "";
+  const brand = searchParams.get("brand") || "";
+  const loadRating = searchParams.get("loadRating") || "";
+  const speedRating = searchParams.get("speedRating") || "";
+  const price = searchParams.get("price") || "";
 
   // Fetch data from API with axios and pagination
   useEffect(() => {
@@ -33,14 +33,15 @@ function Tyre() {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Build API parameters
-        const apiParams = { 
-          page: currentPage, 
+        const apiParams = {
+          page: currentPage,
           limit: pageSize,
-          category: 'tyre' // Filter tyres on the backend
+          category: "tyre", // Filter tyres on the backend
+          isActive: true,
         };
-        
+
         // Add filter parameters if they exist
         if (width) apiParams.width = width;
         if (profile) apiParams.profile = profile;
@@ -49,7 +50,7 @@ function Tyre() {
         if (loadRating) apiParams.loadRating = loadRating;
         if (speedRating) apiParams.speedRating = speedRating;
         if (price) apiParams.sortBy = price; // price is for sorting
-        
+
         const response = await getTyres(apiParams);
 
         // extract and map response
@@ -57,23 +58,27 @@ function Tyre() {
         const pagination = response.data?.data?.pagination || {};
 
         const mappedProducts = items.map((item) => ({
-            id: item._id,
-            _id: item._id, // Also pass _id for compatibility
-            image: getTyreImageUrl(item.images?.[0]), // fallback image
-            brand: item.brand,
-            name: item.name,
-            size: item.tyreSpecifications
-              ? `${item.tyreSpecifications.width}/${item.tyreSpecifications.profile}${" "}${item.tyreSpecifications.diameter}${" "}${item.tyreSpecifications.loadRating}${item.tyreSpecifications.speedRating}`
-              : "",
-            price: item.price,
-            isPopular: item.isPopular,
-            rating: 4, // API doesn't return rating → you can adjust
-            stock: item.stock || 0, // Add stock information
-          }));
+          id: item._id,
+          _id: item._id, // Also pass _id for compatibility
+          image: getTyreImageUrl(item.images?.[0]), // fallback image
+          brand: item.brand,
+          name: item.name,
+          size: item.tyreSpecifications
+            ? `${item.tyreSpecifications.width}/${
+                item.tyreSpecifications.profile
+              }${" "}${item.tyreSpecifications.diameter}${" "}${
+                item.tyreSpecifications.loadRating
+              }${item.tyreSpecifications.speedRating}`
+            : "",
+          price: item.price,
+          isPopular: item.isPopular,
+          rating: 4, // API doesn't return rating → you can adjust
+          stock: item.stock || 0, // Add stock information
+        }));
 
         setProducts(mappedProducts);
         setTotalPages(pagination.totalPages || 1);
-        
+
         // Set error state if no products are found
         if (mappedProducts.length === 0) {
           setError("Product not found");
@@ -89,13 +94,23 @@ function Tyre() {
     };
 
     fetchTyres();
-  }, [currentPage, pageSize, width, profile, diameter, brand, loadRating, speedRating, price]);
+  }, [
+    currentPage,
+    pageSize,
+    width,
+    profile,
+    diameter,
+    brand,
+    loadRating,
+    speedRating,
+    price,
+  ]);
 
   // Scroll to top when page changes
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [currentPage]);
 
@@ -123,34 +138,39 @@ function Tyre() {
                     Tyres
                   </h2>
                   <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                    The new attractive asymmetric tread design offers superior handling and braking performances on both dry and wet surfaces.
+                    The new attractive asymmetric tread design offers superior
+                    handling and braking performances on both dry and wet
+                    surfaces.
                   </p>
                 </div>
 
                 {/* Error Message */}
                 <div className="flex flex-col items-center justify-center py-16 px-4">
                   <div className="mb-6">
-                    <svg 
-                      className="w-24 h-24 text-[#ED1C24] mx-auto" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24" 
+                    <svg
+                      className="w-24 h-24 text-[#ED1C24] mx-auto"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth="1.5" 
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       ></path>
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">Sorry, no products were found</h3>
+                  <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">
+                    Sorry, no products were found
+                  </h3>
                   <p className="text-base font-lexend text-gray-600 max-w-md text-center mb-6">
-                    We couldn't find any tyres matching your current selection. Please try adjusting your filters or check back later.
+                    We couldn't find any tyres matching your current selection.
+                    Please try adjusting your filters or check back later.
                   </p>
-                  <button 
-                    onClick={() => window.location.reload()} 
+                  <button
+                    onClick={() => window.location.reload()}
                     className="px-6 py-3 bg-[#ED1C24] text-white font-lexend font-medium rounded-lg hover:bg-[#d11920] transition-colors duration-300"
                   >
                     Refresh Page
@@ -192,7 +212,9 @@ function Tyre() {
                   Tyres
                 </h2>
                 <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                  The new attractive asymmetric tread design offers superior handling and braking performances on both dry and wet surfaces.
+                  The new attractive asymmetric tread design offers superior
+                  handling and braking performances on both dry and wet
+                  surfaces.
                 </p>
               </div>
 

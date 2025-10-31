@@ -75,11 +75,13 @@ export const gethomedata = async () => {
   return axiosInstance.get(`/api/v1/product/homedata`);
 };
 
-export const getblog = async (page, limit) => {
+export const getblog = async (data) => {
   const params = {};
-  if (page !== undefined) params.page = page;
-  if (limit !== undefined) params.limit = limit;
-  return axiosInstance.get(`/api/v1/blog`, { params });
+  if (data.page !== undefined) params.page = data.page;
+  if (data.limit !== undefined) params.limit = data.limit;
+  if (data.isActive !== undefined) params.isActive = data.isActive;
+
+  return axiosInstance.get("/api/v1/blog", { params });
 };
 
 export const getBlogById = async (id) => {
