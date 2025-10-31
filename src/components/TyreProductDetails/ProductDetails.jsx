@@ -1,4 +1,3 @@
-import React from 'react';
 import HeroSection from './HeroSection';
 import SimilarProducts from './SimilarProduct';
 import { useParams } from 'react-router-dom';

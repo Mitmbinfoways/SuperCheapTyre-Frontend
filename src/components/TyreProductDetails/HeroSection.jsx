@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
-import ProductInfo from './ProductInfo';
-import { getTyreById } from '../../axios/axios';
-import { getTyreImageUrl } from '../../Utils/Utils';
-import { formatCurrency } from '../../Utils/Utils';
-import { useParams } from 'react-router-dom';
-import Loader from '../common/Loader';
+import React, { useEffect, useState, useRef } from "react";
+import ProductInfo from "./ProductInfo";
+import { getTyreById } from "../../axios/axios";
+import { getTyreImageUrl } from "../../Utils/Utils";
+import { formatCurrency } from "../../Utils/Utils";
+import { useParams } from "react-router-dom";
+import Loader from "../common/Loader";
 // Import Swiper components and modules
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Thumbs } from 'swiper/modules';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Thumbs } from "swiper/modules";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+import Badge from "../common/Badge";
 
 const HeroSection = () => {
-
   const { id } = useParams(); // Get product id from URL
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,7 @@ const HeroSection = () => {
         const response = await getTyreById(id);
         setProduct(response.data?.data);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
         setProduct(null);
       } finally {
         setLoading(false);
@@ -55,14 +55,14 @@ const HeroSection = () => {
 
   // Function to navigate to next image in modal
   const nextImage = () => {
-    setModalImageIndex((prevIndex) => 
+    setModalImageIndex((prevIndex) =>
       prevIndex < product.images.length - 1 ? prevIndex + 1 : 0
     );
   };
 
   // Function to navigate to previous image in modal
   const prevImage = () => {
-    setModalImageIndex((prevIndex) => 
+    setModalImageIndex((prevIndex) =>
       prevIndex > 0 ? prevIndex - 1 : product.images.length - 1
     );
   };
@@ -101,8 +101,8 @@ const HeroSection = () => {
   }
 
   // Determine if this is a wheel product
-  const isWheelProduct = product.category === 'wheel';
-  const productTitle = isWheelProduct ? 'Shop Wheels' : 'Shop Tyres';
+  const isWheelProduct = product.category === "wheel";
+  const productTitle = isWheelProduct ? "Shop Wheels" : "Shop Tyres";
 
   return (
     <section className="w-full bg-[#f5f5f5] py-[12px] sm:py-[16px] md:py-[20px] lg:py-[24px]">
@@ -125,14 +125,14 @@ const HeroSection = () => {
                   {/* Navigation Arrows */}
                   {product.images?.length > 1 && (
                     <>
-                      <button 
+                      <button
                         className="absolute left-4 z-10 bg-white bg-opacity-80 rounded-full p-2 shadow-md hover:bg-opacity-100 transition-all"
                         onClick={goToPrevSlide}
                         aria-label="Previous image"
                       >
                         <ChevronLeft className="text-[#ed1c24] w-6 h-6" />
                       </button>
-                      <button 
+                      <button
                         className="absolute right-4 z-10 bg-white bg-opacity-80 rounded-full p-2 shadow-md hover:bg-opacity-100 transition-all"
                         onClick={goToNextSlide}
                         aria-label="Next image"
@@ -141,7 +141,7 @@ const HeroSection = () => {
                       </button>
                     </>
                   )}
-                  
+
                   <Swiper
                     ref={mainSwiperRef}
                     modules={[Navigation, Thumbs]}
@@ -192,10 +192,15 @@ const HeroSection = () => {
                     }}
                   >
                     {product.images?.map((img, index) => (
-                      <SwiperSlide key={index} className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px]">
-                        <div 
+                      <SwiperSlide
+                        key={index}
+                        className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px]"
+                      >
+                        <div
                           className={`flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer ${
-                            selectedImageIndex === index ? 'border-[#ed1c24]' : 'border-[#6e6d6d]'
+                            selectedImageIndex === index
+                              ? "border-[#ed1c24]"
+                              : "border-[#6e6d6d]"
                           }`}
                           onClick={() => handleThumbnailClick(index)}
                         >
@@ -220,8 +225,18 @@ const HeroSection = () => {
                       {product.name}
                     </h2>
                   </div>
+                  {product.isPopular && (
+                    <div className="py-2">
+                      <Badge
+                        label={product.isPopular ? "Popular" : ""}
+                        color="blue"
+                      />
+                    </div>
+                  )}
                   <p className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#676767] mt-[4px]">
-                    {isWheelProduct ? 'High-quality wheels' : 'High-performance tyres'}
+                    {isWheelProduct
+                      ? "High-quality wheels"
+                      : "High-performance tyres"}
                   </p>
                   <p className="text-[20px] sm:text-[22px] md:text-[24px] font-medium leading-[25px] sm:leading-[27px] md:leading-[30px] font-['Lexend'] text-[#ff0000] mt-[8px]">
                     {formatCurrency(product.price)}
@@ -245,11 +260,11 @@ const HeroSection = () => {
 
       {/* Image Modal */}
       {showModal && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
           onClick={closeModal}
         >
-          <div 
+          <div
             className="relative max-w-4xl w-full max-h-[90vh]"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the image
           >
@@ -258,8 +273,19 @@ const HeroSection = () => {
               className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 z-10 hover:bg-opacity-75 transition"
               onClick={closeModal}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 
@@ -269,8 +295,19 @@ const HeroSection = () => {
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10 hover:bg-opacity-75 transition"
                 onClick={prevImage}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
               </button>
             )}
@@ -281,8 +318,19 @@ const HeroSection = () => {
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 rounded-full p-2 z-10 hover:bg-opacity-75 transition"
                 onClick={nextImage}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
             )}

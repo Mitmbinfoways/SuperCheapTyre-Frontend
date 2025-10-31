@@ -1,18 +1,19 @@
-import { useNavigate } from 'react-router-dom';
-import { secureGetItem, secureSetItem } from '../../Utils/encryption';
-import { Toast } from '../../Utils/Toast';
-import { formatCurrency } from '../../Utils/Utils';
+import { useNavigate } from "react-router-dom";
+import { secureGetItem, secureSetItem } from "../../Utils/encryption";
+import { Toast } from "../../Utils/Toast";
+import { formatCurrency } from "../../Utils/Utils";
+import Badge from "../../components/common/Badge"
 
 const TyreCard = ({
   id,
-  _id, // Also accept _id for consistency
+  _id, 
   image,
   brand,
   name,
   size,
   price,
   rating,
-  stock = 0, // Add stock prop with default value
+  stock = 0, 
 }) => {
   const navigate = useNavigate();
 
@@ -20,16 +21,26 @@ const TyreCard = ({
   const productId = id || _id;
 
   const renderStars = () => {
-    const SolidStar = ({ size = 20, className = '' }) => (
-      <svg width={size} height={size} viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    const SolidStar = ({ size = 20, className = "" }) => (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        className={className}
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z" />
       </svg>
     );
     return Array.from({ length: 5 }, (_, index) => (
       <SolidStar
         key={index}
-        className={`w-4 h-4 ${index < rating ? 'fill-[#FF9D00] text-[#FF9D00]' : 'fill-[#DADADA] text-[#DADADA]'
-          }`}
+        className={`w-4 h-4 ${
+          index < rating
+            ? "fill-[#FF9D00] text-[#FF9D00]"
+            : "fill-[#DADADA] text-[#DADADA]"
+        }`}
       />
     ));
   };
@@ -40,25 +51,51 @@ const TyreCard = ({
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    const cart = secureGetItem('cartItems', []);
-    const existingIndex = cart.findIndex((ci) => ci.id === productId);
-    if (existingIndex >= 0) {
-      cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-    } else {
-      cart.push({
-        id: productId,
-        image,
-        name: name || brand || 'Tyre',
-        brand,
-        size,
-        price,
-        quantity: 1,
-        description: `${brand || ''} ${name || ''}`.trim() || 'Tyre Product'
-      });
+
+    // Prevent adding to cart if stock is 0
+    if (stock === 0) {
+      Toast({ message: "This product is out of stock", type: "error" });
+      return;
     }
-    secureSetItem('cartItems', cart);
-    localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));
-    Toast({ message: 'Added to cart', type: 'success' });
+
+    const cart = secureGetItem("cartItems", []);
+    const existingIndex = cart.findIndex((ci) => ci.id === productId);
+
+    // Check if adding this item would exceed stock
+    if (existingIndex >= 0) {
+      const newQuantity = (cart[existingIndex].quantity || 1) + 1;
+      if (newQuantity > stock) {
+        Toast({
+          message: `Maximum available is quantity ${stock}`,
+          type: "error",
+        });
+        return;
+      }
+      cart[existingIndex].quantity = newQuantity;
+    } else {
+      // Check if we can add this item (stock > 0)
+      if (stock > 0) {
+        cart.push({
+          id: productId,
+          image,
+          name: name || brand || "Tyre",
+          brand,
+          size,
+          price,
+          quantity: 1,
+          description: `${brand || ""} ${name || ""}`.trim() || "Tyre Product",
+        });
+      } else {
+        Toast({ message: "This product is out of stock", type: "error" });
+        return;
+      }
+    }
+    secureSetItem("cartItems", cart);
+    localStorage.setItem(
+      "cartCount",
+      String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
+    );
+    Toast({ message: "Added to cart", type: "success" });
   };
 
   return (
@@ -79,23 +116,26 @@ const TyreCard = ({
       </div>
 
       {stock === 0 && (
-        <div className="absolute -top-5 right-3 bg-[#ED1C24] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
-          Out of Stock
+        <div className="absolute -top-5 right-3">
+          <Badge label="Out of Stock" color="red" />
         </div>
       )}
       {stock >= 1 && stock <= 5 && (
-        <div className="absolute -top-5 right-3 bg-[#FFC107] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
-          Low Stock
+        <div className="absolute -top-5 right-3">
+          <Badge label="Low Stock" color="yellow" />
         </div>
       )}
 
       {/* Product Info */}
       <div className="">
         <div className="space-y-1">
-          <h3 className="text-xl font-lexend font-medium text-[#ED1C24] line-clamp-1">{name}</h3>
+          <h3 className="text-xl font-lexend font-medium text-[#ED1C24] line-clamp-1">
+            {name}
+          </h3>
           <p className="text-sm text-[#7A7A7A] font-roboto">{brand}</p>
           <p className="text-sm text-[#7A7A7A] font-roboto">
-            <span className="font-bold">Size:</span> <span className="font-normal">{size}</span>
+            <span className="font-bold">Size:</span>{" "}
+            <span className="font-normal">{size}</span>
           </p>
         </div>
 
@@ -108,15 +148,14 @@ const TyreCard = ({
         </div>
       </div>
 
-
-
       {/* Add to Cart Button - Disabled when out of stock */}
       <div className=" flex items-center absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 justify-center space-x-4">
         <button
-          className={`text-white rounded-lg sm:py-3 py-2 sm:px-8 px-4 text-nowrap font-lexend font-medium text-sm transition-colors ${stock === 0
-            ? 'bg-[#D7D7D7]  cursor-not-allowed'
-            : 'bg-[#ED1C24]  hover:bg-red-700 cursor-pointer'
-            }`}
+          className={`text-white rounded-lg sm:py-3 py-2 sm:px-8 px-4 text-nowrap font-lexend font-medium text-sm transition-colors ${
+            stock === 0
+              ? "bg-[#D7D7D7]  cursor-not-allowed"
+              : "bg-[#ED1C24]  hover:bg-red-700 cursor-pointer"
+          }`}
           onClick={handleAddToCart}
           disabled={stock === 0}
         >

@@ -12,6 +12,7 @@ import 'swiper/css/navigation';
 import { gethomedata } from '../axios/axios';
 import { getTyreImageUrl } from '../Utils/Utils';
 import Loader from './common/Loader';
+import Badge from './common/Badge';
 
 const ProductCard = ({ product, onClick }) => (
     <div onClick={onClick} className="flex-shrink-0 w-64 sm:w-72 bg-light rounded-2xl sm:rounded-3xl shadow-lg text-center p-4 sm:p-6 mx-auto sm:mx-4 h-[25rem] relative cursor-pointer">
@@ -24,13 +25,13 @@ const ProductCard = ({ product, onClick }) => (
 
       {/* Stock Badge */}
       {product.stock === 0 && (
-        <div className="absolute top-3 right-3 bg-[#ED1C24] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
-          Out of Stock
+         <div className="absolute top-3 right-3">
+          <Badge label="Out of Stock" color="red" />
         </div>
       )}
       {product.stock >= 1 && product.stock <= 5 && (
-        <div className="absolute top-3 right-3 bg-[#FFC107] text-white px-3 py-1 rounded-full text-xs font-lexend font-semibold z-10 shadow-md">
-          Low Stock
+        <div className="absolute top-3 right-3">
+          <Badge label="Low Stock" color="yellow" />
         </div>
       )}
   

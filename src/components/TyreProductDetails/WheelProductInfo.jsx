@@ -31,14 +31,34 @@ const WheelProductInfo = (product) => {
   const handleAddToCart = () => {
     // Prevent adding to cart if stock is 0
     if (product.product.stock === 0) {
+      Toast({ message: "This product is out of stock", type: 'error' });
+      return;
+    }
+    
+    // Prevent adding to cart if quantity exceeds stock
+    if (quantity > product.product.stock) {
+      Toast({ 
+        message: `Maximum quantity available is ${product.product.stock}`, 
+        type: 'error' 
+      });
       return;
     }
     
     const cart = secureGetItem('cartItems', []);
     const productId = product.product.id || product.product._id;
     const existingIndex = cart.findIndex((ci) => ci.id === productId);
+    
+    // Check if adding this quantity would exceed stock
     if (existingIndex >= 0) {
-      cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + quantity;
+      const newQuantity = (cart[existingIndex].quantity || 1) + quantity;
+      if (newQuantity > product.product.stock) {
+        Toast({ 
+          message: `Maximum quantity available is ${product.product.stock}`, 
+          type: 'error' 
+        });
+        return;
+      }
+      cart[existingIndex].quantity = newQuantity;
     } else {
       cart.push({
         id: productId,
@@ -114,11 +134,20 @@ const WheelProductInfo = (product) => {
           <div className="flex justify-start items-center w-full ml-[10px]">
             <QuantityInput
               initialValue={quantity}
+              min={1}
+              max={product.product.stock}
               onChange={handleQuantityChange}
               className="px-[10px]"
             />
           </div>
         </div>
+
+        {/* Stock Information */}
+        {product.product.stock === 0 && (
+          <div className="text-red-600 font-medium text-center py-2">
+            This product is currently out of stock
+          </div>
+        )}
 
         {/* Add to Cart Button */}
         <Button
