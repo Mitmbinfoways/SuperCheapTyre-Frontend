@@ -2,48 +2,49 @@ import { useNavigate } from "react-router-dom";
 import { secureGetItem, secureSetItem } from "../../Utils/encryption";
 import { Toast } from "../../Utils/Toast";
 import { formatCurrency } from "../../Utils/Utils";
-import Badge from "../../components/common/Badge"
+import Badge from "../../components/common/Badge";
 
 const TyreCard = ({
   id,
-  _id, 
+  _id,
   image,
   brand,
   name,
   size,
   price,
-  rating,
-  stock = 0, 
+  // rating,
+  stock = 0,
+  isPopular,
 }) => {
   const navigate = useNavigate();
 
   // Use either id or _id for consistency
   const productId = id || _id;
 
-  const renderStars = () => {
-    const SolidStar = ({ size = 20, className = "" }) => (
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        className={className}
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z" />
-      </svg>
-    );
-    return Array.from({ length: 5 }, (_, index) => (
-      <SolidStar
-        key={index}
-        className={`w-4 h-4 ${
-          index < rating
-            ? "fill-[#FF9D00] text-[#FF9D00]"
-            : "fill-[#DADADA] text-[#DADADA]"
-        }`}
-      />
-    ));
-  };
+  // const renderStars = () => {
+  //   const SolidStar = ({ size = 20, className = "" }) => (
+  //     <svg
+  //       width={size}
+  //       height={size}
+  //       viewBox="0 0 24 24"
+  //       className={className}
+  //       fill="currentColor"
+  //       xmlns="http://www.w3.org/2000/svg"
+  //     >
+  //       <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z" />
+  //     </svg>
+  //   );
+  //   return Array.from({ length: 5 }, (_, index) => (
+  //     <SolidStar
+  //       key={index}
+  //       className={`w-4 h-4 ${
+  //         index < rating
+  //           ? "fill-[#FF9D00] text-[#FF9D00]"
+  //           : "fill-[#DADADA] text-[#DADADA]"
+  //       }`}
+  //     />
+  //   ));
+  // };
 
   const handleCardClick = () => {
     navigate(`/productdetails/${id}`); // Pass the id in URL
@@ -132,7 +133,16 @@ const TyreCard = ({
           <h3 className="text-xl font-lexend font-medium text-[#ED1C24] line-clamp-1">
             {name}
           </h3>
-          <p className="text-sm text-[#7A7A7A] font-roboto">{brand}</p>
+          <div className="w-full flex items-center justify-between">
+            <p className="w-full text-sm text-[#7A7A7A] font-roboto line-clamp-2">
+              {brand}
+            </p>
+            {isPopular && (
+              <p className="w-full">
+                <Badge label="Popular" color="blue" />
+              </p>
+            )}
+          </div>
           <p className="text-sm text-[#7A7A7A] font-roboto">
             <span className="font-bold">Size:</span>{" "}
             <span className="font-normal">{size}</span>

@@ -66,6 +66,7 @@ function Tyre() {
               ? `${item.tyreSpecifications.width}/${item.tyreSpecifications.profile}${" "}${item.tyreSpecifications.diameter}${" "}${item.tyreSpecifications.loadRating}${item.tyreSpecifications.speedRating}`
               : "",
             price: item.price,
+            isPopular: item.isPopular,
             rating: 4, // API doesn't return rating → you can adjust
             stock: item.stock || 0, // Add stock information
           }));

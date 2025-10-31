@@ -47,7 +47,12 @@ const ProductInfo = (product) => {
     },
     {
       label: "Stock :",
-      value: productStock,
+      value:
+        productStock === 0 ? (
+          <p className="text-red-600 ml-3">Out of stock</p>
+        ) : (
+          productStock
+        ),
       icon: "/productdetails/stock.svg",
     },
   ];
@@ -170,31 +175,29 @@ const ProductInfo = (product) => {
         </div>
 
         {/* Quantity Selection */}
-        <div className="flex justify-center items-center w-full py-[10px] px-[10px]">
-          <span className="flex-none text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] text-black">
-            Quantity :
-          </span>
-          <div className="flex justify-start items-center w-full ml-[10px]">
-            <QuantityInput
-              initialValue={quantity}
-              min={1}
-              max={productStock}
-              onChange={handleQuantityChange}
-              className="px-3"
-            />
+        {productStock > 0 && (
+          <div className="flex justify-center items-center w-full py-[10px] px-[10px]">
+            <span className="flex-none text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] text-black">
+              Quantity :
+            </span>
+            <div className="flex justify-start items-center w-full ml-[10px]">
+              <QuantityInput
+                initialValue={quantity}
+                min={1}
+                max={productStock}
+                onChange={handleQuantityChange}
+                className="px-3"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
-        {productStock === 0 ? (
-          <p className="text-red-600 ml-3">
-            Out of stock
-          </p>
-        ) : productStock <= 5 ? (
+        {productStock >= 1 && productStock <= 5 && (
           <p className="text-yellow-600 ml-3">
             Only {productStock} left in stock!
           </p>
-        ) : null}
-        {/* Add to Cart Button */}
+        )}
+
         <Button
           text="Add To Cart"
           text_font_size="16"

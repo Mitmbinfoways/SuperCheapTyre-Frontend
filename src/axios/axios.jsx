@@ -10,25 +10,31 @@ const axiosInstance = axios.create({
 export const getTyres = async (params = {}) => {
   // Extract page and limit from params, or set defaults
   const { page, limit, ...otherParams } = params;
-  
+
   // Create query parameters
   const queryParams = new URLSearchParams();
-  
+
   // Add pagination parameters if provided
-  if (page !== undefined) queryParams.append('page', page);
-  if (limit !== undefined) queryParams.append('limit', limit);
-  
+  if (page !== undefined) queryParams.append("page", page);
+  if (limit !== undefined) queryParams.append("limit", limit);
+
   // Add other parameters
-  Object.keys(otherParams).forEach(key => {
+  Object.keys(otherParams).forEach((key) => {
     if (otherParams[key] !== undefined) {
       queryParams.append(key, otherParams[key]);
     }
   });
-  
+
   // Construct the URL with query parameters
-  const url = `/api/v1/product${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-  
+  const url = `/api/v1/product${
+    queryParams.toString() ? `?${queryParams.toString()}` : ""
+  }`;
+
   return axiosInstance.get(url);
+};
+
+export const getAllTyres = async (search) => {
+  return axiosInstance.get(`/api/v1/product?search=${search}`);
 };
 
 export const getTyreById = async (id) => {
@@ -55,6 +61,10 @@ export const getavailableslots = async () => {
   return axiosInstance.get(`/api/v1/appointment/slots`);
 };
 
+export const getAllBrands = async () => {
+  return axiosInstance.get(`/api/v1/brand`);
+};
+
 export const getAppointmentSlots = async (date, timeSlotId) => {
   return axiosInstance.get(
     `/api/v1/appointment/slots?date=${date}&timeSlotId=${timeSlotId}`
@@ -77,11 +87,11 @@ export const getBlogById = async (id) => {
 };
 
 export const createAppointment = async (data) => {
-  return axiosInstance.post("/api/v1/appointment" , data);
+  return axiosInstance.post("/api/v1/appointment", data);
 };
 
 export const createOrder = async (data) => {
-  return axiosInstance.post("/api/v1/order" , data);
+  return axiosInstance.post("/api/v1/order", data);
 };
 
 export const getBanners = async () => {
