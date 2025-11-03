@@ -25,6 +25,7 @@ function Tyre() {
   const brand = searchParams.get("brand") || "";
   const loadRating = searchParams.get("loadRating") || "";
   const speedRating = searchParams.get("speedRating") || "";
+  const pattern = searchParams.get("pattern") || "";
   const price = searchParams.get("price") || "";
 
   // Fetch data from API with axios and pagination
@@ -49,6 +50,7 @@ function Tyre() {
         if (brand) apiParams.brand = brand;
         if (loadRating) apiParams.loadRating = loadRating;
         if (speedRating) apiParams.speedRating = speedRating;
+        if (pattern) apiParams.pattern = pattern;
         if (price) apiParams.sortBy = price; // price is for sorting
 
         const response = await getTyres(apiParams);
@@ -103,6 +105,7 @@ function Tyre() {
     brand,
     loadRating,
     speedRating,
+    pattern,
     price,
   ]);
 

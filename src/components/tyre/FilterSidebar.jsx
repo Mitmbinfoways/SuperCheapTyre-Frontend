@@ -14,6 +14,7 @@ const FilterSidebar = () => {
   const [diameterOptions, setDiameterOptions] = useState([{ value: '', label: 'All Diameter' }]);
   const [loadRatingOptions, setLoadRatingOptions] = useState([{ value: '', label: 'All Load Rating' }]);
   const [speedRatingOptions, setSpeedRatingOptions] = useState([{ value: '', label: 'All Speed Rating' }]);
+  const [patternOptions, setPatternOptions] = useState([{ value: '', label: 'All Pattern' }]);
   const [loading, setLoading] = useState(true);
 
   // Price sorting options
@@ -31,6 +32,7 @@ const FilterSidebar = () => {
     diameter: searchParams.get('diameter') || '',
     loadRating: searchParams.get('loadRating') || '',
     speedRating: searchParams.get('speedRating') || '',
+    pattern: searchParams.get('pattern') || '',
     price: searchParams.get('price') || '',
   });
 
@@ -104,6 +106,15 @@ const FilterSidebar = () => {
           }));
           setSpeedRatingOptions([{ value: '', label: 'All Speed Rating' }, ...speedRatings]);
         }
+
+        // Set pattern options
+        if (tyreData.pattern && tyreData.pattern.length > 0) {
+          const patterns = tyreData.pattern.map(item => ({
+            value: item.name,
+            label: item.name
+          }));
+          setPatternOptions([{ value: '', label: 'All Pattern' }, ...patterns]);
+        }
       }
     } catch (error) {
       console.error('Error fetching master filters:', error);
@@ -129,6 +140,7 @@ const FilterSidebar = () => {
       diameter: searchParams.get('diameter') || '',
       loadRating: searchParams.get('loadRating') || '',
       speedRating: searchParams.get('speedRating') || '',
+      pattern: searchParams.get('pattern') || '',
       price: searchParams.get('price') || '',
     });
   }, [searchParams]);
@@ -240,6 +252,21 @@ const FilterSidebar = () => {
               options={speedRatingOptions}
               value={selected.speedRating}
               onChange={handleChange('speedRating')}
+              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
+            />
+          </div>
+        </div>
+
+        {/* Pattern Filter */}
+        <div>
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+            Pattern
+          </div>
+          <div className="relative">
+            <SingleSelect
+              options={patternOptions}
+              value={selected.pattern}
+              onChange={handleChange('pattern')}
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
