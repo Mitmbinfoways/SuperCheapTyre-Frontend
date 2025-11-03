@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, CloudCog } from 'lucide-react';
 import SingleSelect from '../common/SingleSelect';
 import axiosInstance from '../../axios/axios';
 
 const FilterSidebar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // State for filter options from API
   const [brandOptions, setBrandOptions] = useState([{ value: '', label: 'All Brand' }]);
   const [widthOptions, setWidthOptions] = useState([{ value: '', label: 'All Width' }]);
@@ -60,61 +60,75 @@ const FilterSidebar = () => {
     try {
       const response = await axiosInstance.get('/api/v1/masterFilter');
       if (response.data.statusCode === 200 && response.data.data.items.length > 0) {
-        const tyreData = response.data.data.items[0].tyres;
+        const tyreData = response.data.data.items.filter(
+          (item) => item.category === "tyre"
+        );
 
-        // Set width options
-        if (tyreData.width && tyreData.width.length > 0) {
-          const widths = tyreData.width.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setWidthOptions([{ value: '', label: 'All Width' }, ...widths]);
-        }
+        // Process width options
+        const widthValues = tyreData
+          .filter((item) => item.subCategory === "width")
+          .map((item) => item.values);
+        const uniqueWidths = [...new Set(widthValues)].sort((a, b) => a - b);
+        const widthOptions = uniqueWidths.map((width) => ({
+          value: width,
+          label: width,
+        }));
+        setWidthOptions([{ value: "", label: "All Width" }, ...widthOptions]);
 
-        // Set profile options
-        if (tyreData.profile && tyreData.profile.length > 0) {
-          const profiles = tyreData.profile.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setProfileOptions([{ value: '', label: 'All Profile' }, ...profiles]);
-        }
+        // Process profile options
+        const profileValues = tyreData
+          .filter((item) => item.subCategory === "profile")
+          .map((item) => item.values);
+        const uniqueProfiles = [...new Set(profileValues)].sort((a, b) => a - b);
+        const profileOptions = uniqueProfiles.map((profile) => ({
+          value: profile,
+          label: profile,
+        }));
+        setProfileOptions([{ value: "", label: "All Profile" }, ...profileOptions]);
 
-        // Set diameter options
-        if (tyreData.diameter && tyreData.diameter.length > 0) {
-          const diameters = tyreData.diameter.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setDiameterOptions([{ value: '', label: 'All Diameter' }, ...diameters]);
-        }
+        // Process diameter options
+        const diameterValues = tyreData
+          .filter((item) => item.subCategory === "diameter")
+          .map((item) => item.values);
+        const uniqueDiameters = [...new Set(diameterValues)].sort((a, b) => a - b);
+        const diameterOptions = uniqueDiameters.map((diameter) => ({
+          value: diameter,
+          label: diameter,
+        }));
+        setDiameterOptions([{ value: "", label: "All Diameter" }, ...diameterOptions]);
 
-        // Set load rating options
-        if (tyreData.loadRating && tyreData.loadRating.length > 0) {
-          const loadRatings = tyreData.loadRating.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setLoadRatingOptions([{ value: '', label: 'All Load Rating' }, ...loadRatings]);
-        }
+        // Process load rating options
+        const loadRatingValues = tyreData
+          .filter((item) => item.subCategory === "loadRating")
+          .map((item) => item.values);
+        const uniqueLoadRatings = [...new Set(loadRatingValues)].sort((a, b) => a - b);
+        const loadRatingOptions = uniqueLoadRatings.map((loadRating) => ({
+          value: loadRating,
+          label: loadRating,
+        }));
+        setLoadRatingOptions([{ value: "", label: "All Load Rating" }, ...loadRatingOptions]);
 
-        // Set speed rating options
-        if (tyreData.speedRating && tyreData.speedRating.length > 0) {
-          const speedRatings = tyreData.speedRating.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setSpeedRatingOptions([{ value: '', label: 'All Speed Rating' }, ...speedRatings]);
-        }
+        // Process speed rating options
+        const speedRatingValues = tyreData
+          .filter((item) => item.subCategory === "speedRating")
+          .map((item) => item.values);
+        const uniqueSpeedRatings = [...new Set(speedRatingValues)].sort();
+        const speedRatingOptions = uniqueSpeedRatings.map((speedRating) => ({
+          value: speedRating,
+          label: speedRating,
+        }));
+        setSpeedRatingOptions([{ value: "", label: "All Speed Rating" }, ...speedRatingOptions]);
 
-        // Set pattern options
-        if (tyreData.pattern && tyreData.pattern.length > 0) {
-          const patterns = tyreData.pattern.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setPatternOptions([{ value: '', label: 'All Pattern' }, ...patterns]);
-        }
+        // Process pattern options
+        const patternValues = tyreData
+          .filter((item) => item.subCategory === "pattern")
+          .map((item) => item.values);
+        const uniquePatterns = [...new Set(patternValues)].sort();
+        const patternOptions = uniquePatterns.map((pattern) => ({
+          value: pattern,
+          label: pattern,
+        }));
+        setPatternOptions([{ value: "", label: "All Pattern" }, ...patternOptions]);
       }
     } catch (error) {
       console.error('Error fetching master filters:', error);
@@ -152,13 +166,13 @@ const FilterSidebar = () => {
   const handleApply = () => {
     // Update URL query parameters with selected filters
     const params = new URLSearchParams();
-    
+
     Object.keys(selected).forEach(key => {
       if (selected[key]) {
         params.set(key, selected[key]);
       }
     });
-    
+
     setSearchParams(params);
   };
 
@@ -169,7 +183,7 @@ const FilterSidebar = () => {
       <div className="grid sm:grid-cols-2 lg:grid-cols-1 grid-cols-1 gap-6">
         {/* Brand Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Brand
           </div>
           <div className="relative">
@@ -184,7 +198,7 @@ const FilterSidebar = () => {
 
         {/* Width Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Width
           </div>
           <div className="relative">
@@ -199,7 +213,7 @@ const FilterSidebar = () => {
 
         {/* Profile Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Profile
           </div>
           <div className="relative">
@@ -214,7 +228,7 @@ const FilterSidebar = () => {
 
         {/* Diameter Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Diameter
           </div>
           <div className="relative">
@@ -229,7 +243,7 @@ const FilterSidebar = () => {
 
         {/* Load Rating Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Load Rating
           </div>
           <div className="relative">
@@ -244,7 +258,7 @@ const FilterSidebar = () => {
 
         {/* Speed Rating Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Speed Rating
           </div>
           <div className="relative">
@@ -259,7 +273,7 @@ const FilterSidebar = () => {
 
         {/* Pattern Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Pattern
           </div>
           <div className="relative">
@@ -274,7 +288,7 @@ const FilterSidebar = () => {
 
         {/* Price Sorting */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Sort by Price
           </div>
           <div className="relative">

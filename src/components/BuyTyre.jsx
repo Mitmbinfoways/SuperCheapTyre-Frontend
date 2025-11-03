@@ -52,40 +52,42 @@ const BuyTyre = () => {
         response.data.statusCode === 200 &&
         response.data.data.items.length > 0
       ) {
-        const tyreData = response.data.data.items[0].tyres;
+        const tyreData = response.data.data.items.filter(
+          (item) => item.category === "tyre"
+        );
 
-        // Set width options
-        if (tyreData.width && tyreData.width.length > 0) {
-          const widths = tyreData.width.map((item) => ({
-            value: item.name,
-            label: item.name,
-          }));
-          setWidthOptions([{ value: "", label: "Select a Width" }, ...widths]);
-        }
+        // Process width options
+        const widthValues = tyreData
+          .filter((item) => item.subCategory === "width")
+          .map((item) => item.values);
+        const uniqueWidths = [...new Set(widthValues)].sort((a, b) => a - b);
+        const widthOptions = uniqueWidths.map((width) => ({
+          value: width,
+          label: width,
+        }));
+        setWidthOptions([{ value: "", label: "Select a Width" }, ...widthOptions]);
 
-        // Set profile options
-        if (tyreData.profile && tyreData.profile.length > 0) {
-          const profiles = tyreData.profile.map((item) => ({
-            value: item.name,
-            label: item.name,
-          }));
-          setProfileOptions([
-            { value: "", label: "Select a Profile" },
-            ...profiles,
-          ]);
-        }
+        // Process profile options
+        const profileValues = tyreData
+          .filter((item) => item.subCategory === "profile")
+          .map((item) => item.values);
+        const uniqueProfiles = [...new Set(profileValues)].sort((a, b) => a - b);
+        const profileOptions = uniqueProfiles.map((profile) => ({
+          value: profile,
+          label: profile,
+        }));
+        setProfileOptions([{ value: "", label: "Select a Profile" }, ...profileOptions]);
 
-        // Set diameter options
-        if (tyreData.diameter && tyreData.diameter.length > 0) {
-          const diameters = tyreData.diameter.map((item) => ({
-            value: item.name,
-            label: item.name,
-          }));
-          setDiameterOptions([
-            { value: "", label: "Select a Diameter" },
-            ...diameters,
-          ]);
-        }
+        // Process diameter options
+        const diameterValues = tyreData
+          .filter((item) => item.subCategory === "diameter")
+          .map((item) => item.values);
+        const uniqueDiameters = [...new Set(diameterValues)].sort((a, b) => a - b);
+        const diameterOptions = uniqueDiameters.map((diameter) => ({
+          value: diameter,
+          label: diameter,
+        }));
+        setDiameterOptions([{ value: "", label: "Select a Diameter" }, ...diameterOptions]);
       }
     } catch (error) {
       console.error("Error fetching master filters:", error);

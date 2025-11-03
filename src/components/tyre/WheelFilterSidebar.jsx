@@ -56,43 +56,53 @@ const WheelFilterSidebar = () => {
     try {
       const response = await axiosInstance.get('/api/v1/masterFilter');
       if (response.data.statusCode === 200 && response.data.data.items.length > 0) {
-        const wheelData = response.data.data.items[0].wheels;
+        const wheelData = response.data.data.items.filter(
+          (item) => item.category === "wheel"
+        );
 
-        // Set size options
-        if (wheelData.size && wheelData.size.length > 0) {
-          const sizes = wheelData.size.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setSizeOptions([{ value: '', label: 'All Size' }, ...sizes]);
-        }
+        // Process size options
+        const sizeValues = wheelData
+          .filter((item) => item.subCategory === "size")
+          .map((item) => item.values);
+        const uniqueSizes = [...new Set(sizeValues)].sort((a, b) => a - b);
+        const sizeOptions = uniqueSizes.map((size) => ({
+          value: size,
+          label: size,
+        }));
+        setSizeOptions([{ value: "", label: "All Size" }, ...sizeOptions]);
 
-        // Set color options
-        if (wheelData.color && wheelData.color.length > 0) {
-          const colors = wheelData.color.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setColorOptions([{ value: '', label: 'All Color' }, ...colors]);
-        }
+        // Process color options
+        const colorValues = wheelData
+          .filter((item) => item.subCategory === "color")
+          .map((item) => item.values);
+        const uniqueColors = [...new Set(colorValues)].sort();
+        const colorOptions = uniqueColors.map((color) => ({
+          value: color,
+          label: color,
+        }));
+        setColorOptions([{ value: "", label: "All Color" }, ...colorOptions]);
 
-        // Set diameter options
-        if (wheelData.diameter && wheelData.diameter.length > 0) {
-          const diameters = wheelData.diameter.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setDiameterOptions([{ value: '', label: 'All Diameter' }, ...diameters]);
-        }
+        // Process diameter options
+        const diameterValues = wheelData
+          .filter((item) => item.subCategory === "diameter")
+          .map((item) => item.values);
+        const uniqueDiameters = [...new Set(diameterValues)].sort((a, b) => a - b);
+        const diameterOptions = uniqueDiameters.map((diameter) => ({
+          value: diameter,
+          label: diameter,
+        }));
+        setDiameterOptions([{ value: "", label: "All Diameter" }, ...diameterOptions]);
 
-        // Set fitments options
-        if (wheelData.fitments && wheelData.fitments.length > 0) {
-          const fitments = wheelData.fitments.map(item => ({
-            value: item.name,
-            label: item.name
-          }));
-          setFitmentOptions([{ value: '', label: 'All Fitments' }, ...fitments]);
-        }
+        // Process fitment options
+        const fitmentValues = wheelData
+          .filter((item) => item.subCategory === "fitments")
+          .map((item) => item.values);
+        const uniqueFitments = [...new Set(fitmentValues)].sort();
+        const fitmentOptions = uniqueFitments.map((fitment) => ({
+          value: fitment,
+          label: fitment,
+        }));
+        setFitmentOptions([{ value: "", label: "All Fitments" }, ...fitmentOptions]);
       }
     } catch (error) {
       console.error('Error fetching master filters:', error);

@@ -52,7 +52,7 @@ const CardGrid = ({ items }) => {
             ) : null}
           </div>
           {it.content ? (
-            <div className="p-4 sm:p-5 text-sm sm:text-base text-gray-700">{it.content}</div>
+            <div dangerouslySetInnerHTML={{ __html: it.content }} className="p-4 sm:p-5 text-sm sm:text-base text-gray-700"></div>
           ) : null}
         </article>
       ))}
@@ -75,7 +75,7 @@ const AlternativeList = ({ items }) => {
           </div>
           <div className={`${idx % 2 === 0 ? '' : 'md:order-1'}`}>
             {it.content ? (
-              <p className="text-sm sm:text-base text-gray-700">{it.content}</p>
+              <p dangerouslySetInnerHTML={{ __html: it.content }} className="text-sm sm:text-base text-gray-700"></p>
             ) : null}
           </div>
         </div>
@@ -96,7 +96,7 @@ const CenterList = ({ items }) => {
             ) : null}
           </div>
           {it.content ? (
-            <p className="mt-4 text-sm sm:text-base text-gray-700">{it.content}</p>
+            <p dangerouslySetInnerHTML={{ __html: it.content }} className="mt-4 text-sm sm:text-base text-gray-700"></p>
           ) : null}
         </div>
       ))}
