@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import img from "/home/Grouptyre.png";
 import bg from "/home/bg.png";
 import SingleSelect from "./common/SingleSelect";
-import { getAllBrands } from "../axios/axios";
+import axiosInstance, { getAllBrands } from "../axios/axios";
 const BuyTyre = () => {
   const navigate = useNavigate();
   const [width, setWidth] = useState("");
