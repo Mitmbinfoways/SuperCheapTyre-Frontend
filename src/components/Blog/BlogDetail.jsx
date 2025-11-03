@@ -153,7 +153,10 @@ const BlogDetail = () => {
           </div>
 
           {blog.content ? (
-            <p className="mt-5 text-gray-700 text-sm sm:text-base">{blog.content}</p>
+            <div
+              className="mt-5 text-gray-700 text-sm sm:text-base"
+              dangerouslySetInnerHTML={{ __html: blog.content }}
+            ></div>
           ) : null}
 
         </article>

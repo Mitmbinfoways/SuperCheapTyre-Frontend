@@ -31,7 +31,7 @@ const BlogList = () => {
             format === "carousel"
               ? getBlogImageUrl(b.images?.[0])
               : b.items?.[0]?.imageUrl ||
-                getBlogImageUrl(b.items?.[0]?.image || b.images?.[0]);
+              getBlogImageUrl(b.items?.[0]?.image || b.images?.[0]);
           const previewContent = b.content || b.items?.[0]?.content || "";
           return {
             id: b._id,
@@ -105,9 +105,10 @@ const BlogList = () => {
                     </span>
                   ))}
                 </div>
-                <p className="mt-3 text-sm text-gray-700 line-clamp-3">
-                  {post.previewContent}
-                </p>
+                <p
+                  className="mt-3 text-sm text-gray-700 line-clamp-3"
+                  dangerouslySetInnerHTML={{ __html: post.previewContent }}
+                ></p>
                 <button className="mt-3 text-[#ED1C24] text-sm font-medium">
                   Read more →
                 </button>
@@ -120,9 +121,8 @@ const BlogList = () => {
           <button
             disabled={page <= 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
-            className={`min-w-9 h-9 px-3 rounded-md text-sm ${
-              page <= 1 ? "bg-gray-200 text-gray-400" : "bg-black text-white"
-            }`}
+            className={`min-w-9 h-9 px-3 rounded-md text-sm ${page <= 1 ? "bg-gray-200 text-gray-400" : "bg-black text-white"
+              }`}
           >
             <GrPrevious />
           </button>
@@ -133,11 +133,10 @@ const BlogList = () => {
                 <button
                   key={n}
                   onClick={() => setPage(n)}
-                  className={`min-w-9 h-9 px-3 rounded-md text-sm ${
-                    n === page
+                  className={`min-w-9 h-9 px-3 rounded-md text-sm ${n === page
                       ? "bg-black text-white"
                       : "bg-gray-100 text-gray-800"
-                  }`}
+                    }`}
                 >
                   {n}
                 </button>
@@ -148,11 +147,10 @@ const BlogList = () => {
           <button
             disabled={page >= totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            className={`min-w-9 h-9 px-3 rounded-md text-sm ${
-              page >= totalPages
+            className={`min-w-9 h-9 px-3 rounded-md text-sm ${page >= totalPages
                 ? "bg-gray-200 text-gray-400"
                 : "bg-black text-white"
-            }`}
+              }`}
           >
             <GrNext />
           </button>
