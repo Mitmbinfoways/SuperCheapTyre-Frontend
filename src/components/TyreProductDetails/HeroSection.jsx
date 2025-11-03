@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../common/Loader";
 // Import Swiper components and modules
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs } from "swiper/modules";
+import { Autoplay, Navigation, Thumbs } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import Swiper styles
@@ -167,9 +167,14 @@ const HeroSection = () => {
                 {/* Thumbnail Images Carousel */}
                 <div className="w-full">
                   <Swiper
-                    modules={[Navigation, Thumbs]}
+                    modules={[Navigation, Thumbs,Autoplay]}
+                    loop={true}
                     spaceBetween={16}
                     slidesPerView="auto"
+                    autoplay={{
+                      delay: 2500,
+                      disableOnInteraction: false,
+                    }}
                     onSwiper={setThumbsSwiper}
                     className="w-full"
                     breakpoints={{
@@ -187,7 +192,7 @@ const HeroSection = () => {
                       },
                       1024: {
                         slidesPerView: 3,
-                        spaceBetween: 24,
+                        spaceBetween: 20,
                       },
                     }}
                   >
