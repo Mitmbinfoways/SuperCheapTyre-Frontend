@@ -25,8 +25,8 @@ function Tyre() {
   const brand = searchParams.get("brand") || "";
   const loadRating = searchParams.get("loadRating") || "";
   const speedRating = searchParams.get("speedRating") || "";
-  const pattern = searchParams.get("pattern") || "";
   const price = searchParams.get("price") || "";
+  const search = searchParams.get("search") || ""; // Get search parameter
 
   // Fetch data from API with axios and pagination
   useEffect(() => {
@@ -50,8 +50,8 @@ function Tyre() {
         if (brand) apiParams.brand = brand;
         if (loadRating) apiParams.loadRating = loadRating;
         if (speedRating) apiParams.speedRating = speedRating;
-        if (pattern) apiParams.pattern = pattern;
         if (price) apiParams.sortBy = price; // price is for sorting
+        if (search) apiParams.search = search; // Add search parameter
 
         const response = await getTyres(apiParams);
 
@@ -105,8 +105,8 @@ function Tyre() {
     brand,
     loadRating,
     speedRating,
-    pattern,
     price,
+    search, // Add search to dependency array
   ]);
 
   // Scroll to top when page changes

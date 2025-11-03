@@ -25,6 +25,7 @@ function Wheels() {
   const diameter = searchParams.get("diameter") || "";
   const fitments = searchParams.get("fitments") || "";
   const price = searchParams.get("price") || "";
+  const search = searchParams.get("search") || ""; // Get search parameter
 
   // Fetch data from API with axios and pagination
   useEffect(() => {
@@ -48,6 +49,7 @@ function Wheels() {
         if (diameter) apiParams.diameter = diameter;
         if (fitments) apiParams.fitments = fitments;
         if (price) apiParams.sortBy = price; // price is for sorting
+        if (search) apiParams.search = search; // Add search parameter
 
         const response = await getTyres(apiParams);
 
@@ -87,7 +89,7 @@ function Wheels() {
     };
 
     fetchWheels();
-  }, [currentPage, pageSize, brand, size, color, diameter, fitments, price]);
+  }, [currentPage, pageSize, brand, size, color, diameter, fitments, price, search]); // Add search to dependency array
 
   // Scroll to top when page changes
   useEffect(() => {

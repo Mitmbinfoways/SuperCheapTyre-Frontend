@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { images, navLinks } from '../assets/data';
 import { Phone, User, Search, Menu, X, Moon } from 'lucide-react';
 import { HiMoon } from "react-icons/hi";
@@ -9,10 +9,13 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { secureGetItem } from '../Utils/encryption';
+import { getAllTyres } from '../axios/axios'; // Import the API function
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => Number(localStorage.getItem('cartCount') || 0));
+  const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const onStorage = (e) => {
@@ -42,6 +45,20 @@ const Header = () => {
       clearInterval(interval);
     };
   }, []);
+
+  // Handle search form submission
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      try {
+        // Navigate to tyres page with search query
+        navigate(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
+        setIsMenuOpen(false); // Close mobile menu after search
+      } catch (error) {
+        console.error('Search error:', error);
+      }
+    }
+  };
 
   return (
     <header className="relative z-50">
@@ -74,14 +91,21 @@ const Header = () => {
             {/* Right: Compact search + icons */}
             <div className="hidden lg:flex items-center justify-end space-x-2 xl:space-x-4">
               <div className="relative w-[16rem] xl:w-[28rem] 2xl:w-[36rem]">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="w-full h-10 xl:h-11 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
-                />
-                <div className="absolute right-1 top-1 bottom-1 aspect-square rounded-full bg-dark text-white grid place-items-center">
-                  <IoMdSearch size={24} />
-                </div>
+                <form onSubmit={handleSearch}>
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full h-10 xl:h-11 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
+                  />
+                  <button 
+                    type="submit"
+                    className="absolute right-1 top-1 bottom-1 aspect-square rounded-full bg-dark text-white grid place-items-center"
+                  >
+                    <IoMdSearch size={24} />
+                  </button>
+                </form>
               </div>
               <a 
                 href="https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D" 
@@ -161,8 +185,25 @@ const Header = () => {
                 </NavLink>
               );
             })}
+            {/* Mobile Search Form */}
+            <form onSubmit={handleSearch} className="w-full px-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full h-10 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
+                />
+                <button 
+                  type="submit"
+                  className="absolute right-1 top-1 bottom-1 aspect-square rounded-full bg-dark text-white grid place-items-center"
+                >
+                  <IoMdSearch size={20} />
+                </button>
+              </div>
+            </form>
             <div className="flex items-center space-x-3 sm:space-x-4 pt-4 border-t border-gray-700 w-full justify-center">
-              <button className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"><Search size={18} className="sm:w-5 sm:h-5" /></button>
               <a 
                 href="https://maps.app.goo.gl/8MCfDBfNa6dqdQY9A" 
                 target="_blank" 
