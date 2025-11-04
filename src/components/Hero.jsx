@@ -137,7 +137,7 @@ const Hero = () => {
                   prevEl: '.hero-prev',
                   nextEl: '.hero-next',
                 }}
-                pagination={{ clickable: true }}
+                // pagination={{ clickable: true }}
                 autoplay={{
                   delay: 5000,
                   disableOnInteraction: false,

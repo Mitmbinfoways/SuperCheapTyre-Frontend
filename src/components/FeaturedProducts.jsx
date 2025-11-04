@@ -140,7 +140,7 @@ const FeaturedProducts = () => {
                         navigation={{ prevEl: '.feat-prev', nextEl: '.feat-next' }}
                         breakpoints={{
                             640: { slidesPerView: 2, spaceBetween: 16 },
-                            768: { slidesPerView: 3, spaceBetween: 20 },
+                            768: { slidesPerView: 2, spaceBetween: 20 },
                             1024: { slidesPerView: 3, spaceBetween: 24 },
                             1280: { slidesPerView: 4, spaceBetween: 24 },
                         }}
