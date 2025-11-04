@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { images, navLinks } from '../assets/data';
 import { Phone, User, Search, Menu, X, Moon } from 'lucide-react';
@@ -10,11 +10,15 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { secureGetItem } from '../Utils/encryption';
 import { getAllTyres } from '../axios/axios'; // Import the API function
+import { getTyreImageUrl, formatCurrency } from '../Utils/Utils'; // Import image utility and formatCurrency
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => Number(localStorage.getItem('cartCount') || 0));
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
+  const [suggestions, setSuggestions] = useState([]); // State for product suggestions
+  const [showSuggestions, setShowSuggestions] = useState(false); // State to toggle suggestions dropdown
+  const searchRef = useRef(null); // Ref for search container
   const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
@@ -46,6 +50,55 @@ const Header = () => {
     };
   }, []);
 
+  // Handle clicks outside of search to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Fetch product suggestions based on search query
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (searchQuery.trim() === '') {
+        setSuggestions([]);
+        setShowSuggestions(false);
+        return;
+      }
+
+      try {
+        const response = await getAllTyres(searchQuery.trim());
+        const products = response.data?.data?.items || [];
+        // Limit suggestions to 5 items
+        setSuggestions(products.slice(0, 5));
+        setShowSuggestions(products.length > 0);
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    };
+
+    // Debounce the API call to avoid too many requests
+    const debounceTimer = setTimeout(() => {
+      if (searchQuery.trim() !== '') {
+        fetchSuggestions();
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
+
   // Handle search form submission
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -54,10 +107,20 @@ const Header = () => {
         // Navigate to tyres page with search query
         navigate(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
         setIsMenuOpen(false); // Close mobile menu after search
+        setShowSuggestions(false); // Hide suggestions
       } catch (error) {
         console.error('Search error:', error);
       }
     }
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = (productId) => {
+    // Navigate directly to product details page
+    navigate(`/productdetails/${productId}`);
+    setSearchQuery(''); // Clear search query
+    setShowSuggestions(false); // Hide suggestions
+    setIsMenuOpen(false); // Close mobile menu
   };
 
   return (
@@ -90,13 +153,14 @@ const Header = () => {
             </div>
             {/* Right: Compact search + icons */}
             <div className="hidden lg:flex items-center justify-end space-x-2 xl:space-x-4">
-              <div className="relative w-[16rem] xl:w-[28rem] 2xl:w-[36rem]">
+              <div className="relative w-[16rem] xl:w-[28rem] 2xl:w-[36rem]" ref={searchRef}>
                 <form onSubmit={handleSearch}>
                   <input
                     type="text"
                     placeholder="Search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => searchQuery.trim() !== '' && suggestions.length > 0 && setShowSuggestions(true)}
                     className="w-full h-10 xl:h-11 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
                   />
                   <button 
@@ -106,6 +170,29 @@ const Header = () => {
                     <IoMdSearch size={24} />
                   </button>
                 </form>
+                {/* Suggestions dropdown */}
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute top-full left-0 w-full bg-white rounded-lg shadow-lg mt-1 max-h-80 overflow-y-auto z-50">
+                    {suggestions.map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
+                        onClick={() => handleSuggestionClick(product._id)}
+                      >
+                        <img
+                          src={getTyreImageUrl(product.images?.[0])}
+                          alt={product.name}
+                          className="w-12 h-12 object-contain mr-3"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                          <p className="text-xs text-gray-500 truncate">{product.brand}</p>
+                          <p className="text-xs font-medium text-dark truncate">{formatCurrency(product.price)}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <a 
                 href="https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D" 
@@ -186,13 +273,14 @@ const Header = () => {
               );
             })}
             {/* Mobile Search Form */}
-            <form onSubmit={handleSearch} className="w-full px-4">
+            <form onSubmit={handleSearch} className="w-full px-4" ref={searchRef}>
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => searchQuery.trim() !== '' && suggestions.length > 0 && setShowSuggestions(true)}
                   className="w-full h-10 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
                 />
                 <button 
@@ -202,6 +290,29 @@ const Header = () => {
                   <IoMdSearch size={20} />
                 </button>
               </div>
+              {/* Mobile Suggestions dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 w-full bg-white rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto z-50">
+                  {suggestions.map((product) => (
+                    <div
+                      key={product._id}
+                      className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
+                      onClick={() => handleSuggestionClick(product._id)}
+                    >
+                      <img
+                        src={getTyreImageUrl(product.images?.[0])}
+                        alt={product.name}
+                        className="w-10 h-10 object-contain mr-3"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                        <p className="text-xs text-gray-500 truncate">{product.brand}</p>
+                        <p className="text-xs font-medium text-dark truncate">{formatCurrency(product.price)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </form>
             <div className="flex items-center space-x-3 sm:space-x-4 pt-4 border-t border-gray-700 w-full justify-center">
               <a 
