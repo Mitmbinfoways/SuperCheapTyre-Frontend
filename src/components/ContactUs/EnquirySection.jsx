@@ -381,16 +381,40 @@ export const EnquirySection = () => {
                 className="no-arrows h-12 sm:h-[52px] rounded-lg border border-solid border-[#7e7e7e] [font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-sm tracking-[0] leading-[normal] placeholder:text-[#6f6f6f]"
                 value={formData.mobile}
                 onChange={(e) => {
-                  // Allow only digits and limit to 15
-                  const value = e.target.value
-                    .replace(/[^0-9]/g, "")
-                    .slice(0, 15);
+                  let value = e.target.value;
+                  
+                  // Allow + only at the start and only digits after that
+                  if (value.startsWith('+')) {
+                    // Keep the + and allow up to 15 digits after it
+                    const digits = value.substring(1).replace(/[^0-9]/g, '').slice(0, 15);
+                    value = '+' + digits;
+                  } else {
+                    // No + at start, just allow digits
+                    value = value.replace(/[^0-9]/g, '').slice(0, 15);
+                  }
+                  
                   setFormData((prev) => ({ ...prev, mobile: value }));
                   setErrors((prev) => ({ ...prev, mobile: "" }));
                 }}
                 onKeyDown={(e) => {
-                  // Block +, -, ., e, and exponential input
-                  if (["+", "-", ".", "e", "E"].includes(e.key)) {
+                  // Allow Backspace, Tab, Enter, Escape, Delete, and Arrow keys
+                  if (["Backspace", "Tab", "Enter", "Escape", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                    return;
+                  }
+                  
+                  // Allow + only at the start
+                  if (e.key === "+" && e.target.selectionStart === 0 && !formData.mobile.includes("+")) {
+                    return;
+                  }
+                  
+                  // Prevent -, ., e, E
+                  if (["-", ".", "e", "E"].includes(e.key)) {
+                    e.preventDefault();
+                    return;
+                  }
+                  
+                  // Prevent non-digit characters (except for the cases handled above)
+                  if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
                     e.preventDefault();
                   }
                 }}
