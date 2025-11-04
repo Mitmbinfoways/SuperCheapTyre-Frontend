@@ -41,7 +41,7 @@ const VerificationIcon = ({ size = 16 }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+      d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"
       fill="#4CAF50"
     />
   </svg>
@@ -274,7 +274,10 @@ const Testimonials = () => {
             <div className="testimonials-pagination swiper-pagination !relative flex justify-center mt-4"></div>
 
             <div className="mt-6 sm:mt-8 flex items-center justify-center lg:justify-between">
-              <button className="bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-20 mx-auto rounded-lg hover:bg-red-700 transition-colors text-sm">
+              <button 
+                className="bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-20 mx-auto rounded-lg hover:bg-red-700 transition-colors text-sm"
+                onClick={() => window.open('https://www.google.com/search?sca_esv=b8098a47c6cf00ad&sxsrf=AE3TifMw3JOMMMhP9dz-N5xq5Cr_dZEMZA:1762234719929&si=AMgyJEvkVjFQtirYNBhM3ZJIRTaSJ6PxY6y1_6WZHGInbzDnMdVStg_EEEonJJtI8d7GD97M60bbsx8XDV-413m41dLPLPNRRHUgj5gekhYC_alwI2SrSGen01u35HERQP2VvM1ShizMjH24S8GhyNGBjY4dUj55Eg%3D%3D&q=Supercheap+Tyres+Dandenong+Reviews&sa=X&ved=2ahUKEwi_2_fz49eQAxUIzjgGHZ1NG9YQ0bkNegQIHRAE&biw=1536&bih=695&dpr=1.25', '_blank')}
+              >
                 Read All Reviews
               </button>
             </div>
