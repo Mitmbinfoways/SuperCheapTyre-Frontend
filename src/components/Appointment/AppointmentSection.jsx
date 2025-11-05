@@ -438,17 +438,36 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         <div>
           <label className="text-base font-normal mb-2 block">Phone No.</label>
           <input
-            type="tel"
+            type="text"
             placeholder="Enter your Phone Number"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
-            onKeyPress={(e) => {
-              // Allow only numbers (0-9) and plus sign
-              if (!/[0-9+]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
-                e.preventDefault();
+            onChange={(e) => {
+              let value = e.target.value;
+              
+              // Remove any non-digit and non-plus characters
+              value = value.replace(/[^0-9+]/g, '');
+              
+              // Ensure only one plus sign at the beginning
+              const plusCount = (value.match(/\+/g) || []).length;
+              if (plusCount > 1) {
+                // Remove extra plus signs, keeping only the first one
+                let firstPlusIndex = value.indexOf('+');
+                value = value.replace(/\+/g, '');
+                if (firstPlusIndex === 0) {
+                  value = '+' + value;
+                }
+              } else if (plusCount === 1 && value.indexOf('+') > 0) {
+                // Move plus to the beginning if it's not already there
+                value = value.replace(/\+/g, '');
+                value = '+' + value;
+              }
+              
+              // Limit to 15 characters total
+              if (value.length <= 15) {
+                setPhone(value);
               }
             }}
+            onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             className={` no-arrows w-full p-2 placeholder:text-[#6F6F6F] border text-sm border-[#7E7E7E] rounded-lg bg-transparent focus:outline-none focus:ring-1 ${errors.phone && touched.phone ? 'border-[#FF0000] focus:ring-[#FF0000]' : 'border-border-gray focus:ring-brand-red'}`}
           />
           {errors.phone && touched.phone && (

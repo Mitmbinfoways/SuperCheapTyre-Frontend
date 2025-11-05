@@ -369,13 +369,12 @@ export const EnquirySection = () => {
             </div>
 
             {/* Mobile Field */}
-            {/* Mobile Field */}
             <div className="flex flex-col gap-2">
               <Label className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-base tracking-[0] leading-[normal]">
                 Mobile
               </Label>
               <Input
-                type="tel"
+                type="text"
                 name="mobile"
                 placeholder="Enter your Mobile Number"
                 className="no-arrows h-12 sm:h-[52px] rounded-lg border border-solid border-[#7e7e7e] [font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-sm tracking-[0] leading-[normal] placeholder:text-[#6f6f6f]"
@@ -383,40 +382,29 @@ export const EnquirySection = () => {
                 onChange={(e) => {
                   let value = e.target.value;
                   
-                  // Allow + only at the start and only digits after that
-                  if (value.startsWith('+')) {
-                    // Keep the + and allow up to 15 digits after it
-                    const digits = value.substring(1).replace(/[^0-9]/g, '').slice(0, 15);
-                    value = '+' + digits;
-                  } else {
-                    // No + at start, just allow digits
-                    value = value.replace(/[^0-9]/g, '').slice(0, 15);
+                  // Remove any non-digit and non-plus characters
+                  value = value.replace(/[^0-9+]/g, '');
+                  
+                  // Ensure only one plus sign at the beginning
+                  const plusCount = (value.match(/\+/g) || []).length;
+                  if (plusCount > 1) {
+                    // Remove extra plus signs, keeping only the first one
+                    let firstPlusIndex = value.indexOf('+');
+                    value = value.replace(/\+/g, '');
+                    if (firstPlusIndex === 0) {
+                      value = '+' + value;
+                    }
+                  } else if (plusCount === 1 && value.indexOf('+') > 0) {
+                    // Move plus to the beginning if it's not already there
+                    value = value.replace(/\+/g, '');
+                    value = '+' + value;
                   }
                   
-                  setFormData((prev) => ({ ...prev, mobile: value }));
+                  // Limit to 15 characters total
+                  if (value.length <= 15) {
+                    setFormData((prev) => ({ ...prev, mobile: value }));
+                  }
                   setErrors((prev) => ({ ...prev, mobile: "" }));
-                }}
-                onKeyDown={(e) => {
-                  // Allow Backspace, Tab, Enter, Escape, Delete, and Arrow keys
-                  if (["Backspace", "Tab", "Enter", "Escape", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)) {
-                    return;
-                  }
-                  
-                  // Allow + only at the start
-                  if (e.key === "+" && e.target.selectionStart === 0 && !formData.mobile.includes("+")) {
-                    return;
-                  }
-                  
-                  // Prevent -, ., e, E
-                  if (["-", ".", "e", "E"].includes(e.key)) {
-                    e.preventDefault();
-                    return;
-                  }
-                  
-                  // Prevent non-digit characters (except for the cases handled above)
-                  if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
-                    e.preventDefault();
-                  }
                 }}
               />
               {errors.mobile ? (
