@@ -444,8 +444,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
             onChange={(e) => setPhone(e.target.value)}
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             onKeyPress={(e) => {
-              // Allow only numbers (0-9)
-              if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+              // Allow only numbers (0-9) and plus sign
+              if (!/[0-9+]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
                 e.preventDefault();
               }
             }}
