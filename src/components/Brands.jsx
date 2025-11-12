@@ -77,20 +77,34 @@ const Brands = () => {
               key={brand._id || index}
               className="bg-light p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-md flex items-center justify-center h-20 sm:h-24 md:h-28 hover:shadow-xl transition-all duration-200 hover:scale-105 z-10"
             >
-              <img
-                src={`${import.meta.env.VITE_BASE_URL}/Brand/${brand.image}`}
-                alt={brand.name}
-                className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain"
-                onError={(e) => {
-                  // Handle image loading errors
-                  e.target.src = img; // Fallback to default image
-                }}
-              />
+              <BrandDisplay brand={brand} />
             </div>
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+const BrandDisplay = ({ brand }) => {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <>
+      {imageError ? (
+        <div className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain text-center font-bold text-gray-700 flex items-center justify-center"
+             style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>
+          {brand.name}
+        </div>
+      ) : (
+        <img
+          src={`${import.meta.env.VITE_BASE_URL}/Brand/${brand.image}`}
+          alt={brand.name}
+          className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain"
+          onError={() => setImageError(true)}
+        />
+      )}
+    </>
   );
 };
 
