@@ -5,10 +5,10 @@ import { getBlogImageUrl, formatDateTime } from "../../Utils/Utils";
 import Loader from "../common/Loader";
 import { GrNext, GrPrevious } from "react-icons/gr";
 
-
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(undefined);
   const [totalPages, setTotalPages] = useState(1);
@@ -17,6 +17,9 @@ const BlogList = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
+        setLoading(true);
+        setError(null);
+        
         const payload = {
           page,
           limit,
@@ -51,8 +54,14 @@ const BlogList = () => {
           if (typeof p.limit === "number") setLimit(p.limit);
           if (typeof p.totalPages === "number") setTotalPages(p.totalPages);
         }
+        
+        // Set error state if no blogs are found
+        if (mapped.length === 0) {
+          setError("No blogs found");
+        }
       } catch (e) {
         setBlogs([]);
+        setError("No blogs found");
       } finally {
         setLoading(false);
       }
@@ -62,6 +71,51 @@ const BlogList = () => {
 
   if (loading) {
     return <Loader label="Loading blogs..." />;
+  }
+
+  // Show error message if there's an error and no blogs to display
+  if (error && blogs.length === 0) {
+    return (
+      <main className="bg-[#F3F3F3] py-8 sm:py-10 md:py-12">
+        <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-6 sm:mb-8">
+            Blog
+          </h1>
+          {/* Error Message */}
+          <div className="flex flex-col items-center justify-center py-16 px-4">
+            <div className="mb-6">
+              <svg
+                className="w-24 h-24 text-[#ED1C24] mx-auto"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </div>
+            <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">
+              Sorry, no blogs were found
+            </h3>
+            <p className="text-base font-lexend text-gray-600 max-w-md text-center mb-6">
+              We couldn't find any blogs matching your current selection.
+              Please try adjusting your filters or check back later.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-[#ED1C24] text-white font-lexend font-medium rounded-lg hover:bg-[#d11920] transition-colors duration-300"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
