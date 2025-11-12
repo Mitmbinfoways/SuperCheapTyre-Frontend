@@ -7,6 +7,7 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Toast } from "../../Utils/Toast";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Local utility to merge Tailwind classes
 function cn(...inputs) {
@@ -144,12 +145,18 @@ export const EnquirySection = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const recaptchaRef = useRef(null); // Ref for reCAPTCHA
+  const [recaptchaValue, setRecaptchaValue] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error on change
     setErrors((prev) => ({ ...prev, [name]: "", recaptcha: "" })); // Clear recaptcha error on any field change
+  };
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+    setErrors((prev) => ({ ...prev, recaptcha: "" }));
   };
 
   const validate = () => {
@@ -174,8 +181,7 @@ export const EnquirySection = () => {
     if (!formData.message.trim()) nextErrors.message = "Message is required";
 
     // reCAPTCHA validation
-    const recaptchaResponse = window.grecaptcha.getResponse();
-    if (!recaptchaResponse) {
+    if (!recaptchaValue) {
       nextErrors.recaptcha = "Please complete the reCAPTCHA verification";
     }
 
@@ -197,7 +203,7 @@ export const EnquirySection = () => {
       Toast({ message: "Successfully submitted", type: "success" });
       setFormData({ name: "", mobile: "", email: "", message: "" });
       // Reset reCAPTCHA
-      window.grecaptcha.reset();
+      setRecaptchaValue(null);
     } catch (err) {
       // no failure toast per requirement
     } finally {
@@ -460,18 +466,11 @@ export const EnquirySection = () => {
 
             {/* reCAPTCHA */}
             <div>
-              <div
-                className="g-recaptcha"
-                data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                data-callback={() =>
-                  setErrors((prev) => ({ ...prev, recaptcha: "" }))
-                }
-              ></div>
-              <script
-                src="https://www.google.com/recaptcha/api.js"
-                async
-                defer
-              ></script>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6Lf5PQosAAAAAK6oCkCU5bM90zjqU8J1sSCaGruS"
+                onChange={handleRecaptchaChange}
+              />
               {errors.recaptcha ? (
                 <p className="text-red-600 text-xs mt-1">{errors.recaptcha}</p>
               ) : null}
