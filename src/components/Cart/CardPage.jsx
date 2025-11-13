@@ -4,13 +4,56 @@ import CartItem from './CartItem';
 import OrderSummary from './OrderSummary';
 import { cartData as initialCartData } from './mock';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
+import { getTyreById } from '../../axios/axios';
 
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState(() => {
     return secureGetItem('cartItems', []);
   });
+  const [productStocks, setProductStocks] = useState({});
+  const [loadingStocks, setLoadingStocks] = useState(true);
   const [totals, setTotals] = useState({ subtotal: 0, discount: 0, delivery: 15, total: 0 });
+
+  // Fetch stock information for all products in the cart
+  useEffect(() => {
+    const fetchProductStocks = async () => {
+      if (cartItems.length === 0) {
+        setLoadingStocks(false);
+        return;
+      }
+
+      try {
+        // Create an array of promises to fetch stock for each product
+        const stockPromises = cartItems.map(async (item) => {
+          try {
+            const response = await getTyreById(item.id);
+            return { id: item.id, stock: response.data.data.stock || 0 };
+          } catch (error) {
+            console.error(`Error fetching stock for product ${item.id}:`, error);
+            return { id: item.id, stock: 0 };
+          }
+        });
+
+        // Wait for all promises to resolve
+        const stockResults = await Promise.all(stockPromises);
+        
+        // Convert to an object for easy lookup
+        const stockMap = {};
+        stockResults.forEach(({ id, stock }) => {
+          stockMap[id] = stock;
+        });
+        
+        setProductStocks(stockMap);
+      } catch (error) {
+        console.error("Error fetching product stocks:", error);
+      } finally {
+        setLoadingStocks(false);
+      }
+    };
+
+    fetchProductStocks();
+  }, [cartItems]);
 
   useEffect(() => {
     const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -31,6 +74,14 @@ const CartPage = () => {
 
   const handleQuantityChange = (id, newQuantity) => {
     if (newQuantity < 1) return;
+    
+    // Check stock limitation
+    const productStock = productStocks[id];
+    if (productStock !== undefined && newQuantity > productStock) {
+      // Don't allow quantity to exceed stock
+      return;
+    }
+    
     setCartItems(prevItems =>
       prevItems.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
@@ -96,6 +147,8 @@ const CartPage = () => {
               <React.Fragment key={item.id}>
                 <CartItem
                   item={item}
+                  productStock={productStocks[item.id]}
+                  loadingStock={loadingStocks}
                   onQuantityChange={handleQuantityChange}
                   onRemove={handleRemoveItem}
                 />

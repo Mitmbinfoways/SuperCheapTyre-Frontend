@@ -4,8 +4,12 @@ import { Trash2, Plus, Minus } from 'lucide-react';
 import { RiDeleteBin5Fill, RiDeleteBinFill, RiDeleteBinLine } from "react-icons/ri";
 import { formatCurrency } from '../../Utils/Utils';
 
-const CartItem = ({ item, onQuantityChange, onRemove }) => {
+const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove }) => {
   const navigate = useNavigate();
+
+  // Determine if the + button should be disabled
+  const isIncrementDisabled = loadingStock || (productStock !== undefined && item.quantity >= productStock);
+  
   return (
     <div className="flex flex-col sm:flex-row gap-4">
       <div className="flex-shrink-0 w-full sm:w-32 h-32 rounded-lg flex items-center justify-center cursor-pointer border border-black" onClick={() => navigate(`/productdetails/${item.id}`)}>
@@ -33,7 +37,11 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
               <Minus size={20} />
             </button>
             <span className="font-satoshi font-medium text-sm w-4 text-center">{item.quantity}</span>
-            <button onClick={() => onQuantityChange(item.id, item.quantity + 1)} className="text-black">
+            <button 
+              onClick={() => onQuantityChange(item.id, item.quantity + 1)} 
+              className={isIncrementDisabled ? "text-gray-400" : "text-black"}
+              disabled={isIncrementDisabled}
+            >
               <Plus size={20} />
             </button>
           </div>
