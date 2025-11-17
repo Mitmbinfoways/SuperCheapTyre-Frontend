@@ -107,11 +107,11 @@ const TireShowcase = () => {
                   onClick={() => navigate(`/productdetails/${p.id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 sm:h-32">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32">
                     <img
                       src={p.image}
                       alt={p.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="text-white mb-8">
@@ -140,11 +140,11 @@ const TireShowcase = () => {
                   }
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2  h-24 sm:h-32">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32">
                     <img
                       src={popularProduct.image}
                       alt={popularProduct.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="text-white mb-8">

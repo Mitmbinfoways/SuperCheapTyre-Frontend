@@ -26,14 +26,6 @@ export const ContactUs = () => {
           <ContactSection />
         </div>
 
-        <div className="mb-4 px-24">
-          <h2 className="text-primary font-medium text-3xl mb-4">GET IN TOUCH</h2>
-          <p className="text-[#7A7A7A] max-w-2xl mb-8 leading-relaxed">
-            Contact us for everything from quality cheap tyres to top of the range all-terrain tyres.
-            Our Dandenong Tyre store has everything you will need!
-          </p>
-        </div>
-
         <div className="translate-y-[-1rem] animate-fade-up  [--animation-delay:500ms]">
           <EnquirySection />
         </div>

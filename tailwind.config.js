@@ -25,6 +25,9 @@ export default {
         'source-serif-regular': ['SourceSerif-regular', 'serif'],
         'source-serif-bold': ['SourceSerif-bold', 'serif'],
       },
+      screens: {
+        'xs': '450px',
+      }
     },
   },
   plugins: [],

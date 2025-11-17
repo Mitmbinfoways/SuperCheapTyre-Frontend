@@ -215,8 +215,8 @@ export const EnquirySection = () => {
     {
       icon: "/contactus/call.svg",
       title: "Phone",
-      value: "1234567832",
-      link: "tel:1234567832",
+      value: "(03) 97936190",
+      link: "tel:(03)97936190",
     },
     {
       icon: "/contactus/email.svg",
@@ -233,97 +233,107 @@ export const EnquirySection = () => {
   ];
 
   return (
-    <section className="w-full flex flex-col px-4 py-6 sm:py-8">
+    <section className="w-full flex flex-col px-4 md:px-6 lg:px-8 xl:px-20 py-10 xl:py-16">
       {/* Location and Contact Information Section */}
-      <div className="w-full max-w-[1327px] mx-auto mb-8 translate-y-[-1rem] ">
-        <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-5">
+      <div className="w-full mx-auto mb-8 translate-y-[-1rem] ">
+        <div>
           {/* Our Location */}
-          <div className="flex flex-col lg:col-span-3">
-            <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0] leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-4">
-              Our Location
-            </h2>
-            <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0">
-              <CardContent className="p-1 sm:p-2">
-                <iframe
-                  title="Supercheap Tyres Dandenong Location"
-                  className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-lg"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </CardContent>
-            </Card>
+          <div className="mb-4">
+            <h2 className="text-primary font-medium text-3xl mb-4">GET IN TOUCH</h2>
+            <p className="text-[#7A7A7A] leading-relaxed">
+              Contact us for everything from quality cheap tyres to top of the range all-terrain tyres.
+              Our Dandenong Tyre store has everything you will need!
+            </p>
           </div>
 
-          {/* Contact Information */}
-          <div className="flex flex-col lg:col-span-2">
-            <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0] leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-4">
-              Contact Information
-            </h2>
-            <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0 h-auto lg:h-[336px]">
-              <CardContent className="p-4 sm:p-5 h-full flex flex-col justify-center">
-                <div className="flex flex-col gap-4 sm:gap-5">
-                  {contactInfo.map((info, index) => (
-                    <a
-                      key={index}
-                      href={info.link}
-                      target={info.title === "Address" ? "_blank" : "_self"}
-                      rel="noopener noreferrer"
-                      className="flex items-start gap-3 hover:opacity-80 transition-opacity duration-200"
-                    >
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 xl:grid-cols-5">
+            <div className="flex flex-col xl:col-span-3">
+              <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0] leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-4">
+                Our Location
+              </h2>
+              <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0">
+                <CardContent className="p-1 sm:p-2">
+                  <iframe
+                    title="Supercheap Tyres Dandenong Location"
+                    className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-lg"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Contact Information */}
+            <div className="flex flex-col xl:col-span-2">
+              <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0] leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-4">
+                Contact Information
+              </h2>
+              <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0 h-auto lg:h-[336px]">
+                <CardContent className="p-4 sm:p-5 h-full flex flex-col justify-center">
+                  <div className="flex flex-col gap-4 sm:gap-5">
+                    {contactInfo.map((info, index) => (
+                      <a
+                        key={index}
+                        href={info.link}
+                        target={info.title === "Address" ? "_blank" : "_self"}
+                        rel="noopener noreferrer"
+                        className="flex items-start gap-3 hover:opacity-80 transition-opacity duration-200"
+                      >
+                        <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] bg-[#000000] rounded-[5px] flex items-center justify-center flex-shrink-0">
+                          <img
+                            className="w-5 h-5 sm:w-6 sm:h-6"
+                            alt={info.title}
+                            src={info.icon}
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-sm tracking-[0] leading-[normal] mb-1">
+                            {info.title}
+                          </div>
+                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal] break-all">
+                            {info.value}
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+
+                    {/* Opening Hours */}
+                    <div className="flex items-start gap-3">
                       <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] bg-[#000000] rounded-[5px] flex items-center justify-center flex-shrink-0">
                         <img
-                          className="w-5 h-5 sm:w-6 sm:h-6"
-                          alt={info.title}
-                          src={info.icon}
+                          className="p-2.5 sm:p-3"
+                          alt="Clock"
+                          src="/contactus/clock.svg"
                         />
                       </div>
                       <div className="flex flex-col">
-                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-sm tracking-[0] leading-[normal] mb-1">
-                          {info.title}
+                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[14px] sm:text-[15px] tracking-[0] leading-[normal] mb-1">
+                          Opening Hours
                         </div>
-                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal] break-all">
-                          {info.value}
+                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal]">
+                          Mon - Fri: 9:00am - 5pm
+                          <br />
+                          Sat: 9:00am - 3pm
+                          <br />
+                          Sun: Closed
+                          <br />
+                          Please check Google for public holiday opening hours.
                         </div>
-                      </div>
-                    </a>
-                  ))}
-
-                  {/* Opening Hours */}
-                  <div className="flex items-start gap-3">
-                    <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] bg-[#000000] rounded-[5px] flex items-center justify-center flex-shrink-0">
-                      <img
-                        className="p-2.5 sm:p-3"
-                        alt="Clock"
-                        src="/contactus/clock.svg"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[14px] sm:text-[15px] tracking-[0] leading-[normal] mb-1">
-                        Opening Hours
-                      </div>
-                      <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal]">
-                        Mon - Fri: 9:00am - 5pm
-                        <br />
-                        Sat: 9:00am - 3pm
-                        <br />
-                        Sun: Closed
-                        <br />
-                        Please check Google for public holiday opening hours.
                       </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Enquire Now Section */}
-      <div className="w-full max-w-[1181px] lg:px-20 translate-y-[-1rem] animate-fade-in  [--animation-delay:400ms]">
+      <div className="w-full translate-y-[-1rem] animate-fade-in  [--animation-delay:400ms]">
         <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0.84px] leading-[28px] sm:leading-[30px] mb-4 sm:mb-6">
           Enquire Now
         </h2>
@@ -387,10 +397,10 @@ export const EnquirySection = () => {
                 value={formData.mobile}
                 onChange={(e) => {
                   let value = e.target.value;
-                  
-                  // Remove any non-digit and non-plus characters
-                  value = value.replace(/[^0-9+]/g, '');
-                  
+
+                  // Remove any characters that are not digits, plus signs, or parentheses
+                  value = value.replace(/[^0-9+()]/g, '');
+
                   // Ensure only one plus sign at the beginning
                   const plusCount = (value.match(/\+/g) || []).length;
                   if (plusCount > 1) {
@@ -405,7 +415,7 @@ export const EnquirySection = () => {
                     value = value.replace(/\+/g, '');
                     value = '+' + value;
                   }
-                  
+
                   // Limit to 15 characters total
                   if (value.length <= 15) {
                     setFormData((prev) => ({ ...prev, mobile: value }));

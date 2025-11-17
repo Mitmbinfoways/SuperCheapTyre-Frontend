@@ -75,7 +75,7 @@ const Brands = () => {
           {displayBrands.map((brand, index) => (
             <div
               key={brand._id || index}
-              className="bg-light p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-md flex items-center justify-center h-20 sm:h-24 md:h-28 hover:shadow-xl transition-all duration-200 hover:scale-105 z-10"
+              className="bg-light p-3  sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-md flex items-center justify-center h-20 sm:h-24 md:h-28 hover:shadow-xl hover:scale-105 z-10 transition-all duration-300 filter grayscale hover:grayscale-0"
             >
               <BrandDisplay brand={brand} />
             </div>

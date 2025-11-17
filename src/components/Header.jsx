@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { images, navLinks } from '../assets/data';
-import { Phone, User, Search, Menu, X, Moon } from 'lucide-react';
+import { Phone, User, Search, Menu, X, Moon, LogOut } from 'lucide-react';
 import { HiMoon } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
@@ -12,7 +12,7 @@ import { secureGetItem } from '../Utils/encryption';
 import { getAllTyres } from '../axios/axios'; // Import the API function
 import { getTyreImageUrl, formatCurrency } from '../Utils/Utils'; // Import image utility and formatCurrency
 
-const Header = () => {
+const Header = ({ onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => Number(localStorage.getItem('cartCount') || 0));
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
@@ -78,11 +78,11 @@ const Header = () => {
         const products = response.data?.data?.items || [];
         // Limit suggestions to 5 items
         setSuggestions(products.slice(0, 5));
-        setShowSuggestions(products.length > 0);
+        setShowSuggestions(true); // Always show suggestions panel to display results or "no results" message
       } catch (error) {
         console.error('Error fetching suggestions:', error);
         setSuggestions([]);
-        setShowSuggestions(false);
+        setShowSuggestions(true);
       }
     };
 
@@ -127,32 +127,46 @@ const Header = () => {
     <header className="relative z-50">
       {/* Main Row */}
       <div className="bg-[#000000] text-white">
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex items-start justify-between h-16 sm:h-20 md:h-[160px] py-0">
+        <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex lg:items-start items-center justify-between h-16 sm:h-20 md:h-[160px] py-0">
           {/* Logo */}
           <Link to="/" className="w-40 sm:w-52 md:w-64 lg:w-80 shrink-0">
             <img src={images.logo} alt="Supercheap Tyres Logo" className="block h-16 sm:h-28 md:h-32 lg:h-40 object-contain" />
           </Link>
 
-          <div className=''>
-            <div className="bg-[#000000] text-white text-xs sm:text-sm">
+          <div className='flex xl:flex-col xl:items-end items-center h-full'>
+            <div className="bg-[#000000] text-white text-xs sm:text-sm ">
               <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex justify-end items-center h-10 sm:h-12">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center space-x-3">
+                <div className="flex items-center gap-8">
+                  <div className="flex items-center space-x-3 -mx-5">
                     <a
                       href="tel:(03)97936190"
-                      className="flex items-center space-x-2 text-white hover:text-gray-300 cursor-pointer"
+                      className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer"
                     >
-                      <FaPhoneAlt size={14} className="sm:w-4 sm:h-4" />
-                      <span className="text-xs sm:text-sm">(03) 9793 6190</span>
+                      <FaPhoneAlt size={14} className="xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4 " />
+                      <span className="text-xs md:text-lg xl:text-sm lg:text-3xl">(03) 9793 6190</span>
                     </a>
+                    {/* <button
+                      onClick={onLogout}
+                      className="flex items-center space-x-2 text-white hover:text-gray-300 cursor-pointer"
+                      title="Logout"
+                    >
+                      <LogOut size={14} className="sm:w-4 sm:h-4" />
+                      <span className="text-xs sm:text-sm">Logout</span>
+                    </button> */}
                   </div>
 
                   {/* <HiMoon size={20} className="ml-2" /> */}
+                  {/* Mobile Menu Button */}
+                  <div className="xl:hidden">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-1">
+                      {isMenuOpen ? <X size={24} className="xl:w-7 xl:h-7 lg:w-8 lg:h-8" /> : <Menu size={24} className="xl:w-7 xl:h-7 lg:w-10 lg:h-10 md:w-7 md:h-7" />}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
             {/* Right: Compact search + icons */}
-            <div className="hidden lg:flex items-center justify-end space-x-2 xl:space-x-4">
+            <div className="hidden xl:flex items-center justify-end space-x-2 xl:space-x-4">
               <div className="relative w-[16rem] xl:w-[28rem] 2xl:w-[36rem]" ref={searchRef}>
                 <form onSubmit={handleSearch}>
                   <input
@@ -163,7 +177,7 @@ const Header = () => {
                     onFocus={() => searchQuery.trim() !== '' && suggestions.length > 0 && setShowSuggestions(true)}
                     className="w-full h-10 xl:h-11 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
                   />
-                  <button 
+                  <button
                     type="submit"
                     className="absolute right-1 top-1 bottom-1 aspect-square rounded-full bg-dark text-white grid place-items-center"
                   >
@@ -171,32 +185,38 @@ const Header = () => {
                   </button>
                 </form>
                 {/* Suggestions dropdown */}
-                {showSuggestions && suggestions.length > 0 && (
+                {showSuggestions && (
                   <div className="absolute top-full left-0 w-full bg-white rounded-lg shadow-lg mt-1 max-h-80 overflow-y-auto z-50">
-                    {suggestions.map((product) => (
-                      <div
-                        key={product._id}
-                        className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
-                        onClick={() => handleSuggestionClick(product._id)}
-                      >
-                        <img
-                          src={getTyreImageUrl(product.images?.[0])}
-                          alt={product.name}
-                          className="w-12 h-12 object-contain mr-3"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
-                          <p className="text-xs text-gray-500 truncate">{product.brand}</p>
-                          <p className="text-xs font-medium text-dark truncate">{formatCurrency(product.price)}</p>
+                    {suggestions.length > 0 ? (
+                      suggestions.map((product) => (
+                        <div
+                          key={product._id}
+                          className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
+                          onClick={() => handleSuggestionClick(product._id)}
+                        >
+                          <img
+                            src={getTyreImageUrl(product.images?.[0])}
+                            alt={product.name}
+                            className="w-12 h-12 object-contain mr-3"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                            <p className="text-xs text-gray-500 truncate">{product.brand}</p>
+                            <p className="text-xs font-medium text-dark truncate">{formatCurrency(product.price)}</p>
+                          </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className="p-4 text-center text-gray-500">
+                        No products found
                       </div>
-                    ))}
+                    )}
                   </div>
                 )}
               </div>
-              <a 
-                href="https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D" 
-                target="_blank" 
+              <a
+                href="https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 xl:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm"
               >
@@ -212,7 +232,7 @@ const Header = () => {
               </NavLink>
             </div>
             {/* Center Search */}
-            <div className="hidden lg:block bg-[#000000] text-white mt-6 h-[10px]">
+            <div className="hidden xl:block bg-[#000000] text-white mt-6 h-[10px]">
               <div className="container">
                 <nav className="flex gap-3 items-center justify-center">
                   {navLinks.map((link) => {
@@ -235,21 +255,12 @@ const Header = () => {
               </div>
             </div>
           </div>
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-1">
-              {isMenuOpen ? <X size={24} className="sm:w-7 sm:h-7" /> : <Menu size={24} className="sm:w-7 sm:h-7" />}
-            </button>
-          </div>
-
-
-
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-dark text-white absolute top-full left-0 w-full z-50 shadow-lg">
+        <div className="xl:hidden bg-dark text-white absolute top-full left-0 w-full z-50 shadow-lg">
           <nav className="flex flex-col items-center space-y-3 sm:space-y-4 py-6 sm:py-8">
             {navLinks.map((link) => {
               const to = link.href || '#';
@@ -283,7 +294,7 @@ const Header = () => {
                   onFocus={() => searchQuery.trim() !== '' && suggestions.length > 0 && setShowSuggestions(true)}
                   className="w-full h-10 rounded-full bg-white text-dark placeholder-gray-500 pl-4 pr-11 focus:outline-none"
                 />
-                <button 
+                <button
                   type="submit"
                   className="absolute right-1 top-1 bottom-1 aspect-square rounded-full bg-dark text-white grid place-items-center"
                 >
@@ -291,39 +302,46 @@ const Header = () => {
                 </button>
               </div>
               {/* Mobile Suggestions dropdown */}
-              {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 w-full bg-white rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto z-50">
-                  {suggestions.map((product) => (
-                    <div
-                      key={product._id}
-                      className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
-                      onClick={() => handleSuggestionClick(product._id)}
-                    >
-                      <img
-                        src={getTyreImageUrl(product.images?.[0])}
-                        alt={product.name}
-                        className="w-10 h-10 object-contain mr-3"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
-                        <p className="text-xs text-gray-500 truncate">{product.brand}</p>
-                        <p className="text-xs font-medium text-dark truncate">{formatCurrency(product.price)}</p>
+              {showSuggestions && (
+                <div className="absolute left-0 w-full bg-white rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto z-50">
+                  {suggestions.length > 0 ? (
+                    suggestions.map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
+                        onClick={() => handleSuggestionClick(product._id)}
+                      >
+                        <img
+                          src={getTyreImageUrl(product.images?.[0])}
+                          alt={product.name}
+                          className="w-10 h-10 object-contain mr-3"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                          <p className="text-xs text-gray-500 truncate">{product.brand}</p>
+                          <p className="text-xs font-medium text-dark truncate">{formatCurrency(product.price)}</p>
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="p-4 text-center text-gray-500">
+                      No products found
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
             </form>
             <div className="flex items-center space-x-3 sm:space-x-4 pt-4 border-t border-gray-700 w-full justify-center">
-              <a 
-                href="https://maps.app.goo.gl/8MCfDBfNa6dqdQY9A" 
-                target="_blank" 
+              <a
+                href="https://maps.app.goo.gl/8MCfDBfNa6dqdQY9A"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
               >
                 <MdLocationPin size={18} className="sm:w-5 sm:h-5" />
               </a>
-              <NavLink to="/cart" className="relative p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors">
+              <NavLink to="/cart" className="relative p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
                 <FaShoppingCart size={18} className="sm:w-5 sm:h-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full px-1 py-0.5 min-w-[16px] text-center">
@@ -331,6 +349,13 @@ const Header = () => {
                   </span>
                 )}
               </NavLink>
+              {/* <button
+                onClick={onLogout}
+                className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"
+                title="Logout"
+              >
+                <LogOut size={18} className="sm:w-5 sm:h-5" />
+              </button> */}
             </div>
           </nav>
         </div>

@@ -445,7 +445,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
               let value = e.target.value;
               
               // Remove any non-digit and non-plus characters
-              value = value.replace(/[^0-9+]/g, '');
+              value = value.replace(/[^0-9+()]/g, '');
               
               // Ensure only one plus sign at the beginning
               const plusCount = (value.match(/\+/g) || []).length;

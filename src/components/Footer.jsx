@@ -46,8 +46,8 @@ const Footer = () => {
                             <ul className="space-y-2 sm:space-y-3 font-plus-jakarta text-white text-sm sm:text-base">
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
                                     <img src='/contactus/call.svg' size={16} className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
-                                    <a href="tel:1234567453">
-                                        1234567453
+                                    <a href="tel:(03)97936190">
+                                        (03) 9793 6190
                                     </a>
                                 </li>
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">

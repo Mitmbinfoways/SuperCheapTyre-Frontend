@@ -156,7 +156,7 @@ const BuyTyre = () => {
                 options={diameterOptions}
                 value={diameter}
                 onChange={setDiameter}
-                selectStyle="appearance-none rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
+                selectStyle="appearance-none text-nowrap rounded-md border border-black px-3 sm:px-4 pr-10 py-2 sm:py-3 text-black text-sm sm:text-base focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full bg-white"
               />
             </div>
             <div className="relative">
@@ -198,7 +198,7 @@ const BuyTyre = () => {
                   <img
                     src={img}
                     alt="Tyre"
-                    className="relative hidden lg:block  -top-14 z-30 w-full h-[580px] object-contain drop-shadow-2xl max-w-[clamp(10rem,40vw,28rem)] sm:max-w-[clamp(12rem,45vw,30rem)] md:max-w-[clamp(14rem,46vw,32rem)] lg:max-w-[clamp(16rem,44vw,34rem)] xl:max-w-[clamp(20rem,40vw,36rem)]"
+                    className="relative hidden lg:block  xl:-top-14 z-30 w-full h-[580px] object-contain drop-shadow-2xl max-w-[clamp(10rem,40vw,28rem)] sm:max-w-[clamp(12rem,45vw,30rem)] md:max-w-[clamp(14rem,46vw,32rem)] lg:max-w-[clamp(16rem,44vw,34rem)] xl:max-w-[clamp(20rem,40vw,36rem)]"
                   />
                 </div>
                 {/* <div className="relative">
