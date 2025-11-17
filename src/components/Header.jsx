@@ -145,14 +145,13 @@ const Header = ({ onLogout }) => {
                       <FaPhoneAlt size={14} className="xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4 " />
                       <span className="text-xs md:text-lg xl:text-sm lg:text-3xl">(03) 9793 6190</span>
                     </a>
-                    {/* <button
+                    <button
                       onClick={onLogout}
-                      className="flex items-center space-x-2 text-white hover:text-gray-300 cursor-pointer"
+                      className="hidden xl:block "
                       title="Logout"
                     >
-                      <LogOut size={14} className="sm:w-4 sm:h-4" />
-                      <span className="text-xs sm:text-sm">Logout</span>
-                    </button> */}
+                      <span className="text-xs sm:text-sm flex items-center gap-2 text-white hover:text-gray-300 cursor-pointer"><LogOut size={14} className="sm:w-4 sm:h-4" />Logout</span>
+                    </button>
                   </div>
 
                   {/* <HiMoon size={20} className="ml-2" /> */}
@@ -349,13 +348,13 @@ const Header = ({ onLogout }) => {
                   </span>
                 )}
               </NavLink>
-              {/* <button
+              <button
                 onClick={onLogout}
                 className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"
                 title="Logout"
               >
                 <LogOut size={18} className="sm:w-5 sm:h-5" />
-              </button> */}
+              </button>
             </div>
           </nav>
         </div>

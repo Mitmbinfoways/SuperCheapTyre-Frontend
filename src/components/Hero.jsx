@@ -143,15 +143,15 @@ const Hero = () => {
                   disableOnInteraction: false,
                 }}
                 loop={banners.length > 1}
-                className="hero-carousel w-full h-[520px] md:h-[500px] lg:h-[600px] xl:h-[650px]"
+                className="hero-carousel w-full md:aspect-video aspect-[4/5]"
               >
                 {banners.map((banner) => (
                   <SwiperSlide key={banner._id}>
-                    <div className="relative w-full h-[520px] md:h-[500px] lg:h-[600px] xl:h-[650px]">
+                    <div className="relative w-full">
                       <img
                         src={getImageUrl(banner.laptopImage)}
                         alt="Banner"
-                        className="w-full h-full hidden md:block object-cover object-center"
+                        className="w-full h-full aspect-video hidden md:block object-cover object-center"
                         onError={(e) => {
                           console.error('Failed to load laptop image:', e.target.src);
                           e.target.style.display = 'none';
@@ -160,7 +160,7 @@ const Hero = () => {
                       <img
                         src={getImageUrl(banner.mobileImage)}
                         alt="Banner"
-                        className="w-full h-full md:hidden object-cover object-center"
+                        className="w-full h-full aspect-[4/5] md:hidden block object-cover object-center"
                         onError={(e) => {
                           console.error('Failed to load mobile image:', e.target.src);
                           e.target.style.display = 'none';
@@ -199,35 +199,7 @@ const Hero = () => {
           )}
           <div className="absolute inset-0 bg-black/30 sm:bg-black/10 pointer-events-none"></div>
         </div>
-
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10 h-full">
-          <div className="grid lg:grid-cols-2 items-center h-full pb-8 sm:py-12">
-            <div className="relative text-center lg:text-left">
-              {/* Left side content can be added here if needed */}
-            </div>
-            <div className="relative flex flex-col items-center lg:items-end text-center lg:text-right self-center lg:pr-16 xl:pr-28 2xl:pr-40 mx-4 sm:mx-10 lg:mx-0 gap-2">
-              {/* <h1 className="font-roboto font-black text-3xl md:text-4xl lg:text-7xl leading-[0.95] italic drop-shadow-md">
-              SUPER VALUE.
-              <br />
-              SUPER SAFE.
-            </h1>
-            <h2 className="font-roboto font-black text-4xl md:text-5xl lg:text-7xl text-primary italic drop-shadow-md">
-              SupercheapTyres
-            </h2> */}
-              {/* <div className="absolute -right-20 -top-20 w-[480px] h-auto hidden lg:block">
-              <img src={images.heroTire} alt="Tire" className="w-full h-auto opacity-20" />
-            </div> */}
-            </div>
-          </div>
-        </div>
-
-        <div className="relative -mb-8 sm:-mb-12 md:-mb-16 lg:-mb-24 xl:-mb-28 z-50">
-          {/* <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{backgroundImage: `url(${images.searchFormBg})`}}></div> */}
-          <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 relative z-20">
-            {/* <SearchForm /> */}
-          </div>
-
-        </div>
+        
       </section>
       <BuyTyre />
 
