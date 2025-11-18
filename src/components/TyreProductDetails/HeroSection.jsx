@@ -146,6 +146,7 @@ const HeroSection = () => {
                     ref={mainSwiperRef}
                     modules={[Navigation, Thumbs]}
                     spaceBetween={0}
+                    loop={true}
                     slidesPerView={1}
                     onSlideChange={handleSlideChange}
                     thumbs={{ swiper: thumbsSwiper }}
