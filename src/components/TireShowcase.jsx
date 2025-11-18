@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { gethomedata } from "../axios/axios";
 import { getTyreImageUrl, formatCurrency } from "../Utils/Utils";
 import Loader from "./common/Loader";
 import Badge from "./common/Badge";
@@ -28,7 +27,7 @@ const TireCard = ({ image, name, price, onClick }) => (
   </div>
 );
 
-const TireShowcase = () => {
+const TireShowcase = ({ homeData }) => {
   const [bestSeller, setBestSeller] = useState([]);
   const [newArrival, setNewArrival] = useState([]);
   const [popularProduct, setPopularProduct] = useState(null);
@@ -36,12 +35,11 @@ const TireShowcase = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchHomeData = async () => {
+    if (homeData) {
       try {
-        const res = await gethomedata();
-        const bs = res?.data?.data?.bestSeller || [];
-        const na = res?.data?.data?.newArrival || [];
-        const pp = res?.data?.data?.popularProduct || null;
+        const bs = homeData.bestSeller || [];
+        const na = homeData.newArrival || [];
+        const pp = homeData.popularProduct || null;
 
         const mapItem = (item) => ({
           id: item._id,
@@ -63,9 +61,10 @@ const TireShowcase = () => {
       } finally {
         setLoading(false);
       }
-    };
-    fetchHomeData();
-  }, []);
+    } else {
+      setLoading(false);
+    }
+  }, [homeData]);
 
   if (loading) {
     return <Loader label="Loading home data..." />;

@@ -9,7 +9,6 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { gethomedata } from '../axios/axios';
 import { getTyreImageUrl } from '../Utils/Utils';
 import Loader from './common/Loader';
 import Badge from './common/Badge';
@@ -61,18 +60,16 @@ const ProductCard = ({ product, onClick }) => (
   );
   
 
-
-const FeaturedProducts = () => {
+const FeaturedProducts = ({ homeData }) => {
     const scrollRef = React.useRef(null);
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchHomeData = async () => {
+        if (homeData) {
             try {
-                const res = await gethomedata();
-                const apiProducts = res?.data?.data?.productData || [];
+                const apiProducts = homeData.productData || [];
                 const mapped = apiProducts.map((item) => {
                     // Handle different product categories
                     let size = '';
@@ -101,9 +98,10 @@ const FeaturedProducts = () => {
             } finally {
                 setLoading(false);
             }
-        };
-        fetchHomeData();
-    }, []);
+        } else {
+            setLoading(false);
+        }
+    }, [homeData]);
 
     const scroll = (direction) => {
         if (scrollRef.current) {
