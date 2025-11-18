@@ -155,11 +155,13 @@ const HeroSection = () => {
                   >
                     {product.images?.map((img, index) => (
                       <SwiperSlide key={index}>
-                        <img
-                          src={getTyreImageUrl(img)}
-                          alt={`${product.name} ${index + 1}`}
-                          className="w-full h-auto object-contain"
-                        />
+                        <div className="flex items-center justify-center w-full h-[300px] sm:h-[400px] md:h-[500px]">
+                          <img
+                            src={getTyreImageUrl(img)}
+                            alt={`${product.name} ${index + 1}`}
+                            className="max-h-full max-w-full object-contain"
+                          />
+                        </div>
                       </SwiperSlide>
                     ))}
                   </Swiper>
@@ -213,7 +215,7 @@ const HeroSection = () => {
                           <img
                             src={getTyreImageUrl(img)}
                             alt={`${product.name} ${index + 1}`}
-                            className="w-28 h-32 object-contain"
+                            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain"
                           />
                         </div>
                       </SwiperSlide>
