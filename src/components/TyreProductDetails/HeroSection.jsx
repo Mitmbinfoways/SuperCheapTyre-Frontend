@@ -69,14 +69,19 @@ const HeroSection = () => {
 
   // Handle slide change in main Swiper
   const handleSlideChange = (swiper) => {
-    setSelectedImageIndex(swiper.activeIndex);
+    const realIndex = swiper.realIndex;
+    setSelectedImageIndex(realIndex);
+    // Update thumbnail swiper to match the current slide
+    if (thumbsSwiper) {
+      thumbsSwiper.slideToLoop(realIndex);
+    }
   };
 
   // Handle thumbnail click
   const handleThumbnailClick = (index) => {
     setSelectedImageIndex(index);
     if (mainSwiperRef.current && mainSwiperRef.current.swiper) {
-      mainSwiperRef.current.swiper.slideTo(index);
+      mainSwiperRef.current.swiper.slideToLoop(index);
     }
   };
 
@@ -149,7 +154,7 @@ const HeroSection = () => {
                     loop={true}
                     slidesPerView={1}
                     onSlideChange={handleSlideChange}
-                    thumbs={{ swiper: thumbsSwiper }}
+                    thumbs={{ swiper: thumbsSwiper && thumbsSwiper.initialized ? thumbsSwiper : null }}
                     className="w-full max-w-[480px] h-auto cursor-pointer"
                     onClick={() => openModal(selectedImageIndex)}
                   >
@@ -179,6 +184,10 @@ const HeroSection = () => {
                       disableOnInteraction: false,
                     }}
                     onSwiper={setThumbsSwiper}
+                    onSlideChange={(swiper) => {
+                      // Update selected index when thumbnail swiper slides
+                      setSelectedImageIndex(swiper.realIndex);
+                    }}
                     className="w-full"
                     breakpoints={{
                       320: {

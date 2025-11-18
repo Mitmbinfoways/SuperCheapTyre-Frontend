@@ -104,10 +104,13 @@ const Header = ({ onLogout }) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       try {
-        // Navigate to tyres page with search query
-        navigate(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
-        setIsMenuOpen(false); // Close mobile menu after search
-        setShowSuggestions(false); // Hide suggestions
+        // If there are suggestions, navigate to the first product
+        if (suggestions.length > 0) {
+          handleSuggestionClick(suggestions[0]._id);
+        } else {
+          // Navigate to tyres page with search query
+          navigate(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
+        }
       } catch (error) {
         console.error('Search error:', error);
       }

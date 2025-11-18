@@ -204,6 +204,9 @@ export const EnquirySection = () => {
       setFormData({ name: "", mobile: "", email: "", message: "" });
       // Reset reCAPTCHA
       setRecaptchaValue(null);
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
     } catch (err) {
       // no failure toast per requirement
     } finally {
