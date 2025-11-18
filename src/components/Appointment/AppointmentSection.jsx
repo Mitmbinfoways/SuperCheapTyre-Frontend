@@ -423,7 +423,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         <div>
           <label className="text-base font-normal mb-2 block">Email</label>
           <input
-            type="email"
+            type="text"
             placeholder="Enter your Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

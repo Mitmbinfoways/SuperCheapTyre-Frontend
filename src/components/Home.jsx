@@ -36,7 +36,7 @@ function Home() {
 
   return (
     <main>
-      <Hero />
+      <Hero homeData={homeData} />
       {/* <BuyTyre /> */}
       <FeaturedProducts homeData={homeData} />
       <TireShowcase homeData={homeData} />
