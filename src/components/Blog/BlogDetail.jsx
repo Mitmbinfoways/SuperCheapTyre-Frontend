@@ -52,7 +52,7 @@ const CardGrid = ({ items }) => {
             ) : null}
           </div>
           {it.content ? (
-            <div dangerouslySetInnerHTML={{ __html: it.content }} className="p-4 sm:p-5 text-sm sm:text-base text-gray-700"></div>
+            <div dangerouslySetInnerHTML={{ __html: it.content }} className="p-4 sm:p-5 px-4 text-sm sm:text-base text-gray-700"></div>
           ) : null}
         </article>
       ))}
@@ -65,7 +65,7 @@ const AlternativeList = ({ items }) => {
   return (
     <div className="space-y-6">
       {items.map((it, idx) => (
-        <div key={idx} className="grid md:grid-cols-2 gap-4 md:gap-6">
+        <div key={idx} className="grid md:grid-cols-2 gap-4 md:gap-10">
           <div className={`${idx % 2 === 0 ? '' : 'md:order-2'}`}>
             <div className="w-full h-56 sm:h-64 bg-gray-50 rounded-xl flex items-center justify-center p-2">
               {it.image ? (
@@ -96,7 +96,7 @@ const CenterList = ({ items }) => {
             ) : null}
           </div>
           {it.content ? (
-            <p dangerouslySetInnerHTML={{ __html: it.content }} className="mt-4 text-sm sm:text-base text-gray-700"></p>
+            <p dangerouslySetInnerHTML={{ __html: it.content }} className="mt-4 text-sm sm:text-base px-4 text-gray-700"></p>
           ) : null}
         </div>
       ))}
@@ -154,7 +154,7 @@ const BlogDetail = () => {
 
           {blog.content ? (
             <div
-              className="mt-5 text-gray-700 text-sm sm:text-base"
+              className="mt-5 text-gray-700 text-sm sm:text-base px-4"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             ></div>
           ) : null}

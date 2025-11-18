@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Link from './ui/Link';
-import { getSimilarProducts } from '../../axios/axios';
+import { getSimilarProducts, getTyreById } from '../../axios/axios';
 import { formatCurrency, getTyreImageUrl } from '../../Utils/Utils';
 import Loader from '../common/Loader';
 
@@ -19,9 +19,20 @@ const SimilarProducts = ({ productCategory }) => {
 
       try {
         setLoading(true);
+        
+        // Fetch current product to determine its category if not provided
+        if (!productCategory) {
+          try {
+            const productResponse = await getTyreById(id);
+            setCurrentProductCategory(productResponse.data.data.category || 'tyre');
+          } catch (productError) {
+            console.error('Error fetching current product:', productError);
+          }
+        }
+
         const response = await getSimilarProducts(id);
 
-        // Determine the category from the first product if not provided
+        // Determine the category from the first product if not provided and current product fetch failed
         if (response.data.data.length > 0 && !productCategory) {
           setCurrentProductCategory(response.data.data[0].category || 'tyre');
         }
@@ -73,6 +84,25 @@ const SimilarProducts = ({ productCategory }) => {
 
   if (error) {
     return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+
+  // Check if there are no similar products
+  if (!similarProducts || similarProducts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 bg-white rounded-lg border border-gray-200 mx-4 my-8">
+        <div className="text-5xl mb-4 text-gray-300">🔍</div>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2">No Similar Products Found</h3>
+        <p className="text-gray-500 text-center max-w-md">
+          We couldn't find any similar products to recommend. Try exploring our full collection.
+        </p>
+        <Link 
+          href={currentProductCategory === 'wheel' ? '/wheels' : '/tyres'}
+          className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#ed1c24] hover:bg-[#d0171f] focus:outline-none"
+        >
+          Browse All {currentProductCategory === 'wheel' ? 'Wheels' : 'Tyres'}
+        </Link>
+      </div>
+    );
   }
 
   return (

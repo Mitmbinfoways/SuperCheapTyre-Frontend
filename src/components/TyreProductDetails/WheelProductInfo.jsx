@@ -20,7 +20,7 @@ const WheelProductInfo = (product) => {
     { label: 'Diameter :', value: product.product.wheelSpecifications?.diameter || 'N/A', icon: '/productdetails/size.svg' },
     { label: 'Color :', value: product.product.wheelSpecifications?.color || 'N/A', icon: '/productdetails/tread.svg' },
     { label: 'Fitments :', value: product.product.wheelSpecifications?.fitments || 'N/A', icon: '/productdetails/bolt.svg' },
-    // { label: 'Staggered Options :', value: product.product.wheelSpecifications?.staggeredOptions || 'N/A', icon: '/productdetails/offset.svg' },
+    { label: 'Staggered Options :', value: product.product.wheelSpecifications?.staggeredOptions || 'N/A', icon: '/productdetails/bars-staggered.png' },
     { label: 'Stock :', value: product.product.stock, icon: '/productdetails/stock.svg' },
   ];
 

@@ -478,7 +478,7 @@ export const EnquirySection = () => {
             <div>
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6Lf5PQosAAAAAK6oCkCU5bM90zjqU8J1sSCaGruS"
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                 onChange={handleRecaptchaChange}
               />
               {errors.recaptcha ? (

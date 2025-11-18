@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+  import React, { useEffect, useState, useRef } from "react";
 import ProductInfo from "./ProductInfo";
 import { getTyreById } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
@@ -170,7 +170,7 @@ const HeroSection = () => {
                 {/* Thumbnail Images Carousel */}
                 <div className="w-full">
                   <Swiper
-                    modules={[Navigation, Thumbs,Autoplay]}
+                    modules={[Navigation, Thumbs, Autoplay]}
                     loop={true}
                     spaceBetween={16}
                     slidesPerView="auto"
@@ -205,11 +205,10 @@ const HeroSection = () => {
                         className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px]"
                       >
                         <div
-                          className={`flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer ${
-                            selectedImageIndex === index
-                              ? "border-[#ed1c24]"
-                              : "border-[#6e6d6d]"
-                          }`}
+                          className={`flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer ${selectedImageIndex === index
+                            ? "border-[#ed1c24]"
+                            : "border-[#6e6d6d]"
+                            }`}
                           onClick={() => handleThumbnailClick(index)}
                         >
                           <img
@@ -252,9 +251,19 @@ const HeroSection = () => {
                 </div>
 
                 {/* Product Description */}
-                <p className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#6e6d6d] w-full mt-[6px]">
-                  {product.description}
-                </p>
+                <div
+                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#6e6d6d] w-full mt-[6px]"
+                >
+                  <div 
+                    className="pl-5 space-y-1"
+                    dangerouslySetInnerHTML={{ 
+                      __html: product.description
+                        .replace(/<ul>/g, '<ul class="list-disc pl-4">')
+                        .replace(/<ol>/g, '<ol class="list-decimal pl-4">')
+                    }} 
+                  />
+                </div>
+
 
                 {/* Move ProductInfo directly under description to remove large gap */}
                 <div className="mt-[8px] w-full">
