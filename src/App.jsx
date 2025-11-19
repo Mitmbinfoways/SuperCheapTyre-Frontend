@@ -18,8 +18,6 @@ import Appointment from './components/Appointment/Appointment';
 import Success from './components/Appointment/Success';
 import Cancel from './components/Appointment/Cancel';
 import NotFound from './components/common/NotFound';
-import Login from './components/Login';
-import ProtectedRoute from './components/ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -43,43 +41,29 @@ function ScrollToTopOnRouteChange() {
 };
 
 function App() {
-  const navigate = useNavigate();
-  
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    // Redirect to login page
-    navigate('/login');
-  };
   return (
     <div className="bg-[#F3F3F3] overflow-x-hidden">
       <ScrollToTopOnRouteChange />
+      <Header />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={
-          <ProtectedRoute>
-            <Header onLogout={handleLogout} />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/tyres" element={<Tyre />} />
-              <Route path="/wheels" element={<Wheels />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/blog" element={<BlogList />} />
-              <Route path="/blog/:id" element={<BlogDetail />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path='/contactus' element={<ContactUs />} />
-              <Route path='/productdetails/:id' element={<ProductDetail />} />
-              <Route path='/cart' element={<Cart />} />
-              <Route path='/appointment' element={<Appointment />} />
-              <Route path='/success' element={<Success />} />
-              <Route path='/cancel' element={<Cancel />} />
-              {/* Catch-all route for 404 page */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
-          </ProtectedRoute>
-        } />
+        <Route path="/" element={<Home />} />
+        <Route path="/tyres" element={<Tyre />} />
+        <Route path="/wheels" element={<Wheels />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path='/contactus' element={<ContactUs />} />
+        <Route path='/productdetails/:id' element={<ProductDetail />} />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/appointment' element={<Appointment />} />
+        <Route path='/success' element={<Success />} />
+        <Route path='/cancel' element={<Cancel />} />
+        {/* Catch-all route for 404 page */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
       <ToastContainer />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { images, navLinks } from '../assets/data';
-import { Phone, User, Search, Menu, X, Moon, LogOut } from 'lucide-react';
+import { Phone, Search, Menu, X, Moon } from 'lucide-react';
 import { HiMoon } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
@@ -12,7 +12,7 @@ import { secureGetItem } from '../Utils/encryption';
 import { getAllTyres } from '../axios/axios'; // Import the API function
 import { getTyreImageUrl, formatCurrency } from '../Utils/Utils'; // Import image utility and formatCurrency
 
-const Header = ({ onLogout }) => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => Number(localStorage.getItem('cartCount') || 0));
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
@@ -148,16 +148,8 @@ const Header = ({ onLogout }) => {
                       <FaPhoneAlt size={14} className="xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4 " />
                       <span className="text-xs md:text-lg xl:text-sm lg:text-3xl">(03) 9793 6190</span>
                     </a>
-                    <button
-                      onClick={onLogout}
-                      className="hidden xl:block "
-                      title="Logout"
-                    >
-                      <span className="text-xs sm:text-sm flex items-center gap-2 text-white hover:text-gray-300 cursor-pointer"><LogOut size={14} className="sm:w-4 sm:h-4" />Logout</span>
-                    </button>
                   </div>
 
-                  {/* <HiMoon size={20} className="ml-2" /> */}
                   {/* Mobile Menu Button */}
                   <div className="xl:hidden">
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-1">
@@ -244,8 +236,7 @@ const Header = ({ onLogout }) => {
                         key={link.name}
                         to={to}
                         className={({ isActive }) =>
-                          `text-base pb-3 xl:text-lg font-medium px-5 transition-colors hover:text-primary ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')
-                          }`
+                          `text-base pb-3 xl:text-lg font-medium px-5 transition-colors hover:text-primary ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')}`
                         }
                         end={link.name === 'Home'}
                       >
@@ -275,8 +266,7 @@ const Header = ({ onLogout }) => {
                   key={link.name}
                   to={to}
                   className={({ isActive }) =>
-                    `text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-800 ${isActive && (to !== '#' ? 'text-primary' : '')
-                    }`
+                    `text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-800 ${isActive && (to !== '#' ? 'text-primary' : '')}`
                   }
                   end={link.name === 'Home'}
                   onClick={() => setIsMenuOpen(false)}
@@ -351,13 +341,6 @@ const Header = ({ onLogout }) => {
                   </span>
                 )}
               </NavLink>
-              <button
-                onClick={onLogout}
-                className="p-2 sm:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors"
-                title="Logout"
-              >
-                <LogOut size={18} className="sm:w-5 sm:h-5" />
-              </button>
             </div>
           </nav>
         </div>
