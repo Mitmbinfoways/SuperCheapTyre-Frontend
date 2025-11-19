@@ -157,7 +157,7 @@ const Testimonials = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const GOOGLE_PLACE_ID = "ChIJ-zBzY_YT1moRjVAieKugY9c";
-
+  
   useEffect(() => {
     const loadGoogleReviews = async () => {
       try {
@@ -248,7 +248,10 @@ const Testimonials = () => {
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-              pagination={{ clickable: true }}
+              pagination={{ 
+                clickable: true,
+                el: ".testimonials-pagination" 
+              }}
               loop={true}
               navigation={{ prevEl: ".testi-prev", nextEl: ".testi-next" }}
               breakpoints={{
