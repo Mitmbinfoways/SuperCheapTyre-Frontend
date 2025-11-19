@@ -28,43 +28,22 @@ const TireCard = ({ image, name, price, onClick }) => (
 );
 
 const TireShowcase = ({ homeData }) => {
-  const [bestSeller, setBestSeller] = useState([]);
-  const [newArrival, setNewArrival] = useState([]);
-  const [popularProduct, setPopularProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (homeData) {
-      try {
-        const bs = homeData.bestSeller || [];
-        const na = homeData.newArrival || [];
-        const pp = homeData.popularProduct || null;
+  // Fixed: Correct keys from your API response
+  const bestSelling = homeData?.bestSeller || [];           // ← was bestSelling → bestSeller
+  const newArrival = homeData?.newArrival || null;          // ← was undefined variable
+  const popularProduct = homeData?.popularProduct || null;  // ← was undefined variable
 
-        const mapItem = (item) => ({
-          id: item._id,
-          name: item.name || item.brand,
-          price:
-            typeof item.price === "number" ? formatCurrency(item.price) : "",
-          image: getTyreImageUrl(item.images?.[0]),
-        });
+  // Helper to get full image URL
+  const getImage = (imgArray) => {
+    if (!imgArray || imgArray.length === 0) return "";
+    return getTyreImageUrl ? getTyreImageUrl(imgArray[0]) : imgArray[0];
+  };
 
-        setBestSeller(bs.map(mapItem));
-        setNewArrival(na.map(mapItem));
-        if (pp) {
-          setPopularProduct(mapItem(pp));
-        }
-      } catch (e) {
-        setBestSeller([]);
-        setNewArrival([]);
-        setPopularProduct(null);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
-  }, [homeData]);
+  // Helper for price
+  const getPrice = (price) => (formatCurrency ? formatCurrency(price) : price);
 
   if (loading) {
     return <Loader label="Loading home data..." />;
@@ -81,13 +60,13 @@ const TireShowcase = ({ homeData }) => {
               Best Selling
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 flex-1">
-              {(loading ? [] : bestSeller).slice(0, 2).map((p) => (
+              {bestSelling.slice(0, 2).map((p) => (
                 <TireCard
-                  key={p.id}
-                  image={p.image}
+                  key={p._id}
+                  image={getImage(p.images)}
                   name={p.name}
-                  price={p.price}
-                  onClick={() => navigate(`/productdetails/${p.id}`)}
+                  price={getPrice(p.price)}
+                  onClick={() => navigate(`/productdetails/${p._id}`)}
                 />
               ))}
             </div>
@@ -100,30 +79,30 @@ const TireShowcase = ({ homeData }) => {
               <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 sm:mb-4">
                 New Arrivals
               </h3>
-              {(loading ? [] : newArrival).slice(0, 1).map((p) => (
+              {newArrival && (
                 <div
-                  key={p.id}
-                  onClick={() => navigate(`/productdetails/${p.id}`)}
+                  key={newArrival._id}
+                  onClick={() => navigate(`/productdetails/${newArrival._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
                   <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32">
                     <img
-                      src={p.image}
-                      alt={p.name}
+                      src={getImage(newArrival.images)}
+                      alt={newArrival.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="text-white mb-8">
                     <p className="font-medium text-sm sm:text-lg md:text-xl line-clamp-2">
-                      {p.name}
+                      {newArrival.name}
                     </p>
                     <p className="font-medium text-xs sm:text-sm md:text-base">
-                      {p.price}
+                      {getPrice(newArrival.price)}
                     </p>
                     <p className="text-xs text-[#E0E0E0] mt-1">View Details</p>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
 
             {/* Popular */}
@@ -133,15 +112,13 @@ const TireShowcase = ({ homeData }) => {
               </h3>
               {popularProduct && (
                 <div
-                  key={popularProduct.id}
-                  onClick={() =>
-                    navigate(`/productdetails/${popularProduct.id}`)
-                  }
+                  key={popularProduct._id}
+                  onClick={() => navigate(`/productdetails/${popularProduct._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
                   <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32">
                     <img
-                      src={popularProduct.image}
+                      src={getImage(popularProduct.images)}
                       alt={popularProduct.name}
                       className="w-full h-full object-cover"
                     />
@@ -151,7 +128,7 @@ const TireShowcase = ({ homeData }) => {
                       {popularProduct.name}
                     </p>
                     <p className="font-medium text-xs sm:text-sm md:text-base">
-                      {popularProduct.price}
+                      {getPrice(popularProduct.price)}
                     </p>
                     <p className="text-xs text-[#E0E0E0] mt-1">View Details</p>
                   </div>
