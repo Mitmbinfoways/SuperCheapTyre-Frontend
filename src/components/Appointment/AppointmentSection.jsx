@@ -8,6 +8,9 @@ import { loadStripe } from '@stripe/stripe-js';
 import { secureGetItem, secureSetItem, secureRemoveItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
 
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+
 const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) => {
   const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -257,13 +260,12 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
   const paymentOptionText = paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)';
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneRegex = /^[0-9+()\-\s]{7,}$/;
 
   const errors = {
     firstName: firstName.trim() === '' ? 'First name is required' : '',
     lastName: lastName.trim() === '' ? 'Last name is required' : '',
     email: email.trim() === '' ? 'Email is required' : (!emailRegex.test(email) ? 'Enter a valid email' : ''),
-    phone: phone.trim() === '' ? 'Phone is required' : (!phoneRegex.test(phone) ? 'Enter a valid phone' : ''),
+    phone: !phone ? 'Phone number is required' : (!isValidPhoneNumber(phone) ? 'Enter a valid phone number for selected country' : ''),
     remarks: remarks.trim() === '' ? 'Remarks are required' : ''
   };
 
@@ -363,7 +365,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.trim(),
-      phone: phone.trim(),
+      phone: phone ? phone.toString().trim() : '',
       remarks: remarks.trim(),
       appointment: {
         date: formatAppointmentDateForBackend(selectedDate), // Use ISO format for backend
@@ -439,39 +441,47 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
         <div>
           <label className="text-base font-normal mb-2 block">Phone No.<span className="text-[#FF0000]">*</span></label>
-          <input
-            type="text"
+          <PhoneInput
+            international
+            countryCallingCodeEditable={false}
+            defaultCountry="AU"
             placeholder="Enter your Phone Number"
-            value={phone}
-            onChange={(e) => {
-              let value = e.target.value;
-              
-              // Remove any non-digit and non-plus characters
-              value = value.replace(/[^0-9+()]/g, '');
-              
-              // Ensure only one plus sign at the beginning
-              const plusCount = (value.match(/\+/g) || []).length;
-              if (plusCount > 1) {
-                // Remove extra plus signs, keeping only the first one
-                let firstPlusIndex = value.indexOf('+');
-                value = value.replace(/\+/g, '');
-                if (firstPlusIndex === 0) {
-                  value = '+' + value;
-                }
-              } else if (plusCount === 1 && value.indexOf('+') > 0) {
-                // Move plus to the beginning if it's not already there
-                value = value.replace(/\+/g, '');
-                value = '+' + value;
-              }
-              
-              // Limit to 15 characters total
-              if (value.length <= 15) {
-                setPhone(value);
-              }
-            }}
+            value={phone || ''}
+            onChange={setPhone}
+            limitMaxLength={true}
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
-            className={` no-arrows w-full p-2 placeholder:text-[#6F6F6F] border text-sm border-[#7E7E7E] rounded-lg bg-transparent focus:outline-none focus:ring-1 ${errors.phone && touched.phone ? 'border-[#FF0000] focus:ring-[#FF0000]' : 'border-border-gray focus:ring-brand-red'}`}
+            className={`react-phone-number-input ${errors.phone && touched.phone ? 'react-phone-number-input--invalid' : ''}`}
           />
+          <style>
+            {`
+              .react-phone-number-input {
+                width: 100%;
+                border-radius: 0.5rem;
+                border: 1px solid #7E7E7E;
+                background-color: white;
+              }
+              .react-phone-number-input--invalid {
+                border-color: #FF0000 !important;
+              }
+              .react-phone-number-input .PhoneInputInput {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+                border: none;
+                background-color: transparent;
+                outline: none;
+                width: 100%;
+              }
+              .react-phone-number-input .PhoneInputCountry {
+                padding: 0.5rem;
+                border: none;
+                background-color: transparent;
+              }
+              .react-phone-number-input:focus-within {
+                border-color: #ED1C24;
+                box-shadow: 0 0 0 1px #ED1C24;
+              }
+            `}
+          </style>
           {errors.phone && touched.phone && (
             <p className="mt-1 text-xs text-[#FF0000]">{errors.phone}</p>
           )}
@@ -627,7 +637,7 @@ const AppointmentSection = () => {
       <div className="max-w-screen-2xl mx-auto grid lg:grid-cols-10 gap-5 items-start">
         {/* Left Column */}
         <div className="bg-[#FDFDFE] p-8 rounded-2xl shadow-card shadow-[0_4px_4px_0_#00000040] lg:col-span-6">
-          <h3 className="text-2xl font-medium mb-7">Choose a Date & Time</h3>
+          <h3 className="text-2xl font-medium mb-7">Choose a Date & Time<span className="text-[#FF0000]">*</span></h3>
           <div className="grid md:grid-cols-2 items-start">
             <Calendar
               selectedDate={selectedDate}

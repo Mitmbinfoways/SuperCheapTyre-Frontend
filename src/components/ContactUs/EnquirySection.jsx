@@ -8,6 +8,8 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Toast } from "../../Utils/Toast";
 import ReCAPTCHA from "react-google-recaptcha";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 // Local utility to merge Tailwind classes
 function cn(...inputs) {
@@ -143,6 +145,12 @@ export const EnquirySection = () => {
     message: "",
     recaptcha: "",
   });
+  const [touched, setTouched] = useState({
+    name: false,
+    mobile: false,
+    email: false,
+    message: false,
+  });
   const [submitting, setSubmitting] = useState(false);
   const recaptchaRef = useRef(null); // Ref for reCAPTCHA
   const [recaptchaValue, setRecaptchaValue] = useState(null);
@@ -152,6 +160,8 @@ export const EnquirySection = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error on change
     setErrors((prev) => ({ ...prev, [name]: "", recaptcha: "" })); // Clear recaptcha error on any field change
+    // Mark field as touched
+    setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleRecaptchaChange = (value) => {
@@ -168,7 +178,11 @@ export const EnquirySection = () => {
       recaptcha: "",
     };
     if (!formData.name.trim()) nextErrors.name = "Name is required";
-    if (!formData.mobile.trim()) nextErrors.mobile = "Mobile is required";
+    if (!formData.mobile) {
+      nextErrors.mobile = "Mobile is required";
+    } else if (!isValidPhoneNumber(formData.mobile)) {
+      nextErrors.mobile = "Enter a valid phone number for selected country";
+    }
     if (!formData.email.trim()) {
       nextErrors.email = "Email is required";
     } else {
@@ -191,6 +205,13 @@ export const EnquirySection = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Mark all fields as touched
+    setTouched({
+      name: true,
+      mobile: true,
+      email: true,
+      message: true,
+    });
     if (!validate()) return;
     try {
       setSubmitting(true);
@@ -382,7 +403,7 @@ export const EnquirySection = () => {
                 value={formData.name}
                 onChange={handleChange}
               />
-              {errors.name ? (
+              {errors.name && touched.name ? (
                 <p className="text-red-600 text-xs mt-1">{errors.name}</p>
               ) : null}
             </div>
@@ -392,41 +413,55 @@ export const EnquirySection = () => {
               <Label className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-base tracking-[0] leading-[normal]">
                 Mobile<span className="text-[#FF0000]">*</span>
               </Label>
-              <Input
-                type="text"
+              <PhoneInput
                 name="mobile"
                 placeholder="Enter your Mobile Number"
-                className="no-arrows h-12 sm:h-[52px] rounded-lg border border-solid border-[#7e7e7e] [font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-sm tracking-[0] leading-[normal] placeholder:text-[#6f6f6f]"
                 value={formData.mobile}
-                onChange={(e) => {
-                  let value = e.target.value;
-
-                  // Remove any characters that are not digits, plus signs, or parentheses
-                  value = value.replace(/[^0-9+()]/g, '');
-
-                  // Ensure only one plus sign at the beginning
-                  const plusCount = (value.match(/\+/g) || []).length;
-                  if (plusCount > 1) {
-                    // Remove extra plus signs, keeping only the first one
-                    let firstPlusIndex = value.indexOf('+');
-                    value = value.replace(/\+/g, '');
-                    if (firstPlusIndex === 0) {
-                      value = '+' + value;
-                    }
-                  } else if (plusCount === 1 && value.indexOf('+') > 0) {
-                    // Move plus to the beginning if it's not already there
-                    value = value.replace(/\+/g, '');
-                    value = '+' + value;
-                  }
-
-                  // Limit to 15 characters total
-                  if (value.length <= 15) {
-                    setFormData((prev) => ({ ...prev, mobile: value }));
-                  }
+                onChange={(value) => {
+                  setFormData((prev) => ({ ...prev, mobile: value }));
                   setErrors((prev) => ({ ...prev, mobile: "" }));
+                  // Mark field as touched
+                  setTouched((prev) => ({ ...prev, mobile: true }));
                 }}
+                international
+                limitMaxLength={true}
+                defaultCountry="AU"
+                countryCallingCodeEditable={false}
+                className={`react-phone-number-input ${errors.mobile && touched.mobile ? 'react-phone-number-input--invalid' : ''}`}
               />
-              {errors.mobile ? (
+              <style>
+                {`
+                  .react-phone-number-input {
+                    width: 100%;
+                    border-radius: 0.5rem;
+                    border: 1px solid #7E7E7E;
+                    overflow: hidden;
+                  }
+                  .react-phone-number-input--invalid {
+                    border-color: #FF0000 !important;
+                  }
+                  .react-phone-number-input .PhoneInputInput {
+                    padding: 0.5rem;
+                    font-size: 0.875rem;
+                    border: none;
+                    outline: none;
+                    width: 100%;
+                    font-family: 'Lexend', Helvetica;
+                    color: #6f6f6f;
+                    background-color: #F3F3F3;
+                    
+                  }
+                  .react-phone-number-input .PhoneInputCountry {
+                    padding: 0.5rem;
+                    border: none;
+                  }
+                  .react-phone-number-input:focus-within {
+                    border-color: #ED1C24;
+                    box-shadow: 0 0 0 1px #ED1C24;
+                  }
+                `}
+              </style>
+              {errors.mobile && touched.mobile ? (
                 <p className="text-red-600 text-xs mt-1">{errors.mobile}</p>
               ) : null}
             </div>
@@ -444,7 +479,7 @@ export const EnquirySection = () => {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email ? (
+              {errors.email && touched.email ? (
                 <p className="text-red-600 text-xs mt-1">{errors.email}</p>
               ) : null}
             </div>
@@ -464,10 +499,12 @@ export const EnquirySection = () => {
                   const value = e.target.value.slice(0, 300); // double safety
                   setFormData((prev) => ({ ...prev, message: value }));
                   setErrors((prev) => ({ ...prev, message: "" }));
+                  // Mark field as touched
+                  setTouched((prev) => ({ ...prev, message: true }));
                 }}
               />
               <div className="flex justify-between items-center">
-                {errors.message ? (
+                {errors.message && touched.message ? (
                   <p className="text-red-600 text-xs mt-1">{errors.message}</p>
                 ) : (
                   <span className="text-xs text-gray-500 mt-1">
