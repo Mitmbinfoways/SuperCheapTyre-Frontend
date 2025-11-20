@@ -54,13 +54,43 @@ const decrypt = (encoded) => {
 };
 
 /**
+ * Sanitize data to handle special characters that might cause issues
+ * @param {any} data - Data to sanitize
+ * @returns {any} - Sanitized data
+ */
+const sanitizeData = (data) => {
+  if (typeof data === 'string') {
+    // Replace problematic characters that might cause issues with encryption
+    return data.replace(/[\u2013\u2014]/g, '-'); // Replace en-dash and em-dash with regular dash
+  }
+  
+  if (Array.isArray(data)) {
+    return data.map(sanitizeData);
+  }
+  
+  if (data && typeof data === 'object') {
+    const sanitized = {};
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        sanitized[key] = sanitizeData(data[key]);
+      }
+    }
+    return sanitized;
+  }
+  
+  return data;
+};
+
+/**
  * Securely store data in localStorage with encryption
  * @param {string} key - localStorage key
  * @param {any} data - Data to store (will be JSON stringified)
  */
 export const secureSetItem = (key, data) => {
   try {
-    const jsonData = JSON.stringify(data);
+    // Sanitize data before processing
+    const sanitizedData = sanitizeData(data);
+    const jsonData = JSON.stringify(sanitizedData);
     const encryptedData = encrypt(jsonData);
     localStorage.setItem(key, encryptedData);
   } catch (error) {
@@ -82,7 +112,8 @@ export const secureGetItem = (key, defaultValue = null) => {
     const decryptedData = decrypt(encryptedData);
     if (!decryptedData) return defaultValue;
     
-    return JSON.parse(decryptedData);
+    const parsedData = JSON.parse(decryptedData);
+    return parsedData;
   } catch (error) {
     console.error(`Error retrieving data for key ${key}:`, error);
     return defaultValue;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllBrands } from "../axios/axios";
-import img from "../assets/bglogo.png";
+import brandsBg from "../assets/bglogo.png?imagetools&format=webp&width=900&quality=60";
 import Loader from "./common/Loader";
 
 const Brands = () => {
@@ -62,7 +62,10 @@ const Brands = () => {
   return (
     <section className="py-12 sm:py-16 md:py-16 bg-white relative">
       <img
-        src={img}
+        src={brandsBg}
+        alt=""
+        loading="lazy"
+        decoding="async"
         className="h-[300px] w-[500px] absolute -right-2 -rotate-6 -top-5"
       />
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -75,7 +78,7 @@ const Brands = () => {
           {displayBrands.map((brand, index) => (
             <div
               key={brand._id || index}
-              className="bg-light p-3  sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-md flex items-center justify-center h-20 sm:h-24 md:h-28 hover:shadow-xl hover:scale-105 z-10 transition-all duration-300 filter grayscale hover:grayscale-0"
+              className="bg-light p-3  sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-md flex items-center justify-center h-20 sm:h-24 md:h-28 hover:shadow-xl hover:scale-105 z-10 transition-all duration-300"
             >
               <BrandDisplay brand={brand} />
             </div>
@@ -88,9 +91,16 @@ const Brands = () => {
 
 const BrandDisplay = ({ brand }) => {
   const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   return (
     <>
+      {loading && !imageError && (
+        <div className="flex items-center justify-center h-full">
+          <div className="w-6 h-6 border-t-2 border-r-2 border-red-500 rounded-full animate-spin"></div>
+        </div>
+      )}
+      
       {imageError ? (
         <div className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain text-center font-bold text-gray-700 flex items-center justify-center"
              style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>
@@ -100,8 +110,12 @@ const BrandDisplay = ({ brand }) => {
         <img
           src={`${import.meta.env.VITE_BASE_URL}/Brand/${brand.image}`}
           alt={brand.name}
-          className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain"
-          onError={() => setImageError(true)}
+          className={`max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain ${loading ? 'hidden' : 'block'}`}
+          onLoad={() => setLoading(false)}
+          onError={() => {
+            setImageError(true);
+            setLoading(false);
+          }}
         />
       )}
     </>

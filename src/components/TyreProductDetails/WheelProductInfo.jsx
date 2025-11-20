@@ -5,23 +5,23 @@ import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { getTyreImageUrl } from '../../Utils/Utils';
 import { Toast } from '../../Utils/Toast';
 
-const WheelProductInfo = (product) => {
+const WheelProductInfo = ({ product, navigate }) => {
   const [quantity, setQuantity] = useState(1);
 
   const specifications = [
-    { label: 'Brand :', value: product.product.brand, icon: '/productdetails/brand.svg' },
+    { label: 'Brand :', value: product?.brand || 'N/A', icon: '/productdetails/brand.svg' },
     {
       label: 'Size :',
-      value: product.product.wheelSpecifications
-        ? `${product.product.wheelSpecifications.size}"`
+      value: product?.wheelSpecifications
+        ? `${product.wheelSpecifications.size}"`
         : 'N/A',
       icon: '/productdetails/size.svg'
     },
-    { label: 'Diameter :', value: product.product.wheelSpecifications?.diameter || 'N/A', icon: '/productdetails/size.svg' },
-    { label: 'Color :', value: product.product.wheelSpecifications?.color || 'N/A', icon: '/productdetails/tread.svg' },
-    { label: 'Fitments :', value: product.product.wheelSpecifications?.fitments || 'N/A', icon: '/productdetails/bolt.svg' },
-    { label: 'Staggered Options :', value: product.product.wheelSpecifications?.staggeredOptions || 'N/A', icon: '/productdetails/bars-staggered.png' },
-    { label: 'Stock :', value: product.product.stock, icon: '/productdetails/stock.svg' },
+    { label: 'Diameter :', value: product?.wheelSpecifications?.diameter || 'N/A', icon: '/productdetails/size.svg' },
+    { label: 'Color :', value: product?.wheelSpecifications?.color || 'N/A', icon: '/productdetails/tread.svg' },
+    { label: 'Fitments :', value: product?.wheelSpecifications?.fitments || 'N/A', icon: '/productdetails/bolt.svg' },
+    { label: 'Staggered Options :', value: product?.wheelSpecifications?.staggeredOptions || 'N/A', icon: '/productdetails/bars-staggered.png' },
+    { label: 'Stock :', value: product?.stock || 0, icon: '/productdetails/stock.svg' },
   ];
 
   const handleQuantityChange = (newQuantity) => {
@@ -29,31 +29,31 @@ const WheelProductInfo = (product) => {
   };
 
   const handleAddToCart = () => {
-    // Prevent adding to cart if stock is 0
-    if (product.product.stock === 0) {
+     // Prevent adding to cart if stock is 0
+    if (!product || product.stock === 0) {
       Toast({ message: "This product is out of stock", type: 'error' });
       return;
     }
     
     // Prevent adding to cart if quantity exceeds stock
-    if (quantity > product.product.stock) {
+    if (!product || quantity > product.stock) {
       Toast({ 
-        message: `Maximum quantity available is ${product.product.stock}`, 
+        message: `Maximum quantity available is ${product.stock || 0}`, 
         type: 'error' 
       });
       return;
     }
     
     const cart = secureGetItem('cartItems', []);
-    const productId = product.product.id || product.product._id;
-    const existingIndex = cart.findIndex((ci) => ci.id === productId);
+    const productId = String(product.id || product._id);
+    const existingIndex = cart.findIndex((ci) => String(ci.id) === productId);
     
     // Check if adding this quantity would exceed stock
     if (existingIndex >= 0) {
       const newQuantity = (cart[existingIndex].quantity || 1) + quantity;
-      if (newQuantity > product.product.stock) {
+      if (newQuantity > (product?.stock || 0)) {
         Toast({ 
-          message: `Maximum quantity available is ${product.product.stock}`, 
+          message: `Maximum quantity available is ${product?.stock || 0}`, 
           type: 'error' 
         });
         return;
@@ -62,20 +62,28 @@ const WheelProductInfo = (product) => {
     } else {
       cart.push({
         id: productId,
-        image: product.product.images?.[0] ? getTyreImageUrl(product.product.images[0]) : '/cart/carttyre.svg',
-        name: product.product.name || 'Wheel',
-        brand: product.product.brand,
-        size: product.product.wheelSpecifications
-          ? `${product.product.wheelSpecifications.size}" ${product.product.wheelSpecifications.diameter}"`
+        image: product?.images?.[0] ? getTyreImageUrl(product.images[0]) : '/cart/carttyre.svg',
+        name: product?.name || 'Wheel',
+        brand: product?.brand || 'Unknown',
+        size: product?.wheelSpecifications
+          ? `${product.wheelSpecifications.size}" ${product.wheelSpecifications.diameter}"`
           : 'N/A',
-        price: product.product.price || 0,
+        price: product?.price || 0,
         quantity,
-        description: `${product.product.brand || ''} ${product.product.name || ''}`.trim() || 'Wheel Product'
+        description: `${product?.brand || ''} ${product?.name || ''}`.trim() || 'Wheel Product'
       });
     }
-    secureSetItem('cartItems', cart);
-    localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));
-    Toast({ message: 'Added to cart', type: 'success' });
+    try {
+      secureSetItem('cartItems', cart);
+      localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));
+      Toast({ message: 'Added to cart', type: 'success' });
+      
+      // Redirect to cart page
+      navigate("/cart");
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+      Toast({ message: 'Failed to add item to cart', type: 'error' });
+    }
   };
 
   return (
@@ -135,7 +143,7 @@ const WheelProductInfo = (product) => {
             <QuantityInput
               initialValue={quantity}
               min={1}
-              max={product.product.stock}
+              max={product?.stock || 0}
               onChange={handleQuantityChange}
               className="px-[10px]"
             />
@@ -143,7 +151,7 @@ const WheelProductInfo = (product) => {
         </div>
 
         {/* Stock Information */}
-        {product.product.stock === 0 && (
+        {(!product || product.stock === 0) && (
           <div className="text-red-600 font-medium text-center py-2">
             This product is currently out of stock
           </div>
@@ -157,13 +165,13 @@ const WheelProductInfo = (product) => {
           text_font_weight="600"
           text_line_height="20px"
           text_color="#ffffff"
-          fill_background_color={product.product.stock === 0 ? "#D7D7D7" : "#ed1c24"}
+          fill_background_color={(!product || product.stock === 0) ? "#D7D7D7" : "#ed1c24"}
           border_border_radius="10px"
           layout_width="100%"
           padding="14px 34px"
           onClick={handleAddToCart}
-          disabled={product.product.stock === 0}
-          className={product.product.stock === 0 ? "cursor-not-allowed" : ""}
+          disabled={!product || product.stock === 0}
+          className={(!product || product.stock === 0) ? "cursor-not-allowed" : ""}
           layout_align_self=""
           position=""
           variant=""

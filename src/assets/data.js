@@ -1,5 +1,8 @@
 import img from '../assets/image.png'
 import img1 from '/home/logo.svg'
+import applePay from '../assets/home/apple-pay.png?imagetools&format=webp&width=120&quality=75'
+import bookingIcon from '../assets/home/booking.png?imagetools&format=webp&width=160&quality=75'
+import heroCardImage from '../assets/home/tyrebanner1.png?imagetools&format=webp&width=800&quality=65'
 
 export const images = {
   logo: '/home/logo.svg',
@@ -18,7 +21,7 @@ export const images = {
     visa: "/home/visa.svg",
     mastercard: "/home/mastercard.svg",
     amex: "/home/amex.svg",
-    applePay:'/home/apple-pay.png',
+    applePay,
     afterpay: "/home/gpay.svg",
   },
 };
@@ -101,7 +104,7 @@ export const brands = [
 export const whyChooseUsItems = [
     { icon: '/home/quality.svg', title: 'Quality' },
     { icon: '/home/widerange.svg', title: 'Wide Range' },
-    { icon: '/home/booking.png', title: 'Easy Booking' },
+    { icon: bookingIcon, title: 'Easy Booking' },
     { icon: '/home/securepayment.svg', title: 'Secure Payments' },
 ];
 
@@ -150,7 +153,7 @@ export const blogPosts = [
     id: 1,
     title: 'Choosing the Right Tyres for Your Vehicle',
     excerpt: 'Understand tyre sizes, tread patterns, and what really matters for daily driving.',
-    image: '/home/tyrebanner1.png',
+    image: heroCardImage,
     date: 'Aug 12, 2025',
     author: 'Supercheap Tyres',
   },

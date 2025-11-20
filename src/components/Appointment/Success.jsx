@@ -15,6 +15,8 @@ const Success = () => {
     try {
       setIsLoading(true);
       const cartItems = secureGetItem("cartItemsForOrder", []);
+      // Ensure cartItems is always an array
+      const validCartItems = Array.isArray(cartItems) ? cartItems : [];
       // Get the payment option
       const paymentOption = appointmentData.paymentOption || 'full';
 
@@ -30,7 +32,7 @@ const Success = () => {
       }
 
       // Calculate amount based on payment option
-      const subtotal = cartItems.reduce(
+      const subtotal = validCartItems.reduce(
         (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
         0
       );
@@ -63,7 +65,7 @@ const Success = () => {
       }
 
       const orderPayload = {
-        items: cartItems.map((item) => ({
+        items: validCartItems.map((item) => ({
           id: item._id || item.id,
           quantity: item.quantity,
         })),

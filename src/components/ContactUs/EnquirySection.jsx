@@ -373,7 +373,7 @@ export const EnquirySection = () => {
             {/* Name Field */}
             <div className="flex flex-col gap-2">
               <Label className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-base tracking-[0] leading-[normal]">
-                Name
+                Name<span className="text-[#FF0000]">*</span>
               </Label>
               <Input
                 name="name"
@@ -390,7 +390,7 @@ export const EnquirySection = () => {
             {/* Mobile Field */}
             <div className="flex flex-col gap-2">
               <Label className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-base tracking-[0] leading-[normal]">
-                Mobile
+                Mobile<span className="text-[#FF0000]">*</span>
               </Label>
               <Input
                 type="text"
@@ -434,7 +434,7 @@ export const EnquirySection = () => {
             {/* Email Field */}
             <div className="flex flex-col gap-2">
               <Label className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-base tracking-[0] leading-[normal]">
-                Email
+                Email<span className="text-[#FF0000]">*</span>
               </Label>
               <Input
                 type="email"
@@ -452,7 +452,7 @@ export const EnquirySection = () => {
             {/* Message Field */}
             <div className="flex flex-col gap-2">
               <Label className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-base tracking-[0] leading-[normal]">
-                Your Message
+                Your Message<span className="text-[#FF0000]">*</span>
               </Label>
               <Textarea
                 name="message"

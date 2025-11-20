@@ -12,53 +12,64 @@ import 'swiper/css/navigation';
 import { getTyreImageUrl } from '../Utils/Utils';
 import Loader from './common/Loader';
 import Badge from './common/Badge';
+import { secureGetItem, secureSetItem } from '../Utils/encryption';
+import { Toast } from '../Utils/Toast';
 
-const ProductCard = ({ product, onClick }) => (
-    <div onClick={onClick} className="flex-shrink-0 w-64 sm:w-72 bg-light rounded-2xl sm:rounded-3xl shadow-lg text-center p-4 sm:p-6 mx-auto sm:mx-4 h-[25rem] relative cursor-pointer">
-      
-      {/* Image */}
-      <div className="relative h-40 sm:h-48 md:h-52 flex items-center justify-center mb-3 sm:mb-4">
-        <div className="absolute inset-0 bg-black/5 rounded-full blur-xl"></div>
-        <img src={product.image} alt={product.name} className="max-h-full max-w-full object-contain" />
-      </div>
+const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
+    <div onClick={onViewDetails} className="flex-shrink-0 w-64 sm:w-72 bg-light rounded-2xl sm:rounded-3xl shadow-lg text-center p-4 sm:p-6 mx-auto sm:mx-4 h-[25rem] relative cursor-pointer">
 
-      {/* Stock Badge */}
-      {product.stock === 0 && (
-         <div className="absolute top-3 right-3">
-          <Badge label="Out of Stock" color="red" />
+        {/* Image */}
+        <div className="relative h-40 sm:h-48 md:h-52 flex items-center justify-center mb-3 sm:mb-4">
+            <div className="absolute inset-0 bg-black/5 rounded-full blur-xl"></div>
+            <img src={product.image} alt={product.name} className="max-h-full max-w-full object-contain" />
         </div>
-      )}
-      {product.stock >= 1 && product.stock <= 5 && (
-        <div className="absolute top-3 right-3">
-          <Badge label="Low Stock" color="yellow" />
-        </div>
-      )}
-  
-      {/* Info */}
-      <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start line-clamp-1">{product.name}</h3>
-      <p className="text-start text-sm text-text-secondary font-roboto">{product.brand}</p>
-      <p className="text-text-secondary text-xs sm:text-sm whitespace-pre-line my-1 sm:my-1 leading-relaxed text-start line-clamp-1">
-        {product.description}
-      </p>
-      <p className="flex gap-1 text-text-secondary text-xs sm:text-sm mb-12 text-start">
-        <span className='font-bold text-[#5A7184]'>Size:</span>{product.size}
-      </p>
-  
-      {/* Button (half in/out) */}
-      <button 
-        onClick={onClick} 
-        disabled={product.stock === 0}
-        className={`absolute w-9/12 sm:w-3/4 md:w-2/3 left-1/2 bottom-0 translate-x-[-50%] translate-y-1/2 font-bold py-2 sm:py-3 px-8 sm:px-12 md:px-8 rounded-full transition-colors text-sm sm:text-base shadow-md ${
-          product.stock === 0
-            ? 'bg-[#D7D7D7] text-white cursor-not-allowed'
-            : 'bg-primary text-white hover:bg-red-700'
-        }`}
-      >
-        Buy Now
-      </button>
+
+        {/* Stock Badge */}
+        {product.stock === 0 && (
+            <div className="absolute top-3 right-3">
+                <Badge label="Out of Stock" color="red" />
+            </div>
+        )}
+        {product.stock >= 1 && product.stock <= 5 && (
+            <div className="absolute top-3 right-3">
+                <Badge label="Low Stock" color="yellow" />
+            </div>
+        )}
+
+        {/* Info */}
+        <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start line-clamp-1">{product.name}</h3>
+        <p className="text-start text-sm text-text-secondary font-roboto">{product.brand}</p>
+        <p className="text-text-secondary text-xs sm:text-sm whitespace-pre-line my-1 sm:my-1 leading-relaxed text-start line-clamp-1">
+            <div
+                className=""
+                dangerouslySetInnerHTML={{
+                    __html: product.description
+                        .replace(/<ul>/g, '<ul class="list-disc pl-4">')
+                        .replace(/<ol>/g, '<ol class="list-decimal pl-4">')
+                }}
+            />
+        </p>
+        <p className="flex gap-1 text-text-secondary text-xs sm:text-sm mb-12 text-start">
+            <span className='font-bold text-[#5A7184]'>Size:</span><span className='line-clamp-1'>{product.size}</span>
+        </p>
+
+        {/* Button (half in/out) */}
+        <button
+            onClick={(e) => {
+                e.stopPropagation();
+                onBuyNow(product);
+            }}
+            disabled={product.stock === 0}
+            className={`absolute w-9/12 sm:w-3/4 md:w-2/3 left-1/2 bottom-0 translate-x-[-50%] translate-y-1/2 font-bold py-2 sm:py-3 px-8 sm:px-12 md:px-8 rounded-full transition-colors text-sm sm:text-base shadow-md ${product.stock === 0
+                    ? 'bg-[#D7D7D7] text-white cursor-not-allowed'
+                    : 'bg-primary text-white hover:bg-red-700'
+                }`}
+        >
+            Buy Now
+        </button>
     </div>
-  );
-  
+);
+
 
 const FeaturedProducts = ({ homeData }) => {
     const scrollRef = React.useRef(null);
@@ -80,7 +91,7 @@ const FeaturedProducts = ({ homeData }) => {
                         // Tyre product
                         size = `${item.tyreSpecifications.width || ''}/${item.tyreSpecifications.profile || ''}${" "}${item.tyreSpecifications.diameter || ''}${" "}${item.tyreSpecifications.loadRating || ''}${item.tyreSpecifications.speedRating || ''}`;
                     }
-                    
+
                     return {
                         id: item._id,
                         name: item.name,
@@ -89,7 +100,8 @@ const FeaturedProducts = ({ homeData }) => {
                         size: size.trim(),
                         image: getTyreImageUrl(item.images?.[0]),
                         category: item.category, // Store category for navigation
-                        stock: item.stock || 0 // Add stock information
+                        stock: item.stock || 0, // Add stock information
+                        price: item.price || 0
                     };
                 });
                 setProducts(mapped);
@@ -103,12 +115,78 @@ const FeaturedProducts = ({ homeData }) => {
         }
     }, [homeData]);
 
+    const handleBuyNow = (product) => {
+        // Prevent adding to cart if product is invalid
+        if (!product) {
+            Toast({ message: "Invalid product", type: "error" });
+            return;
+        }
+        
+        // Prevent adding to cart if stock is 0
+        if (product.stock === 0) {
+            Toast({ message: "This product is out of stock", type: "error" });
+            return;
+        }
+
+        const cart = secureGetItem("cartItems", []);
+        const existingIndex = cart.findIndex((ci) => String(ci.id) === String(product.id));
+
+        // Check if adding this item would exceed stock
+        if (existingIndex >= 0) {
+            const newQuantity = (cart[existingIndex].quantity || 1) + 1;
+            if (newQuantity > product.stock) {
+                Toast({
+                    message: `Maximum available is quantity ${product.stock}`,
+                    type: "error",
+                });
+                return;
+            }
+            cart[existingIndex].quantity = newQuantity;
+        } else {
+            // Check if we can add this item (stock > 0)
+            if (product.stock > 0) {
+                cart.push({
+                    id: product.id,
+                    image: product.image,
+                    name: product.name || product.brand || "Product",
+                    brand: product.brand,
+                    size: product.size,
+                    price: product.price,
+                    quantity: 1,
+                    description: `${product.brand || ""} ${product.name || ""}`.trim() || "Product",
+                });
+            } else {
+                Toast({ message: "This product is out of stock", type: "error" });
+                return;
+            }
+        }
+
+        try {
+            secureSetItem("cartItems", cart);
+            localStorage.setItem(
+                "cartCount",
+                String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
+            );
+            Toast({ message: "Added to cart", type: "success" });
+
+            // Redirect to cart page
+            navigate("/cart");
+        } catch (error) {
+            console.error("Error adding item to cart:", error);
+            Toast({ message: "Failed to add item to cart", type: "error" });
+        }
+    };
+
+    const handleViewDetails = (productId) => {
+        navigate(`/productdetails/${productId}`);
+    };
+
     const scroll = (direction) => {
         if (scrollRef.current) {
             const scrollAmount = window.innerWidth < 640 ? 280 : 320;
-            scrollRef.current.scrollBy({ 
-                left: direction * scrollAmount, 
-                behavior: 'smooth' 
+            scrollRef.current.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
             });
         }
     };
@@ -142,14 +220,15 @@ const FeaturedProducts = ({ homeData }) => {
                             1024: { slidesPerView: 3, spaceBetween: 24 },
                             1280: { slidesPerView: 4, spaceBetween: 24 },
                         }}
-                        modules={[FreeMode, Pagination, Navigation,Autoplay]}
+                        modules={[FreeMode, Pagination, Navigation, Autoplay]}
                         className="!pb-10"
                     >
                         {(loading ? [] : products).map((product, index) => (
                             <SwiperSlide key={product.id || index} className="!h-auto flex items-center">
-                                <ProductCard 
-                                  product={product} 
-                                  onClick={() => navigate(`/productdetails/${product.id}`)}
+                                <ProductCard
+                                    product={product}
+                                    onBuyNow={handleBuyNow}
+                                    onViewDetails={() => handleViewDetails(product.id)}
                                 />
                             </SwiperSlide>
                         ))}

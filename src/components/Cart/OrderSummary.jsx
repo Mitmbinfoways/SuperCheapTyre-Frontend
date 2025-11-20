@@ -46,7 +46,9 @@ const OrderSummary = ({ totals }) => {
 
   const handleCheckout = () => {
     const cart = secureGetItem('cartItems', []);
-    if (!cart.length) {
+    // Ensure cart is always an array
+    const validCart = Array.isArray(cart) ? cart : [];
+    if (!validCart.length) {
       Toast({ message: 'Please add at least one item to cart', type: 'error' });
       navigate('/tyres');
       return;

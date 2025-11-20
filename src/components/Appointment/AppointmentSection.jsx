@@ -276,8 +276,10 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
     try {
       // Get cart items from localStorage
       const cart = secureGetItem('cartItems', []);
+      // Ensure cart is always an array
+      const validCart = Array.isArray(cart) ? cart : [];
 
-      if (!cart.length) {
+      if (!validCart.length) {
         Toast({ message: 'Please add at least one tyre to cart', type: 'error' });
         navigate('/tyres');
         return;
@@ -297,10 +299,10 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
       secureSetItem('appointmentData', appointmentData);
       // Store cart items for use after payment
-      secureSetItem('cartItemsForOrder', cart);
+      secureSetItem('cartItemsForOrder', validCart);
 
       // Transform cart data to match expected format
-      const transformedCart = cart.map(item => ({
+      const transformedCart = validCart.map(item => ({
         name: item.name || item.title || 'Tyre Product',
         price: item.price ? parseFloat(item.price) : 0,
         quantity: item.quantity || 1,
@@ -391,7 +393,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         </div>
 
         <div>
-          <label className="text-base font-normal mb-2 block">First Name</label>
+          <label className="text-base font-normal mb-2 block">First Name<span className="text-[#FF0000]">*</span></label>
           <input
             type="text"
             placeholder="Enter your First Name"
@@ -406,7 +408,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         </div>
 
         <div>
-          <label className="text-base font-normal mb-2 block">Last Name</label>
+          <label className="text-base font-normal mb-2 block">Last Name<span className="text-[#FF0000]">*</span></label>
           <input
             type="text"
             placeholder="Enter your Last Name"
@@ -421,7 +423,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         </div>
 
         <div>
-          <label className="text-base font-normal mb-2 block">Email</label>
+          <label className="text-base font-normal mb-2 block">Email<span className="text-[#FF0000]">*</span></label>
           <input
             type="text"
             placeholder="Enter your Email"
@@ -436,7 +438,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         </div>
 
         <div>
-          <label className="text-base font-normal mb-2 block">Phone No.</label>
+          <label className="text-base font-normal mb-2 block">Phone No.<span className="text-[#FF0000]">*</span></label>
           <input
             type="text"
             placeholder="Enter your Phone Number"
@@ -476,7 +478,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         </div>
 
         <div>
-          <label className="text-base font-normal mb-2 block">Remarks</label>
+          <label className="text-base font-normal mb-2 block">Remarks<span className="text-[#FF0000]">*</span></label>
           <textarea
             placeholder="Enter your appointment details here."
             rows="4"

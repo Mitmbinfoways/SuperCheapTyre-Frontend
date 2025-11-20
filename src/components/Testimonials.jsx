@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination, Navigation, Autoplay } from "swiper/modules";
 import { images } from "../assets/data";
@@ -155,7 +155,9 @@ const Testimonials = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const swiperRef = useRef(null);
 
+  const [swiperKey, setSwiperKey] = useState(0);
   const GOOGLE_PLACE_ID = "ChIJ-zBzY_YT1moRjVAieKugY9c";
   
   useEffect(() => {
@@ -185,8 +187,8 @@ const Testimonials = () => {
             relativeTime: review.relativePublishTimeDescription || "",
             isGoogleReview: true,
           }));
-          console.log(place.reviews);
           setTestimonials(googleReviews);
+          setSwiperKey(Date.now());
         }
       } catch (error) {
         console.error("Error loading Google reviews:", error);
@@ -197,6 +199,7 @@ const Testimonials = () => {
 
     loadGoogleReviews();
   }, []);
+
 
   const handlePlayVideo = () => {
     setIsVideoOpen(true);
@@ -242,6 +245,7 @@ const Testimonials = () => {
             </h2>
 
             <Swiper
+              key={swiperKey}
               slidesPerView={1}
               spaceBetween={20}
               autoplay={{

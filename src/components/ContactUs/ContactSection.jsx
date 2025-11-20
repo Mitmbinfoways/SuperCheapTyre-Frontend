@@ -60,7 +60,7 @@ export const ContactSection = () => {
       <img
         className="absolute inset-0 w-full h-full object-cover"
         alt="New WHAT TO LOOK FOR"
-        src="/contactus/contactbg.svg"
+        src="/contactus/contactbg.jpeg"
       />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-10">

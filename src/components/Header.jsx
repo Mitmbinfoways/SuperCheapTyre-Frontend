@@ -32,7 +32,9 @@ const Header = () => {
     // Also check cart items directly to ensure consistency
     const updateCartCount = () => {
       const cartItems = secureGetItem('cartItems', []);
-      const count = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      // Ensure cartItems is always an array
+      const validCartItems = Array.isArray(cartItems) ? cartItems : [];
+      const count = validCartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
       setCartCount(count);
       // Also update localStorage to keep it in sync
       localStorage.setItem('cartCount', String(count));
@@ -143,7 +145,7 @@ const Header = () => {
                   <div className="flex items-center space-x-3 -mx-5">
                     <a
                       href="tel:(03)97936190"
-                      className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer"
+                      className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer -mx-1"
                     >
                       <FaPhoneAlt size={14} className="xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4 " />
                       <span className="text-xs md:text-lg xl:text-sm lg:text-3xl">(03) 9793 6190</span>
@@ -228,7 +230,7 @@ const Header = () => {
             {/* Center Search */}
             <div className="hidden xl:block bg-[#000000] text-white mt-6 h-[10px]">
               <div className="container">
-                <nav className="flex gap-3 items-center justify-center">
+                <nav className="flex gap-2 xl:gap-2.5 2xl:gap-3 items-center justify-center flex-nowrap -mx-4">
                   {navLinks.map((link) => {
                     const to = link.href || '#';
                     return (
@@ -236,7 +238,7 @@ const Header = () => {
                         key={link.name}
                         to={to}
                         className={({ isActive }) =>
-                          `text-base pb-3 xl:text-lg font-medium px-5 transition-colors hover:text-primary ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')}`
+                          `text-base pb-3 xl:text-lg font-medium px-3 xl:px-4 2xl:px-5 transition-colors hover:text-primary whitespace-nowrap flex-shrink-0 ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')}`
                         }
                         end={link.name === 'Home'}
                       >

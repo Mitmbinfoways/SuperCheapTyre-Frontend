@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import img from "/home/Grouptyre.png";
-import bg from "/home/bg.png";
+import tyresIllustration from "../assets/home/Grouptyre.png?imagetools&format=webp&width=900&quality=70";
+import tyresIllustrationSrcSet from "../assets/home/Grouptyre.png?imagetools&format=webp&width=480;640;760;900&as=srcset&quality=70";
+import formBackground from "../assets/home/bg.png?imagetools&format=webp&width=1600&quality=55";
 import SingleSelect from "./common/SingleSelect";
 import axiosInstance, { getAllBrands } from "../axios/axios";
 const BuyTyre = () => {
@@ -129,7 +130,7 @@ const BuyTyre = () => {
         {/* Search Form */}
         <div
           className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-6xl mx-auto bg-no-repeat bg-cover bg-center relative z-40 lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
-          style={{ backgroundImage: `url(${bg})` }}
+          style={{ backgroundImage: `url(${formBackground})` }}
         >
           <h3 className="text-black text-lg sm:text-xl lg:text-2xl font-bold text-center sm:text-left p-2">
             SEARCH FOR TYRES
@@ -196,7 +197,9 @@ const BuyTyre = () => {
                 <div className="relative">
                   <div className="absolute inset-0 blur-xl opacity-30 rounded-full transform -rotate-12"></div>
                   <img
-                    src={img}
+                    src={tyresIllustration}
+                    srcSet={tyresIllustrationSrcSet}
+                    sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 34vw, 60vw"
                     alt="Tyre"
                     className="relative hidden lg:block  xl:-top-14 z-30 w-full h-[580px] object-contain drop-shadow-2xl max-w-[clamp(10rem,40vw,28rem)] sm:max-w-[clamp(12rem,45vw,30rem)] md:max-w-[clamp(14rem,46vw,32rem)] lg:max-w-[clamp(16rem,44vw,34rem)] xl:max-w-[clamp(20rem,40vw,36rem)]"
                   />

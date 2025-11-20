@@ -9,6 +9,7 @@ import Loader from "../common/Loader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Thumbs } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Import Swiper styles
 import "swiper/css";
@@ -18,13 +19,14 @@ import Badge from "../common/Badge";
 
 const HeroSection = () => {
   const { id } = useParams(); // Get product id from URL
+  const navigate = useNavigate(); // Add navigate hook
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0); // New state for tracking selected image
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
-  const [modalImageIndex, setModalImageIndex] = useState(0); // State for modal image index
-  const [thumbsSwiper, setThumbsSwiper] = useState(null); // State for thumbnail Swiper instance
-  const mainSwiperRef = useRef(null); // Ref for main Swiper instance
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const mainSwiperRef = useRef(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -109,16 +111,32 @@ const HeroSection = () => {
   const isWheelProduct = product.category === "wheel";
   const productTitle = isWheelProduct ? "Shop Wheels" : "Shop Tyres";
 
+  // Function to go back to products listing
+  const goBackToProducts = () => {
+    if (isWheelProduct) {
+      navigate("/wheels");
+    } else {
+      navigate("/tyres");
+    }
+  };
+
   return (
     <section className="w-full bg-[#f5f5f5] py-[12px] sm:py-[16px] md:py-[20px] lg:py-[24px]">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="mx-[25px] sm:mx-[35px] md:mx-[40px] lg:mx-[50px]">
           <div className="flex flex-col gap-[16px] sm:gap-[20px] md:gap-[24px] lg:gap-[28px] w-full">
-            {/* Shop Tyres/Wheels Header */}
-            <div className="flex justify-start items-center w-full">
+            {/* Shop Tyres/Wheels Header with Back Button */}
+            <div className="flex justify-between items-center w-full">
               <h1 className="text-[20px] sm:text-[24px] md:text-[27px] lg:text-[30px] font-medium leading-[25px] sm:leading-[30px] md:leading-[34px] lg:leading-[38px] font-['Lexend'] text-[#ed1c24]">
                 {productTitle}
               </h1>
+              <button
+                onClick={goBackToProducts}
+                className="flex items-center text-[14px] sm:text-[16px] md:text-[18px] font-medium font-['Lexend'] text-[#ed1c24] hover:text-[#d11920] transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4 mr-1" />
+                Go back
+              </button>
             </div>
 
             {/* Main Product Section */}
@@ -276,7 +294,7 @@ const HeroSection = () => {
 
                 {/* Move ProductInfo directly under description to remove large gap */}
                 <div className="mt-[8px] w-full">
-                  <ProductInfo product={product} />
+                  {product && <ProductInfo product={product} />}
                 </div>
               </div>
             </div>

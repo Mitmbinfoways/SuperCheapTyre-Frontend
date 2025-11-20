@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "./ui/Button";
 import QuantityInput from "./ui/QuantityInput";
 import { secureGetItem, secureSetItem } from "../../Utils/encryption";
@@ -6,35 +7,37 @@ import { getTyreImageUrl } from "../../Utils/Utils";
 import { Toast } from "../../Utils/Toast";
 import WheelProductInfo from "./WheelProductInfo";
 
-const ProductInfo = (product) => {
+const ProductInfo = ({ product }) => {
+  const navigate = useNavigate();
+  
   // Check if this is a wheel product
-  const isWheelProduct = product.product.category === "wheel";
+  const isWheelProduct = product.category === "wheel";
 
   // If it's a wheel product, render the wheel-specific component
   if (isWheelProduct) {
-    return <WheelProductInfo product={product.product} />;
+    return <WheelProductInfo product={product} navigate={navigate} />;
   }
 
   // Otherwise, render the tyre-specific component (existing logic)
   const [quantity, setQuantity] = useState(1);
 
   // Get the product stock, default to 0 if not available
-  const productStock = product.product.stock || 0;
+  const productStock = product?.stock || 0;
 
   const specifications = [
     {
       label: "Brand :",
-      value: product.product.brand,
+      value: product?.brand || "N/A",
       icon: "/productdetails/brand.svg",
     },
     {
       label: "Size :",
-      value: product.product.tyreSpecifications
-        ? `${product.product.tyreSpecifications.width}/${
-            product.product.tyreSpecifications.profile
-          }${" "}${product.product.tyreSpecifications.diameter}${" "}${
-            product.product.tyreSpecifications.loadRating
-          }${product.product.tyreSpecifications.speedRating}`
+      value: product?.tyreSpecifications
+        ? `${product.tyreSpecifications.width}/${
+            product.tyreSpecifications.profile
+          }${" "}${product.tyreSpecifications.diameter}${" "}${
+            product.tyreSpecifications.loadRating
+          }${product.tyreSpecifications.speedRating}`
         : "N/A",
       icon: "/productdetails/size.svg",
     },
@@ -42,7 +45,7 @@ const ProductInfo = (product) => {
     // { label: 'Offset :', value: 'offset', icon: '/productdetails/Offset.svg' },
     {
       label: "Tread type :",
-      value: product.product.tyreSpecifications?.pattern || "N/A",
+      value: product?.tyreSpecifications?.pattern || "N/A",
       icon: "/productdetails/tread.svg",
     },
     {
@@ -63,13 +66,13 @@ const ProductInfo = (product) => {
 
   const handleAddToCart = () => {
     // Prevent adding to cart if stock is 0
-    if (productStock === 0) {
+    if (!product || productStock === 0) {
       Toast({ message: "This product is out of stock", type: "error" });
       return;
     }
 
     // Check if the requested quantity exceeds available stock
-    if (quantity > productStock) {
+    if (!product || quantity > productStock) {
       Toast({
         message: `Maximum quantity available is ${productStock}`,
         type: "error",
@@ -78,8 +81,8 @@ const ProductInfo = (product) => {
     }
 
     const cart = secureGetItem("cartItems", []);
-    const productId = product.product.id || product.product._id;
-    const existingIndex = cart.findIndex((ci) => ci.id === productId);
+    const productId = String(product?.id || product?._id || "");
+    const existingIndex = cart.findIndex((ci) => String(ci.id) === productId);
 
     if (existingIndex >= 0) {
       // Check if adding this quantity would exceed stock
@@ -95,28 +98,36 @@ const ProductInfo = (product) => {
     } else {
       cart.push({
         id: productId,
-        image: product.product.images?.[0]
-          ? getTyreImageUrl(product.product.images[0])
+        image: product?.images?.[0]
+          ? getTyreImageUrl(product.images[0])
           : "/cart/carttyre.svg",
-        name: product.product.name || "Tyre",
-        brand: product.product.brand,
-        size: product.product.tyreSpecifications
-          ? `${product.product.tyreSpecifications.width}/${product.product.tyreSpecifications.profile}${product.product.tyreSpecifications.speedRating}${product.product.tyreSpecifications.diameter}`
+        name: product?.name || "Tyre",
+        brand: product?.brand || "Unknown",
+        size: product?.tyreSpecifications
+          ? `${product.tyreSpecifications.width}/${product.tyreSpecifications.profile} ${product.tyreSpecifications.diameter} ${product.tyreSpecifications.loadRating}${product.tyreSpecifications.speedRating}`
           : "N/A",
-        price: product.product.price || 0,
+        price: product?.price || 0,
         quantity,
         description:
-          `${product.product.brand || ""} ${
-            product.product.name || ""
+          `${product?.brand || ""} ${
+            product?.name || ""
           }`.trim() || "Tyre Product",
       });
     }
-    secureSetItem("cartItems", cart);
-    localStorage.setItem(
-      "cartCount",
-      String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
-    );
-    Toast({ message: "Added to cart", type: "success" });
+    try {
+      secureSetItem("cartItems", cart);
+      localStorage.setItem(
+        "cartCount",
+        String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
+      );
+      Toast({ message: "Added to cart", type: "success" });
+      
+      // Redirect to cart page
+      navigate("/cart");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      Toast({ message: "Failed to add item to cart", type: "error" });
+    }
   };
 
   return (
@@ -192,7 +203,7 @@ const ProductInfo = (product) => {
           </div>
         )}
 
-        {productStock >= 1 && productStock <= 5 && (
+        {product && productStock >= 1 && productStock <= 5 && (
           <p className="text-yellow-600 ml-3">
             Only {productStock} left in stock!
           </p>
@@ -205,13 +216,13 @@ const ProductInfo = (product) => {
           text_font_weight="600"
           text_line_height="20px"
           text_color="#ffffff"
-          fill_background_color={productStock === 0 ? "#D7D7D7" : "#ed1c24"}
+          fill_background_color={(!product || productStock === 0) ? "#D7D7D7" : "#ed1c24"}
           border_border_radius="10px"
           layout_width="100%"
           padding="14px 34px"
           onClick={handleAddToCart}
-          disabled={productStock === 0}
-          className={productStock === 0 ? "cursor-not-allowed" : ""}
+          disabled={!product || productStock === 0}
+          className={(!product || productStock === 0) ? "cursor-not-allowed" : ""}
           layout_align_self=""
           position=""
           variant=""

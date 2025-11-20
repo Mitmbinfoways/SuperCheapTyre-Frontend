@@ -9,7 +9,9 @@ import { getTyreById } from '../../axios/axios';
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState(() => {
-    return secureGetItem('cartItems', []);
+    const savedCart = secureGetItem('cartItems', []);
+    // Ensure cart is always an array
+    return Array.isArray(savedCart) ? savedCart : [];
   });
   const [productStocks, setProductStocks] = useState({});
   const [loadingStocks, setLoadingStocks] = useState(true);
@@ -56,6 +58,12 @@ const CartPage = () => {
   }, [cartItems]);
 
   useEffect(() => {
+    // Ensure cartItems is always an array before processing
+    if (!Array.isArray(cartItems)) {
+      console.error('Cart items is not an array:', cartItems);
+      return;
+    }
+    
     const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const discount = subtotal * 0.20;
     const delivery = 15;

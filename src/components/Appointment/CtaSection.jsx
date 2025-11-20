@@ -1,4 +1,6 @@
 import React from 'react';
+import appointmentIllustration from '../../assets/appointment/appointmentgirl.png?imagetools&format=webp&width=640&quality=70';
+import appointmentIllustrationSrcSet from '../../assets/appointment/appointmentgirl.png?imagetools&format=webp&width=360;480;560;640&as=srcset&quality=70';
 
 const CtaSection = () => {
   return (
@@ -7,7 +9,9 @@ const CtaSection = () => {
         <div className="p-4 md:p-12">
           <div className="absolute z-10 order-2 md:order-1 left-0  bottom-1">
             <img
-              src="/appointment/appointmentgirl.png"
+              src={appointmentIllustration}
+              srcSet={appointmentIllustrationSrcSet}
+              sizes="(min-width: 1024px) 28vw, 40vw"
               alt="Professional holding a clipboard"
               className="h-auto max-lg:max-h-96 aspect-[2/3] hidden md:block max-lg:opacity-70"
             />

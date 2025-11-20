@@ -19,7 +19,7 @@ const TyreCard = ({
   const navigate = useNavigate();
 
   // Use either id or _id for consistency
-  const productId = id || _id;
+  const productId = String(id || _id);
 
   // const renderStars = () => {
   //   const SolidStar = ({ size = 20, className = "" }) => (
@@ -52,6 +52,12 @@ const TyreCard = ({
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
+    
+    // Prevent adding to cart if required props are missing
+    if (productId === undefined || image === undefined || price === undefined) {
+      Toast({ message: "Invalid product data", type: "error" });
+      return;
+    }
 
     // Prevent adding to cart if stock is 0
     if (stock === 0) {
@@ -60,7 +66,7 @@ const TyreCard = ({
     }
 
     const cart = secureGetItem("cartItems", []);
-    const existingIndex = cart.findIndex((ci) => ci.id === productId);
+    const existingIndex = cart.findIndex((ci) => String(ci.id) === productId);
 
     // Check if adding this item would exceed stock
     if (existingIndex >= 0) {
@@ -91,12 +97,20 @@ const TyreCard = ({
         return;
       }
     }
-    secureSetItem("cartItems", cart);
-    localStorage.setItem(
-      "cartCount",
-      String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
-    );
-    Toast({ message: "Added to cart", type: "success" });
+    try {
+      secureSetItem("cartItems", cart);
+      localStorage.setItem(
+        "cartCount",
+        String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
+      );
+      Toast({ message: "Added to cart", type: "success" });
+      
+      // Redirect to cart page
+      navigate("/cart");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      Toast({ message: "Failed to add item to cart", type: "error" });
+    }
   };
 
   return (

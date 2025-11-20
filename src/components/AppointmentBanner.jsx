@@ -1,6 +1,7 @@
 import React from 'react';
 import { images } from '../assets/data';
-import img from '/home/appointmentgirl.png';
+import appointmentTyre from '../assets/home/appointmentgirl.png?imagetools&format=webp&width=640&quality=70';
+import appointmentTyreSrcSet from '../assets/home/appointmentgirl.png?imagetools&format=webp&width=360;480;640;768&as=srcset&quality=70';
 import { Link } from 'react-router-dom';
 
 const AppointmentBanner = () => {
@@ -15,7 +16,9 @@ const AppointmentBanner = () => {
         {/* Tyre image anchored to container */}
         <div className="pointer-events-none absolute -bottom-40 right-0 sm:-bottom-12 md:bottom-0 sm:right-0 md:-right-6 lg:-right-14 xl:-right-24 z-0">
           <img
-            src={img}
+            src={appointmentTyre}
+            srcSet={appointmentTyreSrcSet}
+            sizes="(min-width: 1024px) 28vw, (min-width: 640px) 35vw, 60vw"
             alt="Two tires"
             className="w-40 xs:w-48 sm:w-60 md:w-72 lg:w-96 xl:w-[460px] sm:h-[454px] md:h-[360px] h-[554px]  object-contain drop-shadow-xl"
           />

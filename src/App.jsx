@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './components/Home';
-import Tyre from './components/tyre/Tyre';
-import Wheels from './components/tyre/Wheels';
-import About from './components/About/About';
-import Blog from './components/Blog/Blog';
-import BlogList from './components/Blog/BlogList';
-import BlogDetail from './components/Blog/BlogDetail';
-import PrivacyPolicy from './components/FooterPage/PrivacyPolicy';
-import Terms from './components/FooterPage/Terms';
-import { ContactUs } from './components/ContactUs/Contact';
-import ProductDetail from './components/TyreProductDetails/ProductDetails';
-import Cart from './components/Cart/Cart';
-import Appointment from './components/Appointment/Appointment';
-import Success from './components/Appointment/Success';
-import Cancel from './components/Appointment/Cancel';
-import NotFound from './components/common/NotFound';
+import Loader from './components/common/Loader';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useGlobalImageOptimization from './hooks/useGlobalImageOptimization';
+
+const Home = lazy(() => import('./components/Home'));
+const Tyre = lazy(() => import('./components/tyre/Tyre'));
+const Wheels = lazy(() => import('./components/tyre/Wheels'));
+const About = lazy(() => import('./components/About/About'));
+const BlogList = lazy(() => import('./components/Blog/BlogList'));
+const BlogDetail = lazy(() => import('./components/Blog/BlogDetail'));
+const PrivacyPolicy = lazy(() => import('./components/FooterPage/PrivacyPolicy'));
+const Terms = lazy(() => import('./components/FooterPage/Terms'));
+const ContactUs = lazy(() =>
+  import('./components/ContactUs/Contact').then((module) => ({ default: module.ContactUs }))
+);
+const ProductDetail = lazy(() => import('./components/TyreProductDetails/ProductDetails'));
+const Cart = lazy(() => import('./components/Cart/Cart'));
+const Appointment = lazy(() => import('./components/Appointment/Appointment'));
+const Success = lazy(() => import('./components/Appointment/Success'));
+const Cancel = lazy(() => import('./components/Appointment/Cancel'));
+const NotFound = lazy(() => import('./components/common/NotFound'));
 
 function ScrollToTopOnRouteChange() {
   const pathname = useLocation();
@@ -41,28 +45,31 @@ function ScrollToTopOnRouteChange() {
 };
 
 function App() {
+  useGlobalImageOptimization();
   return (
     <div className="bg-[#F3F3F3] overflow-x-hidden">
       <ScrollToTopOnRouteChange />
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tyres" element={<Tyre />} />
-        <Route path="/wheels" element={<Wheels />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/blog" element={<BlogList />} />
-        <Route path="/blog/:id" element={<BlogDetail />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path='/contactus' element={<ContactUs />} />
-        <Route path='/productdetails/:id' element={<ProductDetail />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/appointment' element={<Appointment />} />
-        <Route path='/success' element={<Success />} />
-        <Route path='/cancel' element={<Cancel />} />
-        {/* Catch-all route for 404 page */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<Loader label="Loading page..." className="min-h-[60vh]" />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tyres" element={<Tyre />} />
+          <Route path="/wheels" element={<Wheels />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<BlogList />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path='/contactus' element={<ContactUs />} />
+          <Route path='/productdetails/:id' element={<ProductDetail />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/appointment' element={<Appointment />} />
+          <Route path='/success' element={<Success />} />
+          <Route path='/cancel' element={<Cancel />} />
+          {/* Catch-all route for 404 page */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
       <Footer />
       <ToastContainer />
     </div>
