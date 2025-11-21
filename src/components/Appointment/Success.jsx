@@ -64,7 +64,10 @@ const Success = () => {
         throw new Error("Appointment ID not found in response");
       }
 
-      const orderPayload = {
+      // Get transaction ID from localStorage
+    const transactionId = localStorage.getItem('tkID');
+
+    const orderPayload = {
         items: validCartItems.map((item) => ({
           id: item._id || item.id,
           quantity: item.quantity,
@@ -80,7 +83,9 @@ const Success = () => {
         payment: {
           method: "stripe",
           status: paymentOption,
-          amount: Number(totalAmount), // Use the calculated amount based on payment option
+          amount: Number(totalAmount),
+          transactionId: transactionId, // Include the transaction ID
+           // Use the calculated amount based on payment option
           // option: paymentOption // Include the payment option in payment details
         },
       };
@@ -96,6 +101,7 @@ const Success = () => {
       secureRemoveItem("appointmentData");
       localStorage.removeItem("timeSlotId");
       localStorage.removeItem("selectedSlotId");
+      localStorage.removeItem("transactionId"); // Clean up the transaction ID
       secureRemoveItem("selectedPaymentOption"); // Clean up the payment option
 
       window.dispatchEvent(

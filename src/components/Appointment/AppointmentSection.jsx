@@ -323,7 +323,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
       const body = { Product: paymentCart };
 
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/payment`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -335,10 +335,12 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       }
 
       const session = await response.json();
+      const TransId = session.transactionId;
 
-      // ✅ New Stripe redirect method
+      localStorage.setItem('tkID', TransId);
+
       if (session.url) {
-        window.location.href = session.url; // Redirect user to Stripe Checkout
+        window.location.href = session.url;
       } else {
         throw new Error('Invalid session URL received from server');
       }
