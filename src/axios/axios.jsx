@@ -26,8 +26,9 @@ export const getTyres = async (params = {}) => {
   });
 
   // Construct the URL with query parameters
-  const url = `/api/v1/product${queryParams.toString() ? `?${queryParams.toString()}` : ""
-    }`;
+  const url = `/api/v1/product${
+    queryParams.toString() ? `?${queryParams.toString()}` : ""
+  }`;
 
   return axiosInstance.get(url);
 };
@@ -95,8 +96,13 @@ export const createOrder = async (data) => {
   return axiosInstance.post("/api/v1/order", data);
 };
 
+export const TransactionData = async (data) => {
+  const { session_id } = data;
+  return axiosInstance.get(`/api/v1/payment/status?session_id=${session_id}`);
+};
+
 export const getBanners = async (payload) => {
-  const { isActive } = payload
+  const { isActive } = payload;
   return axiosInstance.get(`/api/v1/banner?isActive=${isActive}`);
 };
 

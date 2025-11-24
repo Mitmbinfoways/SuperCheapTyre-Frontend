@@ -266,7 +266,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
     lastName: lastName.trim() === '' ? 'Last name is required' : '',
     email: email.trim() === '' ? 'Email is required' : (!emailRegex.test(email) ? 'Enter a valid email' : ''),
     phone: !phone ? 'Phone number is required' : (!isValidPhoneNumber(phone) ? 'Enter a valid phone number for selected country' : ''),
-    remarks: remarks.trim() === '' ? 'Remarks are required' : ''
+    // remarks: remarks.trim() === '' ? 'Remarks are required' : ''
   };
 
   const hasFieldErrors = Object.values(errors).some(Boolean);
@@ -314,10 +314,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       const subtotal = transformedCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const totalAmount = paymentOption === 'full' ? subtotal : subtotal * 0.25;
 
-      // Update cart items with the correct amount based on payment option
       const paymentCart = transformedCart.map(item => ({
         ...item,
-        // Adjust price per item based on payment option
         price: paymentOption === 'full' ? item.price : item.price * 0.25
       }));
 
@@ -335,9 +333,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       }
 
       const session = await response.json();
-      const TransId = session.transactionId;
 
-      localStorage.setItem('tkID', TransId);
+      localStorage.setItem('tkID', session.id);
 
       if (session.url) {
         window.location.href = session.url;
@@ -490,7 +487,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         </div>
 
         <div>
-          <label className="text-base font-normal mb-2 block">Remarks<span className="text-[#FF0000]">*</span></label>
+          <label className="text-base font-normal mb-2 block">Remarks</label>
           <textarea
             placeholder="Enter your appointment details here."
             rows="4"

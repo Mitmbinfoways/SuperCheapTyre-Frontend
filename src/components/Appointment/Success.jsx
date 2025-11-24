@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { secureGetItem, secureRemoveItem } from "../../Utils/encryption";
-import { createAppointment, createOrder } from "../../axios/axios";
-import { Toast } from '../../Utils/Toast';
+import {
+  createAppointment,
+  createOrder,
+  TransactionData,
+} from "../../axios/axios";
+import { Toast } from "../../Utils/Toast";
 
 const Success = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const hasRunRef = useRef(false);
   const appointmentData = secureGetItem("appointmentData", {});
@@ -18,7 +23,7 @@ const Success = () => {
       // Ensure cartItems is always an array
       const validCartItems = Array.isArray(cartItems) ? cartItems : [];
       // Get the payment option
-      const paymentOption = appointmentData.paymentOption || 'full';
+      const paymentOption = appointmentData.paymentOption || "full";
 
       if (!appointmentData || !appointmentData.date || !appointmentData.time) {
         throw new Error("Appointment data not found");
@@ -38,7 +43,7 @@ const Success = () => {
       );
 
       // Apply payment option logic
-      const totalAmount = paymentOption === 'full' ? subtotal : subtotal * 0.25;
+      const totalAmount = paymentOption === "full" ? subtotal : subtotal * 0.25;
 
       const appointmentPayload = {
         firstname: appointmentData.firstName,
@@ -64,10 +69,25 @@ const Success = () => {
         throw new Error("Appointment ID not found in response");
       }
 
-      // Get transaction ID from localStorage
-    const transactionId = localStorage.getItem('tkID');
+      const sessionId = localStorage.getItem("tkID");
+      let TID = null;
 
-    const orderPayload = {
+      if (sessionId) {
+        try {
+          const data = {
+            session_id: sessionId,
+          };
+          const fetchTransactionData = await TransactionData(data);
+          console.log(fetchTransactionData)
+          TID = fetchTransactionData?.data?.transactionId;
+        } catch (error) {
+          console.error("Error fetching transaction ID:", error);
+        }
+      }
+
+      console.log(TID)
+
+      const orderPayload = {
         items: validCartItems.map((item) => ({
           id: item._id || item.id,
           quantity: item.quantity,
@@ -84,8 +104,8 @@ const Success = () => {
           method: "stripe",
           status: paymentOption,
           amount: Number(totalAmount),
-          transactionId: transactionId, // Include the transaction ID
-           // Use the calculated amount based on payment option
+          transactionId: TID ? TID : null, // Include the transaction ID
+          // Use the calculated amount based on payment option
           // option: paymentOption // Include the payment option in payment details
         },
       };
@@ -118,7 +138,7 @@ const Success = () => {
       console.error("Error creating appointment/order:", error);
       toast.error(
         error.message ||
-        "Failed to create appointment and order. Please contact support."
+          "Failed to create appointment and order. Please contact support."
       );
     } finally {
       setIsLoading(false);
@@ -214,8 +234,9 @@ const Success = () => {
             <button
               onClick={handleGoHome}
               disabled={isLoading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ED1C24] hover:bg-[#c8141d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ED1C24] ${isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ED1C24] hover:bg-[#c8141d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ED1C24] ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {isLoading ? "Processing..." : "Go to Home"}
             </button>
