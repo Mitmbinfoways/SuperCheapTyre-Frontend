@@ -1,10 +1,9 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { images } from '../assets/data';
-import { Facebook, Twitter, Instagram, Phone, Mail } from 'lucide-react';
-import { LiaPhoneVolumeSolid } from "react-icons/lia";
-import { FaFacebookF, FaTwitter } from "react-icons/fa";
+import {  Mail } from 'lucide-react';
+import { FaFacebookF } from "react-icons/fa";
 import { ImInstagram } from "react-icons/im";
+
 const Footer = () => {
     return (
         <footer className="relative z-50 bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20]">
