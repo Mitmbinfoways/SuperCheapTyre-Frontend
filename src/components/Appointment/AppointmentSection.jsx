@@ -151,7 +151,7 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
         <p className="text-xs text-[#FF0000] mt-3">Please select a date.</p>
       )}
       <div className="text-xs sm:text-sm text-[#7A7A7A] mt-3 text-nowrap sm:mt-5 text-center sm:text-left">Appointments can be booked for 45 minutes only.</div>
-            {/* Legend for time slot status */}
+      {/* Legend for time slot status */}
       <div className="col-span-1 sm:col-span-2 flex py-3">
         <div className="flex flex-wrap gap-4 justify-center">
           <div className="flex items-center">
@@ -386,7 +386,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
             {appointmentString}
           </p>
         </div>
-        
+
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-800">
             <span className="font-medium">Payment Option:</span> {paymentOptionText}
@@ -459,8 +459,11 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
                 border: 1px solid #7E7E7E;
                 background-color: white;
               }
-              .react-phone-number-input--invalid {
+              .react-phone-number-input--invalid,
+              .react-phone-number-input--invalid:focus-within {
                 border-color: #FF0000 !important;
+                box-shadow: 0 0 0 0px #FF000060 !important;
+                border: 0.1px solid #FF0000 !important;
               }
               .react-phone-number-input .PhoneInputInput {
                 padding: 0.5rem;
@@ -476,8 +479,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
                 background-color: transparent;
               }
               .react-phone-number-input:focus-within {
-                border-color: #ED1C24;
-                box-shadow: 0 0 0 1px #ED1C24;
+                border-color: #7E7E7E;
+                box-shadow: 0 0 0 1px #3B82F690;
               }
             `}
           </style>

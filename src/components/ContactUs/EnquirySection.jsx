@@ -433,13 +433,17 @@ export const EnquirySection = () => {
                 {`
                   .react-phone-number-input {
                     width: 100%;
+                    height: 52px;
                     border-radius: 0.5rem;
                     border: 1px solid #7E7E7E;
                     overflow: hidden;
                   }
-                  .react-phone-number-input--invalid {
-                    border-color: #FF0000 !important;
-                  }
+                   .react-phone-number-input--invalid,
+                   .react-phone-number-input--invalid:focus-within {
+                     border-color: #FF0000 !important;
+                     box-shadow: 0 0 0 0px #FF000060 !important;
+                     border: 0.1px solid #FF0000 !important;
+                    }
                   .react-phone-number-input .PhoneInputInput {
                     padding: 0.5rem;
                     font-size: 0.875rem;
@@ -456,9 +460,9 @@ export const EnquirySection = () => {
                     border: none;
                   }
                   .react-phone-number-input:focus-within {
-                    border-color: #ED1C24;
-                    box-shadow: 0 0 0 1px #ED1C24;
-                  }
+                    border-color: #7E7E7E;
+                    box-shadow: 0 0 0 1px #3B82F690;
+                 }
                 `}
               </style>
               {errors.mobile && touched.mobile ? (
