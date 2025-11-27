@@ -75,6 +75,7 @@ function Tyre() {
               }${item.tyreSpecifications.speedRating}`
             : "",
           price: item.price,
+          pricetext: item.pricetext,
           isPopular: item.isPopular,
           rating: 4, // API doesn't return rating → you can adjust
           stock: item.stock || 0, // Add stock information

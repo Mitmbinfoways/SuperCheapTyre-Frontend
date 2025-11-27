@@ -1,4 +1,4 @@
-  import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ProductInfo from "./ProductInfo";
 import { getTyreById } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
@@ -275,19 +275,22 @@ const HeroSection = () => {
                   <p className="text-[20px] sm:text-[22px] md:text-[24px] font-medium leading-[25px] sm:leading-[27px] md:leading-[30px] font-['Lexend'] text-[#ff0000] mt-[8px]">
                     {formatCurrency(product.price)}
                   </p>
+                  <p className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#676767] mt-[4px]">
+                    {product.pricetext}
+                  </p>
                 </div>
 
                 {/* Product Description */}
                 <div
                   className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#6e6d6d] w-full mt-[6px]"
                 >
-                  <div 
+                  <div
                     className="pl-5 space-y-1"
-                    dangerouslySetInnerHTML={{ 
+                    dangerouslySetInnerHTML={{
                       __html: product.description
                         .replace(/<ul>/g, '<ul class="list-disc pl-4">')
                         .replace(/<ol>/g, '<ol class="list-decimal pl-4">')
-                    }} 
+                    }}
                   />
                 </div>
 

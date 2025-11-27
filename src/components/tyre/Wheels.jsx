@@ -67,6 +67,7 @@ function Wheels() {
             ? `${item.wheelSpecifications.size}" ${item.wheelSpecifications.diameter}"`
             : "N/A",
           price: item.price,
+          pricetext: item.pricetext,
           rating: 4, // API doesn't return rating → you can adjust
           stock: item.stock || 0, // Add stock information
         }));

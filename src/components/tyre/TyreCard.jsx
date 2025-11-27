@@ -12,6 +12,7 @@ const TyreCard = ({
   name,
   size,
   price,
+  pricetext,
   // rating,
   stock = 0,
   isPopular,
@@ -52,7 +53,7 @@ const TyreCard = ({
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    
+
     // Prevent adding to cart if required props are missing
     if (productId === undefined || image === undefined || price === undefined) {
       Toast({ message: "Invalid product data", type: "error" });
@@ -104,7 +105,7 @@ const TyreCard = ({
         String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
       );
       Toast({ message: "Added to cart", type: "success" });
-      
+
       // Redirect to cart page
       navigate("/cart");
     } catch (error) {
@@ -169,17 +170,19 @@ const TyreCard = ({
 
         <div className="text-lg font-lexend font-medium text-black pb-5">
           {formatCurrency(price)}
+          <p className="text-xs text-[#7A7A7A] mt-1 line-clamp-1">
+            {pricetext}
+          </p>
         </div>
       </div>
 
       {/* Add to Cart Button - Disabled when out of stock */}
       <div className=" flex items-center absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 justify-center space-x-4">
         <button
-          className={`text-white rounded-lg sm:py-3 py-2 sm:px-8 px-4 text-nowrap font-lexend font-medium text-sm transition-colors ${
-            stock === 0
-              ? "bg-[#D7D7D7]  cursor-not-allowed"
-              : "bg-[#ED1C24]  hover:bg-red-700 cursor-pointer"
-          }`}
+          className={`text-white rounded-lg sm:py-3 py-2 sm:px-8 px-4 text-nowrap font-lexend font-medium text-sm transition-colors ${stock === 0
+            ? "bg-[#D7D7D7]  cursor-not-allowed"
+            : "bg-[#ED1C24]  hover:bg-red-700 cursor-pointer"
+            }`}
           onClick={handleAddToCart}
           disabled={stock === 0}
         >
