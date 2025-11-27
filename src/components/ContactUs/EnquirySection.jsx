@@ -423,6 +423,11 @@ export const EnquirySection = () => {
                   // Mark field as touched
                   setTouched((prev) => ({ ...prev, mobile: true }));
                 }}
+                onCountryChange={(country) => {
+                  // Clear the phone number when country changes
+                  setFormData((prev) => ({ ...prev, mobile: '' }));
+                  setErrors((prev) => ({ ...prev, mobile: "" }));
+                }}
                 international
                 limitMaxLength={true}
                 defaultCountry="AU"

@@ -37,11 +37,11 @@ const Hero = ({ homeData }) => {
   const fetchBanners = async () => {
     try {
       setLoading(true);
-      
+
       if (homeData.banners) {
-        const activeBanners = homeData.banners.filter(
-          banner => banner.isActive && !banner.isDelete
-        );
+        const activeBanners = homeData.banners
+          .filter(banner => banner.isActive && !banner.isDelete)
+          .sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
         setBanners(activeBanners);
       }
     } catch (error) {
@@ -68,7 +68,7 @@ const Hero = ({ homeData }) => {
   // Component to render either video or image based on file type
   const renderMedia = (src, alt, className, isDesktop = true, onVideoEnd) => {
     if (!src) return null;
-    
+
     if (isVideoFile(src)) {
       return (
         <video
@@ -108,17 +108,17 @@ const Hero = ({ homeData }) => {
     if (autoplayTimeoutRef.current) {
       clearTimeout(autoplayTimeoutRef.current);
     }
-    
+
     // Update current slide index
     currentSlideIndexRef.current = swiper.activeIndex;
-    
+
     // Reset all videos when slide changes
     const videos = document.querySelectorAll('.hero-carousel video');
     videos.forEach(video => {
       video.currentTime = 0;
       video.play().catch(e => console.log("Autoplay prevented:", e));
     });
-    
+
     // Start autoplay logic for the new slide
     handleAutoplay();
   };
@@ -136,24 +136,24 @@ const Hero = ({ homeData }) => {
     if (autoplayTimeoutRef.current) {
       clearTimeout(autoplayTimeoutRef.current);
     }
-    
+
     if (swiperRef.current && swiperRef.current.swiper) {
       const activeIndex = swiperRef.current.swiper.activeIndex;
       const activeBanner = banners[activeIndex];
-      
+
       // Update current slide index
       currentSlideIndexRef.current = activeIndex;
-      
+
       // Check if current banner has a video
       const isLaptopVideo = activeBanner && isVideoFile(activeBanner.laptopImage);
       const isMobileVideo = activeBanner && isVideoFile(activeBanner.mobileImage);
-      
+
       // If it's a video, don't auto advance - let the video end handler do it
       if (isLaptopVideo || isMobileVideo) {
         // Don't advance for videos, let them finish naturally
         return;
       }
-      
+
       // For images, use the standard 5 second delay
       autoplayTimeoutRef.current = setTimeout(() => {
         if (swiperRef.current && swiperRef.current.swiper) {
@@ -172,7 +172,7 @@ const Hero = ({ homeData }) => {
     if (swiper) {
       currentSlideIndexRef.current = swiper.activeIndex;
     }
-    
+
     // Start the manual autoplay logic
     setTimeout(() => {
       handleAutoplay();
@@ -206,32 +206,32 @@ const Hero = ({ homeData }) => {
                 {banners.map((banner, index) => {
                   const isFirstSlide = index === 0;
                   return (
-                  <SwiperSlide key={banner._id}>
-                    <div className="relative w-full">
-                      {/* Desktop Media */}
-                      <div className="w-full h-full aspect-video hidden md:block">
-                        {renderMedia(
-                          banner.laptopImage,
-                          "Banner",
-                          "w-full h-full object-cover object-center",
-                          true,
-                          handleVideoEnd
-                        )}
+                    <SwiperSlide key={banner._id}>
+                      <div className="relative w-full">
+                        {/* Desktop Media */}
+                        <div className="w-full h-full aspect-video hidden md:block">
+                          {renderMedia(
+                            banner.laptopImage,
+                            "Banner",
+                            "w-full h-full object-cover object-center",
+                            true,
+                            handleVideoEnd
+                          )}
+                        </div>
+
+                        {/* Mobile Media */}
+                        <div className="w-full h-full aspect-[4/5] md:hidden block">
+                          {renderMedia(
+                            banner.mobileImage,
+                            "Banner",
+                            "w-full h-full object-cover object-center",
+                            false,
+                            handleVideoEnd
+                          )}
+                        </div>
                       </div>
-                      
-                      {/* Mobile Media */}
-                      <div className="w-full h-full aspect-[4/5] md:hidden block">
-                        {renderMedia(
-                          banner.mobileImage,
-                          "Banner",
-                          "w-full h-full object-cover object-center",
-                          false,
-                          handleVideoEnd
-                        )}
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                );
+                    </SwiperSlide>
+                  );
                 })}
               </Swiper>
 

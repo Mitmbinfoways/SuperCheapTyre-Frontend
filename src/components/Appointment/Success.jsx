@@ -13,6 +13,7 @@ const Success = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   const hasRunRef = useRef(false);
   const appointmentData = secureGetItem("appointmentData", {});
 
@@ -85,8 +86,6 @@ const Success = () => {
         }
       }
 
-      console.log(TID)
-
       const orderPayload = {
         items: validCartItems.map((item) => ({
           id: item._id || item.id,
@@ -105,8 +104,6 @@ const Success = () => {
           status: paymentOption,
           amount: Number(totalAmount),
           transactionId: TID ? TID : null, // Include the transaction ID
-          // Use the calculated amount based on payment option
-          // option: paymentOption // Include the payment option in payment details
         },
       };
 
@@ -115,6 +112,8 @@ const Success = () => {
       if (orderResponse?.data?.statusCode !== 201) {
         throw new Error("Failed to create order");
       }
+
+      setOrderId(orderResponse?.data?.data?._id);
 
       secureRemoveItem("cartItems");
       secureRemoveItem("cartItemsForOrder");
@@ -138,11 +137,20 @@ const Success = () => {
       console.error("Error creating appointment/order:", error);
       toast.error(
         error.message ||
-          "Failed to create appointment and order. Please contact support."
+        "Failed to create appointment and order. Please contact support."
       );
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const downloadInvoice = (orderId) => {
+    const link = document.createElement("a");
+    link.href = `${import.meta.env.VITE_BASE_URL}/api/v1/order/download/${orderId}`;
+    link.setAttribute("download", `invoice-${orderId}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   const handleGoHome = () => {
@@ -234,11 +242,20 @@ const Success = () => {
             <button
               onClick={handleGoHome}
               disabled={isLoading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ED1C24] hover:bg-[#c8141d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ED1C24] ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`w-full mb-3 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ED1C24] hover:bg-[#c8141d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ED1C24] ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {isLoading ? "Processing..." : "Go to Home"}
+            </button>
+            <button
+              onClick={() => downloadInvoice(orderId)}
+              disabled={!orderId}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${!orderId
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+                } focus:outline-none focus:ring-2 focus:ring-offset-2`}
+            >
+              {!orderId ? "Generating Invoice..." : "Download Invoice"}
             </button>
           </div>
         </div>

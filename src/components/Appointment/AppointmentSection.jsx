@@ -282,8 +282,56 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       const validCart = Array.isArray(cart) ? cart : [];
 
       if (!validCart.length) {
-        Toast({ message: 'Please add at least one tyre to cart', type: 'error' });
-        navigate('/tyres');
+        // Show modal to select product type
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+        modal.innerHTML = `
+          <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl relative">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            <div class="text-center">
+              <h3 class="text-xl font-lexend font-semibold text-gray-900 mb-2">No Product Selected Yet!</h3>
+              <p class="text-gray-500 mb-6">To continue with your booking, please choose a product first:</p>
+              <div class="flex flex-col gap-3">
+                <button id="tyres-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                  Select Tyres
+                </button>
+                <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                  Select Wheels
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        const tyresBtn = modal.querySelector('#tyres-btn');
+        const wheelsBtn = modal.querySelector('#wheels-btn');
+        const closeModalBtn = modal.querySelector('#close-modal-btn');
+        
+        const close = () => {
+          document.body.removeChild(modal);
+        };
+        
+        tyresBtn.addEventListener('click', () => {
+          navigate('/tyres');
+          close();
+        });
+        
+        wheelsBtn.addEventListener('click', () => {
+          navigate('/wheels');
+          close();
+        });
+        closeModalBtn.addEventListener('click', close);
+        
+        // Close if clicked outside
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) close();
+        });
         return;
       }
 
@@ -383,7 +431,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         <div className="bg-[#F4F4F4] border border-[#7E7E7E] rounded-lg p-4">
           <p className="text-xs text-[#FF0000] leading-relaxed tracking-wide">
             <span className="text-[#FF0000]">Selected Appointment:</span><br />
-            {appointmentString}
+            <span className={`${appointmentString === "No appointment selected" ? "text-[#FF0000]" : "text-green-600"}`}>{appointmentString}</span>
           </p>
         </div>
 
@@ -447,7 +495,12 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
             placeholder="Enter your Phone Number"
             value={phone || ''}
             onChange={setPhone}
+            onCountryChange={(country) => {
+              // Clear the phone number when country changes
+              setPhone('');
+            }}
             limitMaxLength={true}
+            
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             className={`react-phone-number-input ${errors.phone && touched.phone ? 'react-phone-number-input--invalid' : ''}`}
           />

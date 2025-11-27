@@ -6,6 +6,11 @@ import { secureGetItem, secureSetItem } from "../../Utils/encryption";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import { Toast } from "../../Utils/Toast";
 import WheelProductInfo from "./WheelProductInfo";
+// Import React Icons from appropriate libraries
+import { FaWeight, FaTachometerAlt } from "react-icons/fa";
+import { GiWeightScale } from "react-icons/gi";
+import { MdSpeed } from "react-icons/md";
+import { BsSpeedometer2 } from "react-icons/bs";
 
 const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
@@ -30,21 +35,21 @@ const ProductInfo = ({ product }) => {
       value: product?.brand || "N/A",
       icon: "/productdetails/brand.svg",
     },
-    {
-      label: "Size :",
-      value: product?.tyreSpecifications
-        ? `${product.tyreSpecifications.width}/${
-            product.tyreSpecifications.profile
-          }${" "}${product.tyreSpecifications.diameter}${" "}${
-            product.tyreSpecifications.loadRating
-          }${product.tyreSpecifications.speedRating}`
-        : "N/A",
-      icon: "/productdetails/size.svg",
-    },
+    // {
+    //   label: "Size :",
+    //   value: product?.tyreSpecifications
+    //     ? `${product.tyreSpecifications.width}/${
+    //         product.tyreSpecifications.profile
+    //       }${" "}${product.tyreSpecifications.diameter}${" "}${
+    //         product.tyreSpecifications.loadRating
+    //       }${product.tyreSpecifications.speedRating}`
+    //     : "N/A",
+    //   icon: "/productdetails/size.svg",
+    // },
     // { label: 'Bolt pattern :', value: 'Bolt pattern', icon: '/productdetails/bolt.svg' },
     // { label: 'Offset :', value: 'offset', icon: '/productdetails/Offset.svg' },
     {
-      label: "Tread type :",
+      label: "Pattern :",
       value: product?.tyreSpecifications?.pattern || "N/A",
       icon: "/productdetails/tread.svg",
     },
@@ -59,6 +64,37 @@ const ProductInfo = ({ product }) => {
       icon: "/productdetails/stock.svg",
     },
   ];
+
+  // Add individual tyre specification fields
+  if (product?.tyreSpecifications) {
+    specifications.splice(1, 0, 
+      {
+        label: "Width :",
+        value: product.tyreSpecifications.width || "N/A",
+        icon: <FaWeight className="w-[20px] h-[20px] text-gray-700" />,
+      },
+      {
+        label: "Profile :",
+        value: product.tyreSpecifications.profile || "N/A",
+        icon: <BsSpeedometer2 className="w-[20px] h-[20px] text-gray-700" />,
+      },
+      {
+        label: "Diameter :",
+        value: product.tyreSpecifications.diameter || "N/A",
+        icon: <GiWeightScale className="w-[20px] h-[20px] text-gray-700" />,
+      },
+      {
+        label: "Load Rating :",
+        value: product.tyreSpecifications.loadRating || "N/A",
+        icon: <FaTachometerAlt className="w-[20px] h-[20px] text-gray-700" />,
+      },
+      {
+        label: "Speed Rating :",
+        value: product.tyreSpecifications.speedRating || "N/A",
+        icon: <MdSpeed className="w-[20px] h-[20px] text-gray-700" />,
+      }
+    );
+  }
 
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
@@ -152,11 +188,15 @@ const ProductInfo = ({ product }) => {
                   index > 0 ? "mt-[-2px]" : ""
                 } ${index === specifications?.length - 1 ? "mb-[8px]" : ""}`}
               >
-                <img
-                  src={spec?.icon}
-                  alt="specification icon"
-                  className="w-[20px] h-[20px] object-contain flex-shrink-0"
-                />
+                {typeof spec?.icon === 'string' ? (
+                  <img
+                    src={spec?.icon}
+                    alt="specification icon"
+                    className="w-[20px] h-[20px] object-contain flex-shrink-0"
+                  />
+                ) : (
+                  spec?.icon
+                )}
                 <span className="text-[14px] sm:text-[15px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-black border border-white py-[10px] px-[10px] w-[140px] flex-shrink-0">
                   {spec?.label}
                 </span>

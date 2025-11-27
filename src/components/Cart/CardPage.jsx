@@ -102,7 +102,12 @@ const CartPage = () => {
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     modal.innerHTML = `
-      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl">
+      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl relative">
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
         <div class="text-center">
           <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
             <svg class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -127,6 +132,7 @@ const CartPage = () => {
     
     const confirmBtn = modal.querySelector('#confirm-btn');
     const cancelBtn = modal.querySelector('#cancel-btn');
+    const closeModalBtn = modal.querySelector('#close-modal-btn');
     
     const close = () => {
       document.body.removeChild(modal);
@@ -138,6 +144,7 @@ const CartPage = () => {
     });
     
     cancelBtn.addEventListener('click', close);
+    closeModalBtn.addEventListener('click', close);
     
     // Close if clicked outside
     modal.addEventListener('click', (e) => {
@@ -167,7 +174,59 @@ const CartPage = () => {
               <div className="text-center py-8">
                 <p className="text-gray-500 text-lg">Your cart is empty</p>
                 <button 
-                  onClick={() => navigate('/tyres')} 
+                  onClick={() => {
+                    // Show modal to select product type
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                    modal.innerHTML = `
+                      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl relative">
+                        <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                        </button>
+                        <div class="text-center">
+                          <h3 class="text-xl font-lexend font-semibold text-gray-900 mb-2">Select Product Type</h3>
+                          <p class="text-gray-500 mb-6">What would you like to add to your cart?</p>
+                          <div class="flex flex-col gap-3">
+                            <button id="tyres-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                              Tyres
+                            </button>
+                            <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                              Wheels
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    
+                    const tyresBtn = modal.querySelector('#tyres-btn');
+                    const wheelsBtn = modal.querySelector('#wheels-btn');
+                    const servicesBtn = modal.querySelector('#services-btn');
+                    const closeModalBtn = modal.querySelector('#close-modal-btn');
+                    
+                    const close = () => {
+                      document.body.removeChild(modal);
+                    };
+                    
+                    tyresBtn.addEventListener('click', () => {
+                      navigate('/tyres');
+                      close();
+                    });
+                    
+                    wheelsBtn.addEventListener('click', () => {
+                      navigate('/wheels');
+                      close();
+                    });
+                    closeModalBtn.addEventListener('click', close);
+                    
+                    // Close if clicked outside
+                    modal.addEventListener('click', (e) => {
+                      if (e.target === modal) close();
+                    });
+                  }} 
                   className="mt-4 bg-primary text-white font-lexend font-semibold text-xl py-3 px-6 rounded-lg hover:bg-red-700 transition-colors"
                 >
                   Continue Shopping
@@ -177,7 +236,61 @@ const CartPage = () => {
             {cartItems.length > 0 && (
               <>
                 <hr className="border-border-gray" />
-                <button onClick={() => navigate('/tyres')} className="w-full bg-primary text-white font-lexend font-semibold text-xl py-4 rounded-lg hover:bg-red-700 transition-colors">
+                <button 
+                  onClick={() => {
+                    // Show modal to select product type
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                    modal.innerHTML = `
+                      <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl relative">
+                        <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                        </button>
+                        <div class="text-center">
+                          <h3 class="text-xl font-lexend font-semibold text-gray-900 mb-2">Select Product Type</h3>
+                          <p class="text-gray-500 mb-6">What would you like to add to your cart?</p>
+                          <div class="flex flex-col gap-3">
+                            <button id="tyres-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                              Tyres
+                            </button>
+                            <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                              Wheels
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    
+                    const tyresBtn = modal.querySelector('#tyres-btn');
+                    const wheelsBtn = modal.querySelector('#wheels-btn');
+                    const servicesBtn = modal.querySelector('#services-btn');
+                    const closeModalBtn = modal.querySelector('#close-modal-btn');
+                    
+                    const close = () => {
+                      document.body.removeChild(modal);
+                    };
+                    
+                    tyresBtn.addEventListener('click', () => {
+                      navigate('/tyres');
+                      close();
+                    });
+                    
+                    wheelsBtn.addEventListener('click', () => {
+                      navigate('/wheels');
+                      close();
+                    });                   
+                    closeModalBtn.addEventListener('click', close);
+                    
+                    // Close if clicked outside
+                    modal.addEventListener('click', (e) => {
+                      if (e.target === modal) close();
+                    });
+                  }} 
+                  className="w-full bg-primary text-white font-lexend font-semibold text-xl py-4 rounded-lg hover:bg-red-700 transition-colors">
                   Add Another Product
                 </button>
               </>
