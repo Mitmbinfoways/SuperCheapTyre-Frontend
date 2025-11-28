@@ -31,27 +31,32 @@ const CardContent = React.forwardRef(function CardContent(
   return <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
 });
 
-export const ContactSection = () => {
+export const ContactSection = ({ contactData }) => {
+  
   const contactCards = [
     {
       title: "Call Us",
-      content: "(03) 9794 2222\n24/7 Emergency Line",
+      content: contactData?.phone
+        ? `${contactData.phone}\n24/7 Emergency Line`
+        : "0397936190\n24/7 Emergency Line",
       icon: "/contactus/call.svg",
       delay: "200ms",
-      href: "tel:(03)97942222",
+      href: contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97942222",
     },
     {
       title: "Hours",
-      content: "Mon-Fri: 9AM-5PM\nSat: 9AM-3PM",
+      content: contactData?.openingHours
+        ? contactData.openingHours.map((h) => `${h.day}: ${h.time}`).join("\n")
+        : "Mon-Fri: 9AM-5PM\nSat: 9AM-3PM",
       icon: "/contactus/clock.svg",
       delay: "400ms",
     },
     {
       title: "Location",
-      content: "114 Hammond Rd, Dandenong South VIC 3175, Australia",
+      content: contactData?.address || "114 Hammond Rd, Dandenong South VIC 3175, Australia",
       icon: "/contactus/location.svg",
       delay: "600ms",
-      href: "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D"
+      href: contactData?.mapLocation || "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
     },
   ];
 

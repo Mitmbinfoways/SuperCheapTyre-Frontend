@@ -106,4 +106,8 @@ export const getBanners = async (payload) => {
   return axiosInstance.get(`/api/v1/banner?isActive=${isActive}`);
 };
 
+export const getContactInfoDetail = async () => {
+  return axiosInstance.get(`/api/v1/contact-info`);
+};
+
 export default axiosInstance;

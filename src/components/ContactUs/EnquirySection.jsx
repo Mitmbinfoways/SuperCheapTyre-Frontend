@@ -131,7 +131,42 @@ const Textarea = React.forwardRef(function Textarea(
   );
 });
 
-export const EnquirySection = () => {
+const getMapEmbedUrl = (url) => {
+  const defaultEmbed = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin";
+
+  if (!url) return defaultEmbed;
+
+  // Check if it's already an embed URL
+  if (url.includes("/embed")) return url;
+
+  try {
+    let query = "";
+    // Extract place name from /place/Place+Name
+    const placeMatch = url.match(/\/maps\/place\/([^/]+)/);
+    if (placeMatch && placeMatch[1]) {
+      query = placeMatch[1];
+    } else {
+      // Fallback to coordinates if present
+      const coordsMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      if (coordsMatch) {
+        query = `${coordsMatch[1]},${coordsMatch[2]}`;
+      }
+    }
+
+    if (query) {
+      // Extract zoom level if present, default to 15
+      const zoomMatch = url.match(/,(\d+(\.\d+)?)z/);
+      const zoom = zoomMatch ? zoomMatch[1] : "15";
+      return `https://maps.google.com/maps?q=${query}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`;
+    }
+  } catch (error) {
+    console.error("Error parsing map URL:", error);
+  }
+
+  return defaultEmbed;
+};
+
+export const EnquirySection = ({ contactData }) => {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -239,20 +274,20 @@ export const EnquirySection = () => {
     {
       icon: "/contactus/call.svg",
       title: "Phone",
-      value: "(03) 97936190",
-      link: "tel:(03)97936190",
+      value: contactData?.phone || "(03) 97936190",
+      link: contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97936190",
     },
     {
       icon: "/contactus/email.svg",
       title: "Email",
-      value: "supercheaptyredandenong@gmail.com",
-      link: "mailto:supercheaptyredandenong@gmail.com",
+      value: contactData?.email || "supercheaptyredandenong@gmail.com",
+      link: contactData?.email ? `mailto:${contactData.email}` : "mailto:supercheaptyredandenong@gmail.com",
     },
     {
       icon: "/contactus/location.svg",
       title: "Address",
-      value: "114 Hammond Rd, Dandenong South VIC 3175, Australia",
-      link: "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+      value: contactData?.address || "114 Hammond Rd, Dandenong South VIC 3175, Australia",
+      link: contactData?.mapLocation || "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
     },
   ];
 
@@ -280,7 +315,7 @@ export const EnquirySection = () => {
                   <iframe
                     title="Supercheap Tyres Dandenong Location"
                     className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-lg"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin"
+                    src={getMapEmbedUrl(contactData?.mapLocation)}
                     style={{ border: 0 }}
                     allowFullScreen=""
                     loading="lazy"
@@ -338,13 +373,24 @@ export const EnquirySection = () => {
                           Opening Hours
                         </div>
                         <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal]">
-                          Mon - Fri: 9:00am - 5pm
-                          <br />
-                          Sat: 9:00am - 3pm
-                          <br />
-                          Sun: Closed
-                          <br />
-                          Please check Google for public holiday opening hours.
+                          {contactData?.openingHours ? (
+                            contactData.openingHours.map((h, i) => (
+                              <React.Fragment key={i}>
+                                {h.day}: {h.time}
+                                <br />
+                              </React.Fragment>
+                            ))
+                          ) : (
+                            <>
+                              Mon - Fri: 9:00am - 5pm
+                              <br />
+                              Sat: 9:00am - 3pm
+                              <br />
+                              Sun: Closed
+                              <br />
+                            </>
+                          )}
+                          {contactData?.openingHoursNote || "Please check Google for public holiday opening hours."}
                         </div>
                       </div>
                     </div>

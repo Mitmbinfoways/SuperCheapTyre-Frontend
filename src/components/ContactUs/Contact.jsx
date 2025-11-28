@@ -1,8 +1,24 @@
+import { useEffect, useState } from "react";
 import { ContactSection } from "./ContactSection";
 import { EnquirySection } from "./EnquirySection";
-
+import { getContactInfoDetail } from "../../axios/axios";
 
 export const ContactUs = () => {
+  const [contactData, setContactData] = useState(null);
+
+  const fetchContactInfo = async () => {
+    try {
+      const response = await getContactInfoDetail();
+      setContactData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching contact info:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContactInfo();
+  }, []);
+
   return (
     <div
       className="relative w-full max-w-screen-2xl mx-auto  min-h-screen bg-[#F5F5F5] overflow-hidden">
@@ -23,11 +39,11 @@ export const ContactUs = () => {
       <div className="relative w-full">
 
         <div className="translate-y-[-1rem] animate-fade-up  [--animation-delay:200ms]">
-          <ContactSection />
+          <ContactSection contactData={contactData} />
         </div>
 
         <div className="translate-y-[-1rem] animate-fade-up  [--animation-delay:500ms]">
-          <EnquirySection />
+          <EnquirySection contactData={contactData} />
         </div>
       </div>
     </div>

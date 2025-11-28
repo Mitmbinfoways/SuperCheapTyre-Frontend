@@ -1,10 +1,27 @@
 import { Link } from 'react-router-dom';
 import { images } from '../assets/data';
-import {  Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { FaFacebookF } from "react-icons/fa";
 import { ImInstagram } from "react-icons/im";
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { getContactInfoDetail } from '../axios/axios';
 
 const Footer = () => {
+    const [contactData, setContactData] = useState(null);
+
+    const fetchContactInfo = async () => {
+        try {
+            const response = await getContactInfoDetail();
+            setContactData(response.data.data);
+        } catch (error) {
+            console.error("Error fetching contact info:", error);
+        }
+    };
+    useEffect(() => {
+        fetchContactInfo();
+    }, []);
+
     return (
         <footer className="relative z-50 bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20]">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -31,8 +48,8 @@ const Footer = () => {
                             <li><Link to="/wheels" className="hover:text-primary transition-colors">Wheels</Link></li>
                             <li><Link to="/appointment" className="hover:text-primary transition-colors">Book Appointment</Link></li>
                             {/* <li><Link to="#" className="hover:text-primary transition-colors">Services</Link></li> */}
-                            {/* <li><Link to="#" className="hover:text-primary transition-colors">My Invoice</Link></li> */}   
-                            <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>                         
+                            {/* <li><Link to="#" className="hover:text-primary transition-colors">My Invoice</Link></li> */}
+                            <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
                             <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
                             <li><Link to="/contactus" className="hover:text-primary transition-colors">Contact Us</Link></li>
                         </ul>
@@ -45,16 +62,16 @@ const Footer = () => {
                             <ul className="space-y-2 sm:space-y-3 font-plus-jakarta text-white text-sm sm:text-base">
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
                                     <img src='/contactus/call.svg' size={16} className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
-                                    <a href="tel:(03)97936190">
-                                        (03) 9793 6190
+                                    <a href={`tel:${contactData?.phone || "(03)97936190"}`}>
+                                        {contactData?.phone || "(03)97936190"}
                                     </a>
                                 </li>
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
                                     <Mail size={16} className="sm:w-5 sm:h-5" />
                                     <a
-                                        href="mailto:supercheaptyredandenong@gmail.com"
+                                        href={`mailto:${contactData?.email || "supercheaptyredandenong@gmail.com"}`}
                                     >
-                                        supercheaptyredandenong@gmail.com
+                                        {contactData?.email || "supercheaptyredandenong@gmail.com"}
                                     </a>
                                 </li>
                             </ul>

@@ -9,7 +9,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { secureGetItem } from '../Utils/encryption';
-import { getAllTyres } from '../axios/axios'; // Import the API function
+import { getAllTyres, getContactInfoDetail } from '../axios/axios'; // Import the API function
 import { getTyreImageUrl, formatCurrency } from '../Utils/Utils'; // Import image utility and formatCurrency
 
 const Header = () => {
@@ -20,6 +20,8 @@ const Header = () => {
   const [showSuggestions, setShowSuggestions] = useState(false); // State to toggle suggestions dropdown
   const searchRef = useRef(null); // Ref for search container
   const navigate = useNavigate(); // Hook for navigation
+  const [contactData, setContactData] = useState(null);
+
 
   useEffect(() => {
     const onStorage = (e) => {
@@ -128,6 +130,19 @@ const Header = () => {
     setIsMenuOpen(false); // Close mobile menu
   };
 
+  const fetchContactInfo = async () => {
+    try {
+      const response = await getContactInfoDetail();
+      setContactData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching contact info:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContactInfo();
+  }, []);
+
   return (
     <header className="relative z-50">
       {/* Main Row */}
@@ -144,11 +159,11 @@ const Header = () => {
                 <div className="flex items-center gap-8">
                   <div className="flex items-center space-x-3 -mx-5">
                     <a
-                      href="tel:(03)97936190"
+                      href={contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97936190"}
                       className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer -mx-1"
                     >
-                      <FaPhoneAlt size={14} className="hidden sm:block xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4 " />
-                      <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">(03) 9793 6190</span>
+                      <FaPhoneAlt size={14} className="hidden sm:block xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4" />
+                      <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">{contactData?.phone || "(03) 9793 6190"}</span>
                     </a>
                   </div>
 
