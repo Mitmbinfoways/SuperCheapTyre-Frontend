@@ -26,9 +26,8 @@ export const getTyres = async (params = {}) => {
   });
 
   // Construct the URL with query parameters
-  const url = `/api/v1/product${
-    queryParams.toString() ? `?${queryParams.toString()}` : ""
-  }`;
+  const url = `/api/v1/product${queryParams.toString() ? `?${queryParams.toString()}` : ""
+    }`;
 
   return axiosInstance.get(url);
 };
@@ -108,6 +107,10 @@ export const getBanners = async (payload) => {
 
 export const getContactInfoDetail = async () => {
   return axiosInstance.get(`/api/v1/contact-info`);
+};
+
+export const getAllServices = async (params = {}) => {
+  return axiosInstance.get(`/api/v1/service`, { params });
 };
 
 export default axiosInstance;

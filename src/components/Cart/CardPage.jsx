@@ -39,13 +39,13 @@ const CartPage = () => {
 
         // Wait for all promises to resolve
         const stockResults = await Promise.all(stockPromises);
-        
+
         // Convert to an object for easy lookup
         const stockMap = {};
         stockResults.forEach(({ id, stock }) => {
           stockMap[id] = stock;
         });
-        
+
         setProductStocks(stockMap);
       } catch (error) {
         console.error("Error fetching product stocks:", error);
@@ -63,7 +63,7 @@ const CartPage = () => {
       console.error('Cart items is not an array:', cartItems);
       return;
     }
-    
+
     const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const discount = subtotal * 0.20;
     const delivery = 15;
@@ -72,7 +72,7 @@ const CartPage = () => {
     secureSetItem('cartItems', cartItems);
     const cartCount = cartItems.reduce((s, it) => s + (it.quantity || 1), 0);
     localStorage.setItem('cartCount', String(cartCount));
-    
+
     // Dispatch storage event to immediately update cart count in header
     window.dispatchEvent(new StorageEvent('storage', {
       key: 'cartCount',
@@ -82,14 +82,14 @@ const CartPage = () => {
 
   const handleQuantityChange = (id, newQuantity) => {
     if (newQuantity < 1) return;
-    
+
     // Check stock limitation
     const productStock = productStocks[id];
     if (productStock !== undefined && newQuantity > productStock) {
       // Don't allow quantity to exceed stock
       return;
     }
-    
+
     setCartItems(prevItems =>
       prevItems.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
@@ -127,25 +127,25 @@ const CartPage = () => {
         </div>
       </div>
     `;
-    
+
     document.body.appendChild(modal);
-    
+
     const confirmBtn = modal.querySelector('#confirm-btn');
     const cancelBtn = modal.querySelector('#cancel-btn');
     const closeModalBtn = modal.querySelector('#close-modal-btn');
-    
+
     const close = () => {
       document.body.removeChild(modal);
     };
-    
+
     confirmBtn.addEventListener('click', () => {
       setCartItems(prevItems => prevItems.filter(item => item.id !== id));
       close();
     });
-    
+
     cancelBtn.addEventListener('click', close);
     closeModalBtn.addEventListener('click', close);
-    
+
     // Close if clicked outside
     modal.addEventListener('click', (e) => {
       if (e.target === modal) close();
@@ -153,7 +153,7 @@ const CartPage = () => {
   };
 
   return (
-      <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 py-5">
+    <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 py-5">
       <h1 className="font-lexend font-medium text-3xl text-primary mb-7 px-3">Your Cart</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="lg:col-span-2 space-y-6">
@@ -173,7 +173,7 @@ const CartPage = () => {
             {cartItems.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-500 text-lg">Your cart is empty</p>
-                <button 
+                <button
                   onClick={() => {
                     // Show modal to select product type
                     const modal = document.createElement('div');
@@ -195,38 +195,45 @@ const CartPage = () => {
                             <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
                               Wheels
                             </button>
+                            <button id="services-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                              Services
+                            </button>
                           </div>
                         </div>
                       </div>
                     `;
-                    
+
                     document.body.appendChild(modal);
-                    
+
                     const tyresBtn = modal.querySelector('#tyres-btn');
                     const wheelsBtn = modal.querySelector('#wheels-btn');
                     const servicesBtn = modal.querySelector('#services-btn');
                     const closeModalBtn = modal.querySelector('#close-modal-btn');
-                    
+
                     const close = () => {
                       document.body.removeChild(modal);
                     };
-                    
+
                     tyresBtn.addEventListener('click', () => {
                       navigate('/tyres');
                       close();
                     });
-                    
+
                     wheelsBtn.addEventListener('click', () => {
                       navigate('/wheels');
                       close();
                     });
+                    servicesBtn.addEventListener('click', () => {
+                      navigate('/services');
+                      close();
+                    });
                     closeModalBtn.addEventListener('click', close);
-                    
+
                     // Close if clicked outside
                     modal.addEventListener('click', (e) => {
                       if (e.target === modal) close();
                     });
-                  }} 
+                  }}
                   className="mt-4 bg-primary text-white font-lexend font-semibold text-xl py-3 px-6 rounded-lg hover:bg-red-700 transition-colors"
                 >
                   Continue Shopping
@@ -236,7 +243,7 @@ const CartPage = () => {
             {cartItems.length > 0 && (
               <>
                 <hr className="border-border-gray" />
-                <button 
+                <button
                   onClick={() => {
                     // Show modal to select product type
                     const modal = document.createElement('div');
@@ -258,38 +265,45 @@ const CartPage = () => {
                             <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
                               Wheels
                             </button>
+                            <button id="services-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                              Services
+                            </button>
                           </div>
                         </div>
                       </div>
                     `;
-                    
+
                     document.body.appendChild(modal);
-                    
+
                     const tyresBtn = modal.querySelector('#tyres-btn');
                     const wheelsBtn = modal.querySelector('#wheels-btn');
                     const servicesBtn = modal.querySelector('#services-btn');
                     const closeModalBtn = modal.querySelector('#close-modal-btn');
-                    
+
                     const close = () => {
                       document.body.removeChild(modal);
                     };
-                    
+
                     tyresBtn.addEventListener('click', () => {
                       navigate('/tyres');
                       close();
                     });
-                    
+
                     wheelsBtn.addEventListener('click', () => {
                       navigate('/wheels');
                       close();
-                    });                   
+                    });
+                    servicesBtn.addEventListener('click', () => {
+                      navigate('/services');
+                      close();
+                    });
                     closeModalBtn.addEventListener('click', close);
-                    
+
                     // Close if clicked outside
                     modal.addEventListener('click', (e) => {
                       if (e.target === modal) close();
                     });
-                  }} 
+                  }}
                   className="w-full bg-primary text-white font-lexend font-semibold text-xl py-4 rounded-lg hover:bg-red-700 transition-colors">
                   Add Another Product
                 </button>

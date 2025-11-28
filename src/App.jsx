@@ -13,6 +13,7 @@ const Wheels = lazy(() => import('./components/tyre/Wheels'));
 const About = lazy(() => import('./components/About/About'));
 const BlogList = lazy(() => import('./components/Blog/BlogList'));
 const BlogDetail = lazy(() => import('./components/Blog/BlogDetail'));
+const Service = lazy(() => import('./components/Service/Service'));
 const PrivacyPolicy = lazy(() => import('./components/FooterPage/PrivacyPolicy'));
 const Terms = lazy(() => import('./components/FooterPage/Terms'));
 const ContactUs = lazy(() =>
@@ -58,6 +59,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="/services" element={<Service />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path='/contactus' element={<ContactUs />} />

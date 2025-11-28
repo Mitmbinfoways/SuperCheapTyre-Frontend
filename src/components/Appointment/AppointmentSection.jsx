@@ -302,6 +302,9 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
                 <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
                   Select Wheels
                 </button>
+                <button id="services-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">
+                  Select Services
+                </button>
               </div>
             </div>
           </div>
@@ -324,6 +327,10 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         
         wheelsBtn.addEventListener('click', () => {
           navigate('/wheels');
+          close();
+        });
+        servicesBtn.addEventListener('click', () => {
+          navigate('/services');
           close();
         });
         closeModalBtn.addEventListener('click', close);

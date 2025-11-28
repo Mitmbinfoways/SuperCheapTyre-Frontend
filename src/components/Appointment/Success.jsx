@@ -86,8 +86,16 @@ const Success = () => {
         }
       }
 
+      // Split cart items into products and services
+      const productItems = validCartItems.filter(item => item.type !== "service");
+      const serviceItems = validCartItems.filter(item => item.type === "service");
+
       const orderPayload = {
-        items: validCartItems.map((item) => ({
+        items: productItems.map((item) => ({
+          id: item._id || item.id,
+          quantity: item.quantity,
+        })),
+        serviceItems: serviceItems.map((item) => ({
           id: item._id || item.id,
           quantity: item.quantity,
         })),
