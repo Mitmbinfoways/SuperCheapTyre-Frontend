@@ -28,6 +28,11 @@ const CartPage = () => {
       try {
         // Create an array of promises to fetch stock for each product
         const stockPromises = cartItems.map(async (item) => {
+          // Skip stock check for services
+          if (item.type === 'service') {
+            return { id: item.id, stock: undefined };
+          }
+
           try {
             const response = await getTyreById(item.id);
             return { id: item.id, stock: response.data.data.stock || 0 };
@@ -83,11 +88,15 @@ const CartPage = () => {
   const handleQuantityChange = (id, newQuantity) => {
     if (newQuantity < 1) return;
 
-    // Check stock limitation
-    const productStock = productStocks[id];
-    if (productStock !== undefined && newQuantity > productStock) {
-      // Don't allow quantity to exceed stock
-      return;
+    const item = cartItems.find(i => i.id === id);
+
+    // Check stock limitation only for non-service items
+    if (item && item.type !== 'service') {
+      const productStock = productStocks[id];
+      if (productStock !== undefined && newQuantity > productStock) {
+        // Don't allow quantity to exceed stock
+        return;
+      }
     }
 
     setCartItems(prevItems =>

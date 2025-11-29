@@ -7,7 +7,7 @@ import heroCardImage from '../assets/home/tyrebanner1.png?imagetools&format=webp
 export const images = {
   logo: '/home/logo.svg',
   // heroBg: "https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/0cec/1f42/f50fbfd6c1b00a8b25a3d3218f1da76e?Expires=1759104000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Z03-01JnwlWBc4-ELA-IlA5fmfr03d4m6-zYcvGWFXDulTY3t9OFIX3EW7D6AICsCBGuBEQOJR4vvdCtntEgWUsfhk~4jaFWTRgZDUqIJNP7qo9oF4pWr0I9XVzSlKL82OyUCL2rOReVM7N8OrYMGZgVldU90qWWZifK~f8JE5uxI-eFWw6X6pJJxbHSExaeKQz9kFZgBkgyDpO87waGlBRFfnV6WIz-cWw79n1eEKdvCQ0-84WA51sm~-OAL5JEHcFnZo~i60El0z32HfXLS-4q9cH6XsqJrIkWtdHXQV0XBBqiX5vsFPp6k5apiPV9p~ZrQH5VKAdy5MiG51mS0g__",
-  heroBg:{img},
+  heroBg: { img },
   heroTire: "https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/ac03/c633/99f8d90e2a4d09d44876944f3e84df46?Expires=1759104000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=rYhPKGgUIDmHiTTFYWcF0zJjZ1xAIa~C9N0SJ7WOBd6ossDzrXQFCyXe9HJCfhdHfvXsvWBA~sRyDGqoAVx4oiKeIfPd~VJzT69M6U3WoJ3afSB3s2x6~nboC4dQZ~PW79088jRR3xZovutb9WRemctJS6jvtzUGG2UHcJ-ZkoTqSBsPOSLLuGC~b92dVauL8-HYjEcqvf-suByZJvcebEiH5hYXU0aopDP8dLoFO8Z1Krp5Yep~HvvHYk0yEWTAErYiQnC4JHiSlrcOruhmkfiYbAyZuHeb7-jeq2i9tPCLxPBRpTG6y-oauHE-3NAhHHWSiZ6y72YkckDZ1n74GA__",
   searchFormBg: "https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/343c/9b56/053f3c362085aa8be590dca37723f1e9?Expires=1759104000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=XG5ChLWCMkLQ1mJP1t8NpCXsm1dOLpvJjYCGvOfyLWv8q4agrqK8d0exumkVi5YId-Z8s8MuiTFdX0~c9lJGr0ujB9tNrimncCqlzHoaXmOcq0C3~6~tLLdYmGkjitzrVeR3F5Sqi5AE-VFxE-ZOX0PdW5OFe0LUXKxSGe-ALf0HZKzwWQBUVAcngzCb6X16JyngRNDa7pFJ6LSRm5T5V0fccUI9npTpNXt0XfTp8dTSrGshLJSz75RKwtZpoKPMm~X~AV8psArwwOoJ6c~dYvUKm9JGUpyMU~wLlZBNZ7dlveqiv32wtpoSRzXq5fRo-inL2meTryFwwlu3CWRR9Q__",
   searchTiresLeft: "https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/229b/af0a/50355bea1f20d33642e795ed68c570bb?Expires=1759104000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Z5qwNx7Smzy6Gu2NMjHuUWACUpmyeUYZwO~G2KVDnvpNwUQ8grsz12H0ef9rjrfQAqS13-lZakBCmfv73JCjUru5OwLCwVyzpRHNSxH9gcxxoX88Iwutm1iwObRnzNAVPwUjsjL4bbssvmCu5hhdulrqseXtpCv5s4f3ZyND8C~1yPOV2IJ5wLvYHprLzn1sOqCbpooePVe8xmEHZARJ6M3iythWwDRmp3taHPKg8lmwk5q3pxGuV0hkaFh2vlKjNi62yTptDOA~zpFvv405V5~YncKiiSX1eRc7b2ok2e49ybGC5ktYBYSHZZoiIhi9j1X2jxwPCQEljjMsK0qfSw__",
@@ -30,9 +30,9 @@ export const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Tyres', href: '/tyres' },
   { name: 'Wheels', href: '/wheels' },
+  { name: 'Services', href: '/services' },
   { name: 'Book An Appointment', href: '/appointment' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Services', href: '/services' },
   { name: 'About Us', href: '/about' },
   { name: 'Contact Us', href: '/contactus' },
 ];
@@ -50,27 +50,27 @@ export const featuredProducts = [
     description: '165/65R13 4\nPlatinum 7 77H BSW',
     size: '165/65R13',
     image: '/home/product.svg',
-  },{
+  }, {
     name: 'Achilles',
     description: '165/65R13 4\nPlatinum 7 77H BSW',
     size: '165/65R13',
     image: '/home/product.svg',
-  },{
+  }, {
     name: 'Achilles',
     description: '165/65R13 4\nPlatinum 7 77H BSW',
     size: '165/65R13',
     image: '/home/product.svg',
-  },{
+  }, {
     name: 'Achilles',
     description: '165/65R13 4\nPlatinum 7 77H BSW',
     size: '165/65R13',
     image: '/home/product.svg',
-  },{
+  }, {
     name: 'Achilles',
     description: '165/65R13 4\nPlatinum 7 77H BSW',
     size: '165/65R13',
     image: '/home/product.svg',
-  },{
+  }, {
     name: 'Achilles',
     description: '165/65R13 4\nPlatinum 7 77H BSW',
     size: '165/65R13',
@@ -102,10 +102,10 @@ export const brands = [
 ];
 
 export const whyChooseUsItems = [
-    { icon: '/home/quality.svg', title: 'Quality' },
-    { icon: '/home/widerange.svg', title: 'Wide Range' },
-    { icon: bookingIcon, title: 'Easy Booking' },
-    { icon: '/home/securepayment.svg', title: 'Secure Payments' },
+  { icon: '/home/quality.svg', title: 'Quality' },
+  { icon: '/home/widerange.svg', title: 'Wide Range' },
+  { icon: bookingIcon, title: 'Easy Booking' },
+  { icon: '/home/securepayment.svg', title: 'Secure Payments' },
 ];
 
 export const testimonials = [
@@ -114,38 +114,38 @@ export const testimonials = [
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
-  },{
+  }, {
     text: 'I received great customer service from the specialists who helped me. I would recommend to anyone who wants quality.',
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
-  },{
+  }, {
     text: 'I received great customer service from the specialists who helped me. I would recommend to anyone who wants quality.',
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
-  },{
+  }, {
     text: 'I received great customer service from the specialists who helped me. I would recommend to anyone who wants quality.',
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
-  },{
+  }, {
     text: 'I received great customer service from the specialists who helped me. I would recommend to anyone who wants quality.',
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
-  },{
+  }, {
     text: 'I received great customer service from the specialists who helped me. I would recommend to anyone who wants quality.',
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
-  },{
+  }, {
     text: 'I received great customer service from the specialists who helped me. I would recommend to anyone who wants quality.',
     author: 'Viola Manisa',
     avatar: '/home/Avatar.svg',
     rating: 4,
   },
-  ];
+];
 
 // Static blog content for the Blog page sections
 export const blogPosts = [

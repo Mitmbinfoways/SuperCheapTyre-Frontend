@@ -141,6 +141,11 @@ const TyreCard = ({
           <Badge label="Low Stock" color="yellow" />
         </div>
       )}
+      {stock > 5 && (
+        <div className="absolute -top-5 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
+          {stock} IN STOCK NOW
+        </div>
+      )}
 
       {/* Product Info */}
       <div className="">
@@ -175,7 +180,6 @@ const TyreCard = ({
           </p>
         </div>
       </div>
-
       {/* Add to Cart Button - Disabled when out of stock */}
       <div className=" flex items-center absolute bottom-0 left-1/2 translate-y-1/2 -translate-x-1/2 justify-center space-x-4">
         <button
