@@ -109,8 +109,8 @@ export const getContactInfoDetail = async () => {
   return axiosInstance.get(`/api/v1/contact-info`);
 };
 
-export const getAllServices = async (params = {}) => {
-  return axiosInstance.get(`/api/v1/service`, { params });
+export const getAllServices = async (params) => {
+  return axiosInstance.get(`/api/v1/service?isActive=${params.isActive}`);
 };
 
 export const getTyreSize = async (id) => {

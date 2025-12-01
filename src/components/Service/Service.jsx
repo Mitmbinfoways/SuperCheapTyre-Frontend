@@ -14,7 +14,7 @@ const Service = () => {
 
     const fetchServices = async () => {
         try {
-            const response = await getAllServices();
+            const response = await getAllServices({ isActive: true });
             setServices(response.data.data || []);
         } catch (err) {
             console.error("Error fetching services:", err);
@@ -69,7 +69,7 @@ const Service = () => {
                 String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
             );
             Toast({ message: "Added to cart", type: "success" });
-            
+
             // Redirect to cart page
             navigate("/cart");
         } catch (error) {
@@ -131,7 +131,7 @@ const Service = () => {
                                     className="text-gray-600 mb-4 flex-1 line-clamp-4 prose prose-sm max-w-none"
                                     dangerouslySetInnerHTML={{ __html: service.description }}
                                 />
-                                <button 
+                                <button
                                     onClick={() => handleAddToCart(service)}
                                     className="mt-auto px-6 py-2 bg-red-600 text-white rounded-full font-medium hover:bg-red-700 transition-colors w-full sm:w-fit self-start"
                                 >

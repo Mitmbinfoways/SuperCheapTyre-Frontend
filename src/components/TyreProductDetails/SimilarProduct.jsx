@@ -4,6 +4,7 @@ import Link from './ui/Link';
 import { getSimilarProducts, getTyreById } from '../../axios/axios';
 import { formatCurrency, getTyreImageUrl } from '../../Utils/Utils';
 import Loader from '../common/Loader';
+import Badge from '../common/Badge';
 
 const SimilarProducts = ({ productCategory }) => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const SimilarProducts = ({ productCategory }) => {
 
       try {
         setLoading(true);
-        
+
         // Fetch current product to determine its category if not provided
         if (!productCategory) {
           try {
@@ -58,7 +59,8 @@ const SimilarProducts = ({ productCategory }) => {
               : product.tyreSpecifications
                 ? `${product.tyreSpecifications?.width || ''}/${product.tyreSpecifications?.profile || ''}${" "}${product.tyreSpecifications?.diameter || ''}${" "}${product.tyreSpecifications?.loadRating || ' '}${product.tyreSpecifications?.speedRating || ''}`.trim()
                 : 'N/A',
-            category: product.category || 'tyre'
+            category: product.category || 'tyre',
+            stock: product.stock || 0
           };
         });
         setSimilarProducts(mappedProducts);
@@ -95,7 +97,7 @@ const SimilarProducts = ({ productCategory }) => {
         <p className="text-gray-500 text-center max-w-md">
           We couldn't find any similar products to recommend. Try exploring our full collection.
         </p>
-        <Link 
+        <Link
           href={currentProductCategory === 'wheel' ? '/wheels' : '/tyres'}
           className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#ed1c24] hover:bg-[#d0171f] focus:outline-none"
         >
@@ -131,8 +133,24 @@ const SimilarProducts = ({ productCategory }) => {
                     <div
                       key={product?.id}
                       onClick={() => navigate(`/productdetails/${product.id}`)}
-                      className="flex flex-col justify-end items-start w-full border border-[#c8c8c8] rounded-[10px] bg-white p-[20px] sm:p-[24px] md:p-[26px] lg:p-[28px_30px] hover:shadow-lg transition-shadow cursor-pointer"
+                      className="relative flex flex-col justify-end items-start w-full border border-[#c8c8c8] rounded-[10px] bg-white p-[20px] sm:p-[24px] md:p-[26px] lg:p-[28px_30px] hover:shadow-lg transition-shadow cursor-pointer"
                     >
+                      {product.stock === 0 && (
+                        <div className="absolute top-3 right-3">
+                          <Badge label="Out of Stock" color="red" />
+                        </div>
+                      )}
+                      {product.stock >= 1 && product.stock <= 5 && (
+                        <div className="absolute top-3 right-3">
+                          <Badge label="Low Stock" color="yellow" />
+                        </div>
+                      )}
+                      {product.stock > 5 && (
+                        <div className="absolute top-3 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
+                          IN STOCK NOW
+                        </div>
+                      )}
+
                       {/* Product Image and Rating */}
                       <div className="flex flex-col gap-[6px] items-center w-full mb-[20px] sm:mb-[24px] md:mb-[26px] lg:mb-[28px]">
                         <img
