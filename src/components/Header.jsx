@@ -11,6 +11,7 @@ import { IoMdSearch } from "react-icons/io";
 import { secureGetItem } from '../Utils/encryption';
 import { getAllTyres, getContactInfoDetail } from '../axios/axios'; // Import the API function
 import { getTyreImageUrl, formatCurrency } from '../Utils/Utils'; // Import image utility and formatCurrency
+import { formatPhoneNumber } from '../Utils/FormatePhoneNumber';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -163,7 +164,7 @@ const Header = () => {
                       className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer -mx-1"
                     >
                       <FaPhoneAlt size={14} className="hidden sm:block xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4" />
-                      <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">{contactData?.phone || "(03) 9793 6190"}</span>
+                      <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">{formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}</span>
                     </a>
                   </div>
 

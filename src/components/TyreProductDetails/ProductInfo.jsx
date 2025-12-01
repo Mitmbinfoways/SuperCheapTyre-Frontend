@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./ui/Button";
 import QuantityInput from "./ui/QuantityInput";
 import { secureGetItem, secureSetItem } from "../../Utils/encryption";
@@ -11,10 +11,11 @@ import { FaWeight, FaTachometerAlt } from "react-icons/fa";
 import { GiWeightScale } from "react-icons/gi";
 import { MdSpeed } from "react-icons/md";
 import { BsSpeedometer2 } from "react-icons/bs";
+import { getTyreSize } from "../../axios/axios";
 
 const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
-  
+
   // Check if this is a wheel product
   const isWheelProduct = product.category === "wheel";
 
@@ -25,8 +26,23 @@ const ProductInfo = ({ product }) => {
 
   // Otherwise, render the tyre-specific component (existing logic)
   const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState("specification");
+  const [relatedData, setRelatedData] = useState([]);
 
-  // Get the product stock, default to 0 if not available
+  const fetchdata = async () => {
+    try {
+      const res = await getTyreSize(product?._id)
+      console.log(res.data.data)
+      setRelatedData(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchdata()
+  }, [product?._id])
+
   const productStock = product?.stock || 0;
 
   const specifications = [
@@ -67,7 +83,7 @@ const ProductInfo = ({ product }) => {
 
   // Add individual tyre specification fields
   if (product?.tyreSpecifications) {
-    specifications.splice(1, 0, 
+    specifications.splice(1, 0,
       {
         label: "Width :",
         value: product.tyreSpecifications.width || "N/A",
@@ -145,9 +161,8 @@ const ProductInfo = ({ product }) => {
         price: product?.price || 0,
         quantity,
         description:
-          `${product?.brand || ""} ${
-            product?.name || ""
-          }`.trim() || "Tyre Product",
+          `${product?.brand || ""} ${product?.name || ""
+            }`.trim() || "Tyre Product",
       });
     }
     try {
@@ -157,7 +172,7 @@ const ProductInfo = ({ product }) => {
         String(cart.reduce((s, it) => s + (it.quantity || 1), 0))
       );
       Toast({ message: "Added to cart", type: "success" });
-      
+
       // Redirect to cart page
       navigate("/cart");
     } catch (error) {
@@ -178,15 +193,37 @@ const ProductInfo = ({ product }) => {
 
           {/* Specifications List */}
           <div className="border border-[#e0e0e0] rounded-[14px] bg-white px-[16px] sm:px-[18px] md:px-[20px] lg:px-[22px] py-[10px]">
-            <h3 className="text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] text-black py-[12px] px-[6px]">
-              Product Specification
-            </h3>
-            {specifications?.map((spec, index) => (
+            <div className="flex gap-6 border-b border-gray-200 mb-4 px-[6px]">
+              <button
+                className={`text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] py-[12px] transition-colors relative ${activeTab === "specification"
+                  ? "text-[#ed1c24]"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
+                onClick={() => setActiveTab("specification")}
+              >
+                Product Specification
+                {activeTab === "specification" && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
+                )}
+              </button>
+              <button
+                className={`text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] py-[12px] transition-colors relative ${activeTab === "tyreSize"
+                  ? "text-[#ed1c24]"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
+                onClick={() => setActiveTab("tyreSize")}
+              >
+                Other Tyre Size
+                {activeTab === "tyreSize" && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
+                )}
+              </button>
+            </div>
+            {activeTab === "specification" ? specifications?.map((spec, index) => (
               <div
                 key={index}
-                className={`flex justify-start items-center w-full ${
-                  index > 0 ? "mt-[-2px]" : ""
-                } ${index === specifications?.length - 1 ? "mb-[8px]" : ""}`}
+                className={`flex justify-start items-center w-full ${index > 0 ? "mt-[-2px]" : ""
+                  } ${index === specifications?.length - 1 ? "mb-[8px]" : ""}`}
               >
                 {typeof spec?.icon === 'string' ? (
                   <img
@@ -210,18 +247,29 @@ const ProductInfo = ({ product }) => {
                   border_border="1px solid #ffffff"
                   padding="10px"
                   margin="0 0 0 14px"
-                  layout_align_self=""
-                  fill_background_color=""
-                  border_border_radius=""
-                  layout_width=""
-                  position=""
-                  variant=""
-                  size=""
-                  className=""
-                  onClick={() => {}}
                 />
               </div>
-            ))}
+            )) : activeTab === "tyreSize" && (
+              relatedData?.length > 0 ? (
+                <div className="grid grid-cols-4 gap-2 max-h-48 overflow-y-auto">
+                  {relatedData.map((item) => (
+                    <div key={item._id} >
+                      <Link to={isWheelProduct ? `/wheel/${item._id}` : `/productdetails/${item._id}`}>
+                        <p className="hover:underline underline-offset-2">{item.tyreSpecifications.width}/{
+                          item.tyreSpecifications.profile
+                        }{" "}{item.tyreSpecifications.diameter}{" "}{
+                            item.tyreSpecifications.loadRating
+                          }{item.tyreSpecifications.speedRating}</p>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex justify-center items-center h-36 w-full">
+                  <p className="text-gray-500 font-['Lexend'] text-lg">No tyre found</p>
+                </div>
+              )
+            )}
           </div>
         </div>
 

@@ -143,7 +143,7 @@ const TyreCard = ({
       )}
       {stock > 5 && (
         <div className="absolute -top-5 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
-          {stock} IN STOCK NOW
+          IN STOCK NOW
         </div>
       )}
 

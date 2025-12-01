@@ -6,6 +6,7 @@ import { ImInstagram } from "react-icons/im";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getContactInfoDetail } from '../axios/axios';
+import { formatPhoneNumber } from '../Utils/FormatePhoneNumber';
 
 const Footer = () => {
     const [contactData, setContactData] = useState(null);
@@ -63,7 +64,7 @@ const Footer = () => {
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
                                     <img src='/contactus/call.svg' size={16} className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
                                     <a href={`tel:${contactData?.phone || "(03)97936190"}`}>
-                                        {contactData?.phone || "(03)97936190"}
+                                        {formatPhoneNumber(contactData?.phone) || "(03)97936190"}
                                     </a>
                                 </li>
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">

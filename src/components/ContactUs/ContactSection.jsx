@@ -1,6 +1,7 @@
 import React from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { formatPhoneNumber } from "../../Utils/FormatePhoneNumber";
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -37,7 +38,7 @@ export const ContactSection = ({ contactData }) => {
     {
       title: "Call Us",
       content: contactData?.phone
-        ? `${contactData.phone}\n24/7 Emergency Line`
+        ? `${formatPhoneNumber(contactData.phone)}\n24/7 Emergency Line`
         : "0397936190\n24/7 Emergency Line",
       icon: "/contactus/call.svg",
       delay: "200ms",

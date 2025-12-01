@@ -10,6 +10,7 @@ import { Toast } from "../../Utils/Toast";
 import ReCAPTCHA from "react-google-recaptcha";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { formatPhoneNumber } from "../../Utils/FormatePhoneNumber";
 
 // Local utility to merge Tailwind classes
 function cn(...inputs) {
@@ -274,7 +275,7 @@ export const EnquirySection = ({ contactData }) => {
     {
       icon: "/contactus/call.svg",
       title: "Phone",
-      value: contactData?.phone || "(03) 97936190",
+      value: formatPhoneNumber(contactData?.phone) || "(03) 97936190",
       link: contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97936190",
     },
     {

@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Button from './ui/Button';
 import QuantityInput from './ui/QuantityInput';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { getTyreImageUrl } from '../../Utils/Utils';
 import { Toast } from '../../Utils/Toast';
+import { getTyreSize } from '../../axios/axios';
 
 const WheelProductInfo = ({ product, navigate }) => {
   const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState("specification");
+  const [relatedData, setRelatedData] = useState([]);
+
+  const fetchdata = async () => {
+    try {
+      const res = await getTyreSize(product?._id)
+      console.log(res.data.data)
+      setRelatedData(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchdata()
+  }, [product?._id])
 
   const specifications = [
     { label: 'Brand :', value: product?.brand || 'N/A', icon: '/productdetails/brand.svg' },
@@ -29,32 +47,32 @@ const WheelProductInfo = ({ product, navigate }) => {
   };
 
   const handleAddToCart = () => {
-     // Prevent adding to cart if stock is 0
+    // Prevent adding to cart if stock is 0
     if (!product || product.stock === 0) {
       Toast({ message: "This product is out of stock", type: 'error' });
       return;
     }
-    
+
     // Prevent adding to cart if quantity exceeds stock
     if (!product || quantity > product.stock) {
-      Toast({ 
-        message: `Maximum quantity available is ${product.stock || 0}`, 
-        type: 'error' 
+      Toast({
+        message: `Maximum quantity available is ${product.stock || 0}`,
+        type: 'error'
       });
       return;
     }
-    
+
     const cart = secureGetItem('cartItems', []);
     const productId = String(product.id || product._id);
     const existingIndex = cart.findIndex((ci) => String(ci.id) === productId);
-    
+
     // Check if adding this quantity would exceed stock
     if (existingIndex >= 0) {
       const newQuantity = (cart[existingIndex].quantity || 1) + quantity;
       if (newQuantity > (product?.stock || 0)) {
-        Toast({ 
-          message: `Maximum quantity available is ${product?.stock || 0}`, 
-          type: 'error' 
+        Toast({
+          message: `Maximum quantity available is ${product?.stock || 0}`,
+          type: 'error'
         });
         return;
       }
@@ -77,7 +95,7 @@ const WheelProductInfo = ({ product, navigate }) => {
       secureSetItem('cartItems', cart);
       localStorage.setItem('cartCount', String(cart.reduce((s, it) => s + (it.quantity || 1), 0)));
       Toast({ message: 'Added to cart', type: 'success' });
-      
+
       // Redirect to cart page
       navigate("/cart");
     } catch (error) {
@@ -93,10 +111,33 @@ const WheelProductInfo = ({ product, navigate }) => {
         <div className="flex flex-col w-full">
           {/* Specifications List */}
           <div className="border border-[#e0e0e0] rounded-[14px] bg-white px-[16px] sm:px-[18px] md:px-[20px] lg:px-[22px] py-[10px]">
-            <h3 className="text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] text-black py-[12px] px-[6px]">
-              Product Specification
-            </h3>
-            {specifications?.map((spec, index) => (
+            <div className="flex gap-6 border-b border-gray-200 mb-4 px-[6px]">
+              <button
+                className={`text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] py-[12px] transition-colors relative ${activeTab === "specification"
+                  ? "text-[#ed1c24]"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
+                onClick={() => setActiveTab("specification")}
+              >
+                Product Specification
+                {activeTab === "specification" && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
+                )}
+              </button>
+              <button
+                className={`text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] py-[12px] transition-colors relative ${activeTab === "wheelSize"
+                  ? "text-[#ed1c24]"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
+                onClick={() => setActiveTab("wheelSize")}
+              >
+                Other Wheel
+                {activeTab === "wheelSize" && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
+                )}
+              </button>
+            </div>
+            {activeTab === "specification" ? specifications?.map((spec, index) => (
               <div
                 key={index}
                 className={`flex justify-start items-center w-full ${index > 0 ? 'mt-[-2px]' : ''} ${index === specifications?.length - 1 ? 'mb-[8px]' : ''}`}
@@ -119,18 +160,40 @@ const WheelProductInfo = ({ product, navigate }) => {
                   border_border="1px solid #ffffff"
                   padding="10px"
                   margin="0 0 0 14px"
-                  layout_align_self=""
-                  fill_background_color=""
-                  border_border_radius=""
-                  layout_width=""
-                  position=""
-                  variant=""
-                  size=""
-                  className=""
-                  onClick={() => { }}
                 />
               </div>
-            ))}
+            )) : activeTab === "wheelSize" && (
+              relatedData?.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-48 overflow-y-auto p-2">
+                  {relatedData.map((item) => (
+                    <Link
+                      key={item._id}
+                      to={`/wheel/${item._id}`}
+                      className="flex flex-col items-center text-center hover:scale-105 transition-transform cursor-pointer"
+                    >
+                      <img
+                        src={item.images?.[0] ? getTyreImageUrl(item.images[0]) : "/cart/carttyre.svg"}
+                        alt={item.name}
+                        className="w-20 h-20 object-contain"
+                      />
+                      <p className="text-sm text-gray-700 mt-2 hover:underline underline-offset-2">
+                        {item?.wheelSpecifications
+                          ? `${item.wheelSpecifications.size}x${item.wheelSpecifications.diameter}`
+                          : item.name}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate w-full">
+                        {item.brand}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+
+              ) : (
+                <div className="flex justify-center items-center h-36 w-full">
+                  <p className="text-gray-500 font-['Lexend'] text-lg">No wheel found</p>
+                </div>
+              )
+            )}
           </div>
         </div>
 

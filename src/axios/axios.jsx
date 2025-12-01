@@ -113,4 +113,8 @@ export const getAllServices = async (params = {}) => {
   return axiosInstance.get(`/api/v1/service`, { params });
 };
 
+export const getTyreSize = async (id) => {
+  return axiosInstance.get(`/api/v1/product/${id}/same-brand-pattern`);
+};
+
 export default axiosInstance;
