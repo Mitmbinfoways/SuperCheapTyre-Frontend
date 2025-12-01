@@ -164,12 +164,12 @@ const WheelProductInfo = ({ product, navigate }) => {
               </div>
             )) : activeTab === "wheelSize" && (
               relatedData?.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-48 overflow-y-auto p-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-48 overflow-y-auto pb-2">
                   {relatedData.map((item) => (
                     <Link
                       key={item._id}
                       to={`/wheel/${item._id}`}
-                      className="flex flex-col items-center text-center hover:scale-105 transition-transform cursor-pointer"
+                      className="flex flex-col items-center border p-3 rounded-lg text-center hover:scale-105 transition-transform cursor-pointer"
                     >
                       <img
                         src={item.images?.[0] ? getTyreImageUrl(item.images[0]) : "/cart/carttyre.svg"}
