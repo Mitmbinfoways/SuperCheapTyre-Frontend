@@ -150,8 +150,8 @@ const Header = () => {
       <div className="bg-[#000000] text-white">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex lg:items-start items-center justify-between h-16 sm:h-20 md:h-[160px] py-0">
           {/* Logo */}
-          <Link to="/" className="w-40 sm:w-52 md:w-64 lg:w-80 shrink-0">
-            <img src={images.logo} alt="Supercheap Tyres Logo" className="block h-16 sm:h-28 md:h-32 lg:h-40 object-contain" />
+          <Link to="/" className="w-40 sm:w-52 md:w-64 lg:w-64 xl:w-72 2xl:w-80 shrink-0">
+            <img src={images.logo} alt="Supercheap Tyres Logo" className="block h-16 sm:h-28 md:h-32 lg:h-32 xl:h-36 2xl:h-40 object-contain" />
           </Link>
 
           <div className='flex xl:flex-col xl:items-end items-center h-full'>
@@ -187,7 +187,7 @@ const Header = () => {
             </div>
             {/* Right: Compact search + icons */}
             <div className="hidden xl:flex items-center justify-end space-x-2 xl:space-x-4">
-              <div className="relative w-[16rem] xl:w-[28rem] 2xl:w-[36rem]" ref={searchRef}>
+              <div className="relative w-[16rem] xl:w-[22rem] 2xl:w-[36rem]" ref={searchRef}>
                 <form onSubmit={handleSearch}>
                   <input
                     type="text"
@@ -253,8 +253,8 @@ const Header = () => {
             </div>
             {/* Center Search */}
             <div className="hidden xl:block bg-[#000000] text-white mt-6 h-[10px]">
-              <div className="container">
-                <nav className="flex gap-2 xl:gap-2.5 2xl:gap-3 items-center justify-center flex-nowrap -mx-4">
+              <div className="w-full">
+                <nav className="flex gap-2 xl:gap-2 2xl:gap-3 items-center justify-center flex-nowrap">
                   {navLinks.map((link) => {
                     const to = link.href || '#';
                     return (
@@ -262,7 +262,7 @@ const Header = () => {
                         key={link.name}
                         to={to}
                         className={({ isActive }) =>
-                          `text-base pb-3 xl:text-lg font-medium px-3 xl:px-4 2xl:px-5 transition-colors hover:text-primary whitespace-nowrap flex-shrink-0 ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')}`
+                          `text-base pb-3 xl:text-base 2xl:text-lg font-medium px-3 xl:px-3 2xl:px-5 transition-colors hover:text-primary whitespace-nowrap flex-shrink-0 ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')}`
                         }
                         end={link.name === 'Home'}
                       >

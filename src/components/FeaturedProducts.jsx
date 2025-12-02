@@ -36,7 +36,7 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
             </div>
         )}
         {product.stock >= 4 && (
-            <div className="absolute top-3 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
+            <div className="absolute top-3 right-3 bg-[#4CAF50] text-white text-xs px-2 py-1 rounded-lg shadow-sm">
                 4+ IN STOCK NOW
             </div>
         )}
