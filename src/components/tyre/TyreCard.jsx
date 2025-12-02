@@ -133,17 +133,17 @@ const TyreCard = ({
 
       {stock === 0 && (
         <div className="absolute -top-5 right-3">
-          <Badge label="Out of Stock" color="red" />
+          <Badge label="Out of Stock" color="red" customClass="text-xs px-2 py-1 rounded-lg shadow-sm" />
         </div>
       )}
       {stock >= 1 && stock < 4 && (
         <div className="absolute -top-5 right-3">
-          <Badge label={`${stock} Low Stock`} color="yellow" />
+          <Badge label={`${stock} Low Stock`} color="yellow" customClass="text-xs px-2 py-1 rounded-lg shadow-sm" />
         </div>
       )}
       {stock >= 4 && (
-        <div className="absolute -top-5 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
-          4+ IN STOCK NOW
+        <div className="absolute -top-5 right-3 bg-[#4CAF50] text-white text-xs px-2 py-1 rounded-lg shadow-sm">
+          4+ In Stock Now
         </div>
       )}
 

@@ -27,12 +27,12 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
         {/* Stock Badge */}
         {product.stock === 0 && (
             <div className="absolute top-3 right-3">
-                <Badge label="Out of Stock" color="red" />
+                <Badge label="Out of Stock" color="red" customClass="text-xs px-2 py-1 rounded-lg shadow-sm" />
             </div>
         )}
         {product.stock >= 1 && product.stock < 4 && (
             <div className="absolute top-3 right-3">
-                <Badge label={`${product.stock} Low Stock`} color="yellow" />
+                <Badge label={`${product.stock} Low Stock`} color="yellow" customClass="text-xs px-2 py-1 rounded-lg shadow-sm" />
             </div>
         )}
         {product.stock >= 4 && (
