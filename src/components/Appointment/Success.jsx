@@ -170,7 +170,10 @@ const Success = () => {
   useEffect(() => {
     if (!hasRunRef.current) {
       hasRunRef.current = true;
-      createAppointmentAndOrder();
+      const cartItems = secureGetItem("cartItemsForOrder", []);
+      if (cartItems && cartItems.length > 0) {
+        createAppointmentAndOrder();
+      }
     }
   }, []);
 

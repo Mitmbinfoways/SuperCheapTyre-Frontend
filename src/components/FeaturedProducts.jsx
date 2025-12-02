@@ -30,9 +30,14 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
                 <Badge label="Out of Stock" color="red" />
             </div>
         )}
-        {product.stock >= 1 && product.stock <= 5 && (
+        {product.stock >= 1 && product.stock < 4 && (
             <div className="absolute top-3 right-3">
-                <Badge label="Low Stock" color="yellow" />
+                <Badge label={`${product.stock} Low Stock`} color="yellow" />
+            </div>
+        )}
+        {product.stock >= 4 && (
+            <div className="absolute top-3 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
+                4+ IN STOCK NOW
             </div>
         )}
 
@@ -61,8 +66,8 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
             }}
             disabled={product.stock === 0}
             className={`absolute w-9/12 sm:w-3/4 md:w-2/3 left-1/2 bottom-0 translate-x-[-50%] translate-y-1/2 font-bold py-2 sm:py-3 px-8 sm:px-12 md:px-8 rounded-full transition-colors text-sm sm:text-base shadow-md ${product.stock === 0
-                    ? 'bg-[#D7D7D7] text-white cursor-not-allowed'
-                    : 'bg-primary text-white hover:bg-red-700'
+                ? 'bg-[#D7D7D7] text-white cursor-not-allowed'
+                : 'bg-primary text-white hover:bg-red-700'
                 }`}
         >
             Buy Now
@@ -121,7 +126,7 @@ const FeaturedProducts = ({ homeData }) => {
             Toast({ message: "Invalid product", type: "error" });
             return;
         }
-        
+
         // Prevent adding to cart if stock is 0
         if (product.stock === 0) {
             Toast({ message: "This product is out of stock", type: "error" });

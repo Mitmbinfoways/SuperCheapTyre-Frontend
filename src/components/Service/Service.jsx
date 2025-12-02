@@ -102,7 +102,7 @@ const Service = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service) => (
-                        <div key={service._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
+                        <div key={service._id} className="p-6 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
                             <div className="h-56 overflow-hidden relative group">
                                 {service.images && service.images.length > 0 ? (
                                     <img
@@ -120,12 +120,12 @@ const Service = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className="p-6 flex-1 flex flex-col">
+                            <div className="flex-1 flex flex-col">
                                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                                     {service?.name?.toUpperCase()}
                                 </h3>
                                 <p className="font-bold text-gray-900 mb-3">
-                                    Starting From AU${service?.price} <sup className='text-md'>ea</sup>
+                                    Starting From AU${service?.price} <sup className='text-md'>EA</sup>
                                 </p>
                                 <div
                                     className="text-gray-600 mb-4 flex-1 line-clamp-4 prose prose-sm max-w-none"

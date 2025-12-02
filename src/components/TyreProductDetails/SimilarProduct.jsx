@@ -140,14 +140,14 @@ const SimilarProducts = ({ productCategory }) => {
                           <Badge label="Out of Stock" color="red" />
                         </div>
                       )}
-                      {product.stock >= 1 && product.stock <= 5 && (
+                      {product.stock >= 1 && product.stock < 4 && (
                         <div className="absolute top-3 right-3">
-                          <Badge label="Low Stock" color="yellow" />
+                          <Badge label={`${product.stock} Low Stock`} color="yellow" />
                         </div>
                       )}
-                      {product.stock > 5 && (
+                      {product.stock >= 4 && (
                         <div className="absolute top-3 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
-                          IN STOCK NOW
+                          4+ IN STOCK NOW
                         </div>
                       )}
 

@@ -136,14 +136,14 @@ const TyreCard = ({
           <Badge label="Out of Stock" color="red" />
         </div>
       )}
-      {stock >= 1 && stock <= 5 && (
+      {stock >= 1 && stock < 4 && (
         <div className="absolute -top-5 right-3">
-          <Badge label="Low Stock" color="yellow" />
+          <Badge label={`${stock} Low Stock`} color="yellow" />
         </div>
       )}
-      {stock > 5 && (
+      {stock >= 4 && (
         <div className="absolute -top-5 right-3 bg-[#4CAF50] text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm uppercase">
-          IN STOCK NOW
+          4+ IN STOCK NOW
         </div>
       )}
 
@@ -174,7 +174,7 @@ const TyreCard = ({
         </div> */}
 
         <div className="text-lg font-lexend font-medium text-black pb-5">
-          {formatCurrency(price)}<sup>ea</sup>
+          {formatCurrency(price)}<sup>EA</sup>
           <p className="text-xs text-[#7A7A7A] mt-1 line-clamp-1">
             {pricetext}
           </p>

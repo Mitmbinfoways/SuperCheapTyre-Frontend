@@ -10,21 +10,21 @@ import { getTyreSize } from '../../axios/axios';
 const WheelProductInfo = ({ product, navigate }) => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("specification");
-  // const [relatedData, setRelatedData] = useState([]);
+  const [relatedData, setRelatedData] = useState([]);
 
-  // const fetchdata = async () => {
-  //   try {
-  //     const res = await getTyreSize(product?._id)
-  //     console.log(res.data.data)
-  //     setRelatedData(res.data.data)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+  const fetchdata = async () => {
+    try {
+      const res = await getTyreSize(product?._id)
+      console.log(res.data.data)
+      setRelatedData(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-  // useEffect(() => {
-  //   fetchdata()
-  // }, [product?._id])
+  useEffect(() => {
+    fetchdata()
+  }, [product?._id])
 
   const specifications = [
     { label: 'Brand :', value: product?.brand || 'N/A', icon: '/productdetails/brand.svg' },
@@ -124,18 +124,18 @@ const WheelProductInfo = ({ product, navigate }) => {
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
                 )}
               </button>
-              {/* <button
+              <button
                 className={`text-[18px] sm:text-[19px] md:text-[20px] font-medium leading-[23px] sm:leading-[24px] md:leading-[25px] font-['Lexend'] py-[12px] transition-colors relative ${activeTab === "wheelSize"
                   ? "text-[#ed1c24]"
                   : "text-gray-500 hover:text-gray-700"
                   }`}
                 onClick={() => setActiveTab("wheelSize")}
               >
-                Other Wheel
+                Other Size
                 {activeTab === "wheelSize" && (
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
                 )}
-              </button> */}
+              </button>
             </div>
             {activeTab === "specification" ? specifications?.map((spec, index) => (
               <div
@@ -162,7 +162,7 @@ const WheelProductInfo = ({ product, navigate }) => {
                   margin="0 0 0 14px"
                 />
               </div>
-            )) : null /* activeTab === "wheelSize" && (
+            )) : activeTab === "wheelSize" && (
               relatedData?.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-48 overflow-y-auto pb-2">
                   {relatedData.map((item) => (
@@ -193,7 +193,7 @@ const WheelProductInfo = ({ product, navigate }) => {
                   <p className="text-gray-500 font-['Lexend'] text-lg">No wheel found</p>
                 </div>
               )
-            ) */ }
+            )}
           </div>
         </div>
 

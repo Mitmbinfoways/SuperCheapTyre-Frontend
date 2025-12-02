@@ -24,7 +24,7 @@ const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove
           </div>
           {item.type === 'service' ? (
             <p className="font-bold text-gray-900 mb-3 text-xl">
-              Starting From AU${item.price} <sup className='text-sm'>ea</sup>
+              Starting From AU${item.price} <sup className='text-sm'>EA</sup>
             </p>
           ) : (
             <p className="font-satoshi font-bold text-2xl mt-2 sm:mt-0 text-[#000000]">{formatCurrency(item.price)}</p>

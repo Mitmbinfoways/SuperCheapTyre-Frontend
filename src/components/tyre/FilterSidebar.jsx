@@ -160,7 +160,16 @@ const FilterSidebar = () => {
   }, [searchParams]);
 
   const handleChange = (key) => (value) => {
-    setSelected((prev) => ({ ...prev, [key]: value }));
+    const updatedSelected = { ...selected, [key]: value };
+    setSelected(updatedSelected);
+
+    const params = new URLSearchParams();
+    Object.keys(updatedSelected).forEach((k) => {
+      if (updatedSelected[k]) {
+        params.set(k, updatedSelected[k]);
+      }
+    });
+    setSearchParams(params);
   };
 
   const handleApply = () => {
@@ -174,6 +183,21 @@ const FilterSidebar = () => {
     });
 
     setSearchParams(params);
+  };
+
+  const handleReset = () => {
+    const resetState = {
+      brand: '',
+      width: '',
+      profile: '',
+      diameter: '',
+      loadRating: '',
+      speedRating: '',
+      pattern: '',
+      price: '',
+    };
+    setSelected(resetState);
+    setSearchParams(new URLSearchParams());
   };
 
   return (
@@ -242,7 +266,7 @@ const FilterSidebar = () => {
         </div>
 
         {/* Load Rating Filter */}
-        <div>
+        {/* <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Load Rating
           </div>
@@ -254,10 +278,10 @@ const FilterSidebar = () => {
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Speed Rating Filter */}
-        <div>
+        {/* <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Speed Rating
           </div>
@@ -269,10 +293,10 @@ const FilterSidebar = () => {
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Pattern Filter */}
-        <div>
+        {/* <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Pattern
           </div>
@@ -284,10 +308,10 @@ const FilterSidebar = () => {
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Price Sorting */}
-        <div>
+        {/* <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Sort by Price
           </div>
@@ -299,12 +323,20 @@ const FilterSidebar = () => {
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>
-        </div>
+        </div> */}
       </div>
 
       <button onClick={handleApply} className="w-full bg-brand-red text-white rounded-[8px] py-2 sm:py-3 mt-6 sm:mt-6 font-lexend font-semibold text-xs sm:text-sm bg-[#ED1C24] hover:bg-red-700 transition-colors">
         Apply Filter
       </button>
+      {Object.values(selected).some((val) => val !== '') && (
+        <button
+          onClick={handleReset}
+          className="w-full border border-[#ED1C24] text-[#ED1C24] rounded-[8px] py-2 sm:py-3 mt-3 font-lexend font-semibold text-xs sm:text-sm hover:bg-red-50 transition-colors"
+        >
+          Reset Filter
+        </button>
+      )}
     </div>
   );
 };

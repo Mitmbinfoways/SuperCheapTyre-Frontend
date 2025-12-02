@@ -15,12 +15,12 @@ const SummaryRow = ({ label, value, isDiscount = false }) => (
 );
 
 const OrderSummary = ({ totals }) => {
-  const [paymentOption, setPaymentOption] = useState('full');
+  const [paymentOption, setPaymentOption] = useState('partial');
   const navigate = useNavigate();
 
   // Load saved payment option from localStorage on component mount
   useEffect(() => {
-    const savedPaymentOption = secureGetItem('selectedPaymentOption', 'full');
+    const savedPaymentOption = secureGetItem('selectedPaymentOption', 'partial');
     setPaymentOption(savedPaymentOption);
   }, []);
 
@@ -32,7 +32,7 @@ const OrderSummary = ({ totals }) => {
   // Calculate display total based on payment option
   const calculateDisplayTotal = () => {
     const subtotal = totals.subtotal;
-    
+
     if (paymentOption === 'full') {
       // Full payment: just the subtotal (no delivery fee)
       return subtotal;
@@ -61,7 +61,7 @@ const OrderSummary = ({ totals }) => {
   return (
     <div className="bg-white rounded-2xl border border-border-gray p-6 space-y-6 sticky top-8">
       <h2 className="font-satoshi font-bold text-2xl">Order Summary</h2>
-      
+
       <div className="space-y-5">
         <SummaryRow label="Subtotal" value={totals.subtotal} />
       </div>
@@ -76,7 +76,7 @@ const OrderSummary = ({ totals }) => {
       <div className="space-y-3">
         <p className="font-lexend text-2xl">Payment Options:</p>
         <div className="grid sm:flex-row sm:items-center gap-4 sm:gap-2">
-          <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
+          {/* <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
             <input 
               type="radio" 
               name="payment" 
@@ -86,12 +86,12 @@ const OrderSummary = ({ totals }) => {
               className="w-4 h-4 accent-black"
             />
             Full Payment
-          </label>
+          </label> */}
           <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
-            <input 
-              type="radio" 
-              name="payment" 
-              value="partial" 
+            <input
+              type="radio"
+              name="payment"
+              value="partial"
               checked={paymentOption === 'partial'}
               onChange={(e) => setPaymentOption(e.target.value)}
               className="w-4 h-4 accent-black"
@@ -101,8 +101,8 @@ const OrderSummary = ({ totals }) => {
         </div>
         <div className="bg-blue-50 p-3 rounded-lg">
           <p className="text-sm text-blue-800">
-            {paymentOption === 'full' 
-              ? 'You will be charged the full amount.' 
+            {paymentOption === 'full'
+              ? 'You will be charged the full amount.'
               : 'You will be charged 25% of the total now, with the remainder payable at the store.'}
           </p>
         </div>
