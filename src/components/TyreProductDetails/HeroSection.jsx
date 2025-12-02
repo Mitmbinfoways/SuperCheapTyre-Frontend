@@ -273,7 +273,7 @@ const HeroSection = () => {
                       : "High-performance tyres"}
                   </p>
                   <p className="text-[20px] sm:text-[22px] md:text-[24px] font-medium leading-[25px] sm:leading-[27px] md:leading-[30px] font-['Lexend'] text-[#ff0000] mt-[8px]">
-                    {formatCurrency(product.price)}
+                    {formatCurrency(product.price)}<sup>ea</sup>
                   </p>
                   <p className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-[#676767] mt-[4px]">
                     {product.pricetext}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CloudCog } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -309,22 +309,22 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
             </div>
           </div>
         `;
-        
+
         document.body.appendChild(modal);
-        
+
         const tyresBtn = modal.querySelector('#tyres-btn');
         const wheelsBtn = modal.querySelector('#wheels-btn');
         const closeModalBtn = modal.querySelector('#close-modal-btn');
-        
+
         const close = () => {
           document.body.removeChild(modal);
         };
-        
+
         tyresBtn.addEventListener('click', () => {
           navigate('/tyres');
           close();
         });
-        
+
         wheelsBtn.addEventListener('click', () => {
           navigate('/wheels');
           close();
@@ -334,7 +334,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
           close();
         });
         closeModalBtn.addEventListener('click', close);
-        
+
         // Close if clicked outside
         modal.addEventListener('click', (e) => {
           if (e.target === modal) close();
@@ -507,7 +507,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
               setPhone('');
             }}
             limitMaxLength={true}
-            
+
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             className={`react-phone-number-input ${errors.phone && touched.phone ? 'react-phone-number-input--invalid' : ''}`}
           />
@@ -584,6 +584,13 @@ const AppointmentSection = () => {
   const [holidays, setHolidays] = useState([]);
   const [loadingHolidays, setLoadingHolidays] = useState(false);
   const [timeSlotId, setTimeSlotId] = useState(null);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedDate && selectedTime && window.innerWidth < 1024) {
+      formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selectedDate, selectedTime]);
 
   const formatTo12Hour = (time24) => {
     // time24 in format "HH:MM"
@@ -726,7 +733,7 @@ const AppointmentSection = () => {
         </div>
 
         {/* Right Column */}
-        <div className="lg:col-span-4 lg:max-w-2xl">
+        <div ref={formRef} className="lg:col-span-4 lg:max-w-2xl">
           <BookingForm
             selectedDate={selectedDate}
             selectedTime={selectedTime}

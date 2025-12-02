@@ -213,7 +213,7 @@ const ProductInfo = ({ product }) => {
                   }`}
                 onClick={() => setActiveTab("tyreSize")}
               >
-                Other Tyre Size
+                Other Size
                 {activeTab === "tyreSize" && (
                   <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ed1c24]" />
                 )}
@@ -251,7 +251,7 @@ const ProductInfo = ({ product }) => {
               </div>
             )) : activeTab === "tyreSize" && (
               relatedData?.length > 0 ? (
-                <div className="grid grid-cols-4 gap-2 max-h-48 overflow-y-auto">
+                <div className="grid grid-cols-4 gap-2 h-48 overflow-y-auto">
                   {relatedData.map((item) => (
                     <div key={item._id} >
                       <Link to={isWheelProduct ? `/wheel/${item._id}` : `/productdetails/${item._id}`}>

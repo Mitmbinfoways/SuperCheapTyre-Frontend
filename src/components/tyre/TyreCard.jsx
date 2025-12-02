@@ -174,7 +174,7 @@ const TyreCard = ({
         </div> */}
 
         <div className="text-lg font-lexend font-medium text-black pb-5">
-          {formatCurrency(price)}
+          {formatCurrency(price)}<sup>ea</sup>
           <p className="text-xs text-[#7A7A7A] mt-1 line-clamp-1">
             {pricetext}
           </p>
