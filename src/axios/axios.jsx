@@ -110,7 +110,11 @@ export const getContactInfoDetail = async () => {
 };
 
 export const getAllServices = async (params) => {
-  return axiosInstance.get(`/api/v1/service?isActive=${params.isActive}`);
+  const queryParams = new URLSearchParams();
+  if (params.isActive !== undefined) queryParams.append('isActive', params.isActive);
+  if (params.cart_Recommended !== undefined) queryParams.append('cart_Recommended', params.cart_Recommended);
+
+  return axiosInstance.get(`/api/v1/service?${queryParams.toString()}`);
 };
 
 export const getTyreSize = async (id) => {

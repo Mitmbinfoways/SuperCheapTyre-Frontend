@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
 import { formatCurrency } from '../../Utils/Utils';
+import RecommendedServicesPopup from './RecommendedServicesPopup';
 
 const SummaryRow = ({ label, value, isDiscount = false }) => (
   <div className="flex justify-between items-center">
@@ -14,8 +15,9 @@ const SummaryRow = ({ label, value, isDiscount = false }) => (
   </div>
 );
 
-const OrderSummary = ({ totals }) => {
+const OrderSummary = ({ totals, refreshCart }) => {
   const [paymentOption, setPaymentOption] = useState('partial');
+  const [showRecommendedPopup, setShowRecommendedPopup] = useState(false);
   const navigate = useNavigate();
 
   // Load saved payment option from localStorage on component mount
@@ -55,27 +57,35 @@ const OrderSummary = ({ totals }) => {
     }
     // Store the selected payment option in localStorage
     secureSetItem('selectedPaymentOption', paymentOption);
+
+    // Show recommended services popup
+    setShowRecommendedPopup(true);
+  };
+
+  const proceedToCheckout = () => {
+    setShowRecommendedPopup(false);
     navigate('/appointment');
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-border-gray p-6 space-y-6 sticky top-8">
-      <h2 className="font-satoshi font-bold text-2xl">Order Summary</h2>
+    <>
+      <div className="bg-white rounded-2xl border border-border-gray p-6 space-y-6 sticky top-8">
+        <h2 className="font-satoshi font-bold text-2xl">Order Summary</h2>
 
-      <div className="space-y-5">
-        <SummaryRow label="Subtotal" value={totals.subtotal} />
-      </div>
+        <div className="space-y-5">
+          <SummaryRow label="Subtotal" value={totals.subtotal} />
+        </div>
 
-      <hr className="border-border-gray" />
+        <hr className="border-border-gray" />
 
-      <div className="flex justify-between items-center">
-        <p className="font-lexend font-medium text-xl">Total</p>
-        <p className="font-lexend font-medium text-2xl">{formatCurrency(displayTotal)}</p>
-      </div>
+        <div className="flex justify-between items-center">
+          <p className="font-lexend font-medium text-xl">Total</p>
+          <p className="font-lexend font-medium text-2xl">{formatCurrency(displayTotal)}</p>
+        </div>
 
-      <div className="space-y-3">
-        <p className="font-lexend text-2xl">Payment Options:</p>
-        <div className="grid sm:flex-row sm:items-center gap-4 sm:gap-2">
+        <div className="space-y-3">
+          <p className="font-lexend text-2xl">Payment Options:</p>
+          <div className="grid sm:flex-row sm:items-center gap-4 sm:gap-2">
           {/* <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
             <input 
               type="radio" 
@@ -87,32 +97,41 @@ const OrderSummary = ({ totals }) => {
             />
             Full Payment
           </label> */}
-          <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
-            <input
-              type="radio"
-              name="payment"
-              value="partial"
-              checked={paymentOption === 'partial'}
-              onChange={(e) => setPaymentOption(e.target.value)}
-              className="w-4 h-4 accent-black"
-            />
-            Partial Payment (25%)
-          </label>
+            <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
+              <input
+                type="radio"
+                name="payment"
+                value="partial"
+                checked={paymentOption === 'partial'}
+                onChange={(e) => setPaymentOption(e.target.value)}
+                className="w-4 h-4 accent-black"
+              />
+              Partial Payment (25%)
+            </label>
+          </div>
+          <div className="bg-blue-50 p-3 rounded-lg">
+            <p className="text-sm text-blue-800">
+              {paymentOption === 'full'
+                ? 'You will be charged the full amount.'
+                : 'You will be charged 25% of the total now, with the remainder payable at the store.'}
+            </p>
+          </div>
         </div>
-        <div className="bg-blue-50 p-3 rounded-lg">
-          <p className="text-sm text-blue-800">
-            {paymentOption === 'full'
-              ? 'You will be charged the full amount.'
-              : 'You will be charged 25% of the total now, with the remainder payable at the store.'}
-          </p>
-        </div>
+
+        <button onClick={handleCheckout} className="w-full bg-primary text-white font-lexend font-semibold text-base py-4 rounded-lg flex items-center justify-center gap-3 hover:bg-red-700 transition-colors">
+          Go to Checkout
+          <ArrowRight size={24} />
+        </button>
       </div>
 
-      <button onClick={handleCheckout} className="w-full bg-primary text-white font-lexend font-semibold text-base py-4 rounded-lg flex items-center justify-center gap-3 hover:bg-red-700 transition-colors">
-        Go to Checkout
-        <ArrowRight size={24} />
-      </button>
-    </div>
+      {showRecommendedPopup && (
+        <RecommendedServicesPopup
+          onClose={() => setShowRecommendedPopup(false)}
+          onContinue={proceedToCheckout}
+          refreshCart={refreshCart}
+        />
+      )}
+    </>
   );
 };
 

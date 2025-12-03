@@ -13,6 +13,12 @@ const CartPage = () => {
     // Ensure cart is always an array
     return Array.isArray(savedCart) ? savedCart : [];
   });
+
+  const refreshCart = () => {
+    const savedCart = secureGetItem('cartItems', []);
+    setCartItems(Array.isArray(savedCart) ? savedCart : []);
+  };
+
   const [productStocks, setProductStocks] = useState({});
   const [loadingStocks, setLoadingStocks] = useState(true);
   const [totals, setTotals] = useState({ subtotal: 0, discount: 0, delivery: 15, total: 0 });
@@ -321,7 +327,7 @@ const CartPage = () => {
           </div>
         </div>
         <div className="lg:col-span-1">
-          <OrderSummary totals={totals} />
+          <OrderSummary totals={totals} refreshCart={refreshCart} />
         </div>
       </div>
     </div>
