@@ -89,10 +89,10 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
             <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in fade-in zoom-in duration-300">
 
                 {/* Header */}
-                <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <div className="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-start sm:items-center bg-gray-50">
                     <div>
-                        <h2 className="text-2xl font-bold font-satoshi text-gray-900">Recommended Services</h2>
-                        <p className="text-gray-500 mt-1 font-lexend">Enhance your experience with these services</p>
+                        <h2 className="text-xl sm:text-2xl font-bold font-satoshi text-gray-900">Recommended Services</h2>
+                        <p className="text-sm sm:text-base text-gray-500 mt-1 font-lexend">Enhance your experience with these services</p>
                     </div>
                     <button
                         onClick={onClose}
@@ -103,66 +103,60 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50/50">
+                    <div className="grid grid-cols-1 gap-6">
                         {services.map((service) => (
                             <div
                                 key={service._id}
-                                className={`bg-white rounded-xl p-4 border transition-all duration-300 flex flex-col ${addedServices[service._id]
-                                        ? 'border-green-500 ring-1 ring-green-500 shadow-md'
-                                        : 'border-gray-200 hover:border-primary/30 hover:shadow-lg'
+                                className={`bg-white rounded-xl p-3 sm:p-4 border transition-all duration-300 flex flex-row items-center gap-3 sm:gap-4 ${addedServices[service._id]
+                                    ? "border-green-500 ring-1 ring-green-500 shadow-md"
+                                    : "border-gray-200 hover:border-primary/30 hover:shadow-lg"
                                     }`}
                             >
-                                <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 relative group">
-                                    {service.images && service.images.length > 0 ? (
+                                {/* IMAGE */}
+                                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                    {service.images?.length > 0 ? (
                                         <img
                                             src={getBlogImageUrl(service.images[0])}
                                             alt={service.name}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            className="w-full h-full object-cover"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-gray-400">
                                             No Image
                                         </div>
                                     )}
-                                    {addedServices[service._id] && (
-                                        <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center backdrop-blur-[2px]">
-                                            <div className="bg-white text-green-600 px-4 py-2 rounded-full font-bold shadow-lg flex items-center gap-2">
-                                                <Check size={18} strokeWidth={3} />
-                                                Added
-                                            </div>
-                                        </div>
-                                    )}
                                 </div>
 
-                                <div className="flex-1">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="font-bold text-lg text-gray-900 line-clamp-1">{service.name}</h3>
-                                        <span className="font-bold text-primary text-lg whitespace-nowrap">
-                                            ${service.price}
-                                        </span>
+                                {/* TEXT SECTION */}
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-base sm:text-lg text-gray-900 line-clamp-1">{service.name}</h3>
+
+                                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 my-1 pr-0 sm:pr-4" dangerouslySetInnerHTML={{ __html: service.description }}></p>
+
+                                    <div className="text-sm sm:text-xl font-semibold text-gray-900 mt-1 sm:mt-0">
+                                        Starting From AU${service.price}
+                                        <span className="text-xs align-top"> EA</span>
                                     </div>
-                                    <div
-                                        className="text-sm text-gray-600 line-clamp-2 mb-4 prose prose-sm"
-                                        dangerouslySetInnerHTML={{ __html: service.description }}
-                                    />
                                 </div>
 
+                                {/* ADD BUTTON */}
                                 <button
                                     onClick={() => !addedServices[service._id] && handleAddToCart(service)}
                                     disabled={addedServices[service._id]}
-                                    className={`w-full py-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${addedServices[service._id]
-                                            ? 'bg-green-50 text-green-700 cursor-default'
-                                            : 'bg-black text-white hover:bg-gray-800 active:scale-[0.98]'
+                                    className={`flex-shrink-0 px-3 py-1.5 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-200 flex items-center gap-1 sm:gap-2 text-sm sm:text-base ${addedServices[service._id]
+                                        ? "bg-green-50 text-green-700 cursor-default"
+                                        : "bg-black text-white hover:bg-gray-800"
                                         }`}
                                 >
                                     {addedServices[service._id] ? (
                                         <>
-                                            <Check size={18} />
-                                            Added to Cart
+                                            <Check size={16} className="sm:w-[18px] sm:h-[18px]" />
+                                            <span className="hidden sm:inline">Added</span>
+                                            <span className="sm:hidden">Added</span>
                                         </>
                                     ) : (
-                                        'Add to Cart'
+                                        "Add"
                                     )}
                                 </button>
                             </div>
@@ -171,10 +165,10 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t border-gray-100 bg-white flex justify-end gap-4">
+                <div className="p-4 sm:p-6 border-t border-gray-100 bg-white flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
                     <button
                         onClick={onContinue}
-                        className="px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-500/20 flex items-center gap-2"
+                        className="w-full sm:w-auto justify-center px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-500/20 flex items-center gap-2"
                     >
                         Continue to Checkout
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

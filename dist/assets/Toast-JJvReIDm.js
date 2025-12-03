@@ -1,0 +1,1 @@
+import{y as e}from"./react-vendor-BV5hTVn7.js";const r="GLOBAL_SINGLE_TOAST",a=({message:t,type:o="default",autoClose:s=3e3})=>{e.isActive(r)||e(t,{toastId:r,type:o,position:"top-right",autoClose:s,hideProgressBar:!1,closeOnClick:!0,pauseOnHover:!0,draggable:!0,progress:void 0})};export{a as T};

@@ -7,7 +7,6 @@ import { formatCurrency } from '../../Utils/Utils';
 const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove }) => {
   const navigate = useNavigate();
 
-  // Determine if the + button should be disabled
   const isIncrementDisabled = loadingStock || (productStock !== undefined && item.quantity >= productStock);
 
   return (

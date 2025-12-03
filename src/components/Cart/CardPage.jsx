@@ -10,7 +10,6 @@ const CartPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = secureGetItem('cartItems', []);
-    // Ensure cart is always an array
     return Array.isArray(savedCart) ? savedCart : [];
   });
 

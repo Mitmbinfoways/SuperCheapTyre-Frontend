@@ -19,27 +19,22 @@ const OrderSummary = ({ totals, refreshCart }) => {
   const [paymentOption, setPaymentOption] = useState('partial');
   const [showRecommendedPopup, setShowRecommendedPopup] = useState(false);
   const navigate = useNavigate();
+  const [cart, setCart] = useState([])
 
-  // Load saved payment option from localStorage on component mount
   useEffect(() => {
     const savedPaymentOption = secureGetItem('selectedPaymentOption', 'partial');
     setPaymentOption(savedPaymentOption);
   }, []);
 
-  // Save payment option to localStorage whenever it changes
   useEffect(() => {
     secureSetItem('selectedPaymentOption', paymentOption);
   }, [paymentOption]);
 
-  // Calculate display total based on payment option
   const calculateDisplayTotal = () => {
     const subtotal = totals.subtotal;
-
     if (paymentOption === 'full') {
-      // Full payment: just the subtotal (no delivery fee)
       return subtotal;
     } else {
-      // Partial payment: 25% of subtotal
       return subtotal * 0.25;
     }
   };
@@ -47,25 +42,75 @@ const OrderSummary = ({ totals, refreshCart }) => {
   const displayTotal = calculateDisplayTotal();
 
   const handleCheckout = () => {
-    const cart = secureGetItem('cartItems', []);
-    // Ensure cart is always an array
-    const validCart = Array.isArray(cart) ? cart : [];
-    if (!validCart.length) {
-      Toast({ message: 'Please add at least one item to cart', type: 'error' });
-      navigate('/tyres');
+    const cartItems = secureGetItem('cartItems', []);
+
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      openEmptyCartModal(navigate);
       return;
     }
-    // Store the selected payment option in localStorage
     secureSetItem('selectedPaymentOption', paymentOption);
-
-    // Show recommended services popup
     setShowRecommendedPopup(true);
   };
+
 
   const proceedToCheckout = () => {
     setShowRecommendedPopup(false);
     navigate('/appointment');
   };
+
+  const openEmptyCartModal = (navigate) => {
+    const modal = document.createElement('div');
+    modal.className =
+      'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+
+    modal.innerHTML = `
+    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl relative">
+      <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div class="text-center">
+        <h3 class="text-xl font-lexend font-semibold text-gray-900 mb-2">Select Product Type</h3>
+        <p class="text-gray-500 mb-6">What would you like to add to your cart?</p>
+
+        <div class="flex flex-col gap-3">
+          <button id="tyres-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">Tyres</button>
+          <button id="wheels-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">Wheels</button>
+          <button id="services-btn" class="px-5 py-3 text-base font-lexend font-medium text-white bg-primary rounded-lg hover:bg-red-700 transition-colors">Services</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+    document.body.appendChild(modal);
+
+    const close = () => modal.remove();
+
+    modal.querySelector('#close-modal-btn').addEventListener('click', close);
+
+    modal.querySelector('#tyres-btn').addEventListener('click', () => {
+      navigate('/tyres');
+      close();
+    });
+
+    modal.querySelector('#wheels-btn').addEventListener('click', () => {
+      navigate('/wheels');
+      close();
+    });
+
+    modal.querySelector('#services-btn').addEventListener('click', () => {
+      navigate('/services');
+      close();
+    });
+
+    // Close when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) close();
+    });
+  };
+
 
   return (
     <>
@@ -86,7 +131,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
         <div className="space-y-3">
           <p className="font-lexend text-2xl">Payment Options:</p>
           <div className="grid sm:flex-row sm:items-center gap-4 sm:gap-2">
-          {/* <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
+            {/* <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
             <input 
               type="radio" 
               name="payment" 
