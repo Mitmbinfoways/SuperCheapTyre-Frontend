@@ -1,16 +1,16 @@
 import img from '/privacy/privacybg.svg'
-import  terms from '/terms/terms.svg'
+import terms from '/terms/terms.svg'
 
 function Terms() {
     return (
         <div className="flex">
-            
-             <main className="flex-grow max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-12 relative overflow-x-hidden">
-             <img src={img} className='absolute -right-8 -top-24 h-40 sm:h-80 max-w-full pointer-events-none select-none z-0'/>
+
+            <main className="flex-grow max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-12 relative overflow-x-hidden">
+                <img src={img} className='absolute -right-8 -top-24 h-40 sm:h-80 max-w-full pointer-events-none select-none z-0' />
                 <div className="relative z-10">
                     {/* Title */}
                     <h1 className="text-xl sm:text-2xl font-medium px-6 sm:px-10 text-red-600 mb-4 sm:mb-6">
-                    Terms & Condition
+                        Terms & Condition
                     </h1>
 
                     {/* List */}
@@ -22,10 +22,10 @@ function Terms() {
                         <li>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam id dolor id nibh ultricies vehicula ut id elit.</li>
                         <li>Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</li>
                         <li>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna. Nulla vitae elit libero.</li>
-                        
+
                     </ol>
                 </div>
-                <img src={terms} className='absolute -right-0 top-52 h-40 sm:h-72 max-w-full'/>
+                <img src={terms} className='hidden xl:block absolute -right-0 top-52 h-40 sm:h-72 max-w-full' />
 
             </main>
         </div>

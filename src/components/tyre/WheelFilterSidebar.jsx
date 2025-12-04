@@ -6,7 +6,7 @@ import axiosInstance from '../../axios/axios';
 
 const WheelFilterSidebar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // State for filter options from API
   const [brandOptions, setBrandOptions] = useState([{ value: '', label: 'All Brand' }]);
   const [sizeOptions, setSizeOptions] = useState([{ value: '', label: 'All Size' }]);
@@ -132,20 +132,42 @@ const WheelFilterSidebar = () => {
   }, [searchParams]);
 
   const handleChange = (key) => (value) => {
-    setSelected((prev) => ({ ...prev, [key]: value }));
+    const updatedSelected = { ...selected, [key]: value };
+    setSelected(updatedSelected);
+
+    const params = new URLSearchParams();
+    Object.keys(updatedSelected).forEach((k) => {
+      if (updatedSelected[k]) {
+        params.set(k, updatedSelected[k]);
+      }
+    });
+    setSearchParams(params);
   };
 
   const handleApply = () => {
     // Update URL query parameters with selected filters
     const params = new URLSearchParams();
-    
+
     Object.keys(selected).forEach(key => {
       if (selected[key]) {
         params.set(key, selected[key]);
       }
     });
-    
+
     setSearchParams(params);
+  };
+
+  const handleReset = () => {
+    const resetState = {
+      brand: '',
+      size: '',
+      color: '',
+      diameter: '',
+      fitments: '',
+      price: '',
+    };
+    setSelected(resetState);
+    setSearchParams(new URLSearchParams());
   };
 
   return (
@@ -155,7 +177,7 @@ const WheelFilterSidebar = () => {
       <div className="grid sm:grid-cols-2 lg:grid-cols-1 grid-cols-1 gap-6">
         {/* Brand Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Brand
           </div>
           <div className="relative">
@@ -170,7 +192,7 @@ const WheelFilterSidebar = () => {
 
         {/* Size Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Size
           </div>
           <div className="relative">
@@ -185,7 +207,7 @@ const WheelFilterSidebar = () => {
 
         {/* Color Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Color
           </div>
           <div className="relative">
@@ -200,7 +222,7 @@ const WheelFilterSidebar = () => {
 
         {/* Diameter Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Diameter
           </div>
           <div className="relative">
@@ -215,7 +237,7 @@ const WheelFilterSidebar = () => {
 
         {/* Fitments Filter */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Fitments
           </div>
           <div className="relative">
@@ -230,7 +252,7 @@ const WheelFilterSidebar = () => {
 
         {/* Price Sorting */}
         <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2"> 
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
             Sort by Price
           </div>
           <div className="relative">
@@ -247,6 +269,14 @@ const WheelFilterSidebar = () => {
       <button onClick={handleApply} className="w-full bg-brand-red text-white rounded-[8px] py-2 sm:py-3 mt-6 sm:mt-6 font-lexend font-semibold text-xs sm:text-sm bg-[#ED1C24] hover:bg-red-700 transition-colors">
         Apply Filter
       </button>
+      {Object.values(selected).some((val) => val !== '') && (
+        <button
+          onClick={handleReset}
+          className="w-full border border-[#ED1C24] text-[#ED1C24] rounded-[8px] py-2 sm:py-3 mt-3 font-lexend font-semibold text-xs sm:text-sm hover:bg-red-50 transition-colors"
+        >
+          Reset Filter
+        </button>
+      )}
     </div>
   );
 };
