@@ -160,13 +160,24 @@ const Header = () => {
                 <div className="flex items-center gap-8">
                   <div className="flex items-center space-x-3 -mx-5">
                     <a
-                      href={contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97936190"}
+                      href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`}
                       className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer -mx-1"
+                      onClick={(e) => {
+                        if (!contactData?.phone) {
+                          console.log("Using fallback number");
+                        }
+                      }}
                     >
-                      <FaPhoneAlt size={14} className="hidden sm:block xl:w-4 xl:h-4 lg:w-7 lg:h-7 md:w-4 md:h-4" />
-                      <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">{formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}</span>
+                      <div className="sm:hidden p-2 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
+                        <FaPhoneAlt size={18} />
+                      </div>
+                      <FaPhoneAlt className="hidden sm:block size-6 md:size-4 lg:size-5 xl:size-4" />
+                      <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">
+                        {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
+                      </span>
                     </a>
                   </div>
+
 
                   {/* Mobile Menu Button and Cart Icon */}
                   <div className="xl:hidden flex items-center space-x-3">

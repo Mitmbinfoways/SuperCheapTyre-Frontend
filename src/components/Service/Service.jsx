@@ -120,7 +120,7 @@ const Service = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className="flex-1 flex flex-col">
+                            <div className="flex-1 flex flex-col pt-4">
                                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                                     {service?.name?.toUpperCase()}
                                 </h3>
