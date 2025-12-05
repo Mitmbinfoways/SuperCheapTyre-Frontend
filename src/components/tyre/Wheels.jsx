@@ -4,7 +4,7 @@ import BreadcrumbSection from "./BreadcrumbSection";
 import WheelFilterSidebar from "./WheelFilterSidebar";
 import TyreGrid from "./TyreGrid";
 import Pagination from "./Pagination";
-import HeroBanner from "./HeroBanner";
+import HeroBannerWheel from "./HeroBannerWheel";
 import { getTyres } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import Loader from "../common/Loader";
@@ -124,8 +124,7 @@ function Wheels() {
                     Wheels
                   </h2>
                   <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                    Browse our wide selection of high-quality wheels for your
-                    vehicle.
+                    Browse our large selection of premium wheels that are designed to improve the performance, handling and the overall look of your car.
                   </p>
                 </div>
 
@@ -197,8 +196,7 @@ function Wheels() {
                   Wheels
                 </h2>
                 <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                  Browse our wide selection of high-quality wheels for your
-                  vehicle.
+                  Browse our large selection of premium wheels that are designed to improve the performance, handling and the overall look of your car.
                 </p>
               </div>
 
@@ -216,7 +214,7 @@ function Wheels() {
           />
         </div>
 
-        <HeroBanner />
+        <HeroBannerWheel />
       </div>
     </main>
   );

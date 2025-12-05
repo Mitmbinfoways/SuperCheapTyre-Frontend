@@ -25,8 +25,7 @@ const AboutUsHero= () => {
             </h1>
 
             <p className="w-full md:w-[699px] max-w-full font-medium text-[#000000] text-center text-sm sm:text-base md:text-lg leading-6 sm:leading-7 md:leading-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              We believe road safety begins with the right tyres. We provide reliable, affordable and high-quality tyre solutions for everyday drivers and 4×4 enthusiasts across Melbourne and Australia.
             </p>
           </div>
         </div>

@@ -301,8 +301,7 @@ export const EnquirySection = ({ contactData }) => {
           <div className="mb-4">
             <h2 className="text-primary font-medium text-3xl mb-4">GET IN TOUCH</h2>
             <p className="text-[#7A7A7A] leading-relaxed">
-              Contact us for everything from quality cheap tyres to top of the range all-terrain tyres.
-              Our Dandenong Tyre store has everything you will need!
+              At Supercheap Tyres, we’re here to help with all your tyre and wheel needs call, email or visit us for fast, reliable service.
             </p>
           </div>
 
@@ -409,26 +408,8 @@ export const EnquirySection = ({ contactData }) => {
           Enquire Now
         </h2>
 
-        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6E6E6E] text-sm sm:text-base tracking-[0.48px] leading-[26px] sm:leading-[30px] mb-6 sm:mb-8">
-          Supercheap Tyres Dandenong is your number one tyre dealer and tyre
-          shop in Dandenong and the surrounding areas.
-          <br />
-          We stock a huge variety of products, including cheap tyres, discount
-          tyres, SUV tyres, van tyres, 4WD tyres, trailer tyres, and more.
-          <br />
-          Whether you're looking to buy tyres for your car, SUV, or trailer,
-          we've got you covered.
-          <br />
-          Looking for great deals on tyres and tyre services nearby? We offer
-          some of the cheapest tyres in Melbourne, along with expert wheel
-          alignment services.
-          <br />
-          Whether you're searching for "tyres near me" or "tire shop near me,"
-          we've got you covered.
-          <br />
-          Visit us today or check out our tyres online for the best deals in
-          South East Melbourne, including Dandenong. Contact us for more
-          information!
+        <div className="[font-family:'Lexend',Helvetica] max-w-6xl font-normal text-[#6E6E6E] text-sm sm:text-base tracking-[0.48px] leading-[26px] sm:leading-[30px] mb-6 sm:mb-8">
+          Supercheap Tyres Dandenong is a leading tyre dealer proudly servicing the South East Melbourne region including Dandenong. Our products are spread out to a wide range that consists of budget tyres, premium tyres, SUV tyres, van tyres, 4×4 tyres, trailer tyres and more. Whether you need tyres for a daily driver, family vehicle or commercial use, we have quality options to suit every requirement. We’re committed to providing great value, offering some of the most competitive tyre prices in Melbourne along with expert fitting, wheel alignment and repair services. If you’re searching online for “tyres near me” or a reliable tyre shop in Dandenong, look no further. You can find the best deals and qualitative service on tyres at our store or online. Contact us today for assistance or a free quote.
         </div>
 
         {/* Contact Form */}

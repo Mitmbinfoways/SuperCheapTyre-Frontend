@@ -133,7 +133,7 @@ const BuyTyre = () => {
           style={{ backgroundImage: `url(${formBackground})` }}
         >
           <h3 className="text-black text-lg sm:text-xl lg:text-2xl font-bold text-center sm:text-left p-2">
-            SEARCH FOR TYRES
+            Find the Right Tyres
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 sm:mt-2">
             <div className="relative">
@@ -184,11 +184,14 @@ const BuyTyre = () => {
               Buy your tyre
             </h2>
             <p className="font-roboto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-200">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sodales
-              dictum aliquam sed ornare tellus sit et ullamcorper velit. Diam
-              cursus eu metus diam donec. Tellus rhoncus feugiat auctor viverra
-              pretium. Id accumsan, augue est purus, vitae est. Risus fames arcu
-              et massa sed parturient risus aenean.
+              Whether you’re commuting through Melbourne, heading up the Hume, or exploring the
+              outback, your tyres matter. Choosing, purchasing and fitting of tyres is easy and stress-free at
+              Supercheap Tyres. At Supercheap Tyres, we make choosing, buying and fitting tyres simple
+              and stress-free. We stock a huge range of budget, mid-range and premium options, with
+              brand-new stock updated daily to ensure you always have the best selection. Our specialist
+              staff will provide you with personalised advice over the internet and at the shop where you
+              will find the right fit to your car, 4WD, van, ute, SUV or commercial vehicle. New tyres have
+              never been easy to get with quick service, good advice and prices.
             </p>
           </div>
           <div className="relative order-1 lg:order-2 h-0 sm:h-0 md:h-0 lg:h-96 xl:h-[420px] ml-0 lg:ml-0">

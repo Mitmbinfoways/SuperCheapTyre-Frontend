@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HeroBanner = () => {
+const HeroBannerWheel = () => {
   return (
     <div className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-blue-900 rounded-2xl sm:rounded-3xl mx-4 sm:mx-8 lg:mx-12 my-6 sm:my-8 lg:my-8 overflow-hidden">
       <div className="absolute inset-0">
@@ -12,11 +12,11 @@ const HeroBanner = () => {
       </div>
       <div className="relative z-10 flex items-center justify-center h-64 sm:h-80 lg:h-96 px-3 sm:px-4 lg:px-8">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-roboto font-black text-white text-center leading-tight tracking-wide">
-          Grip with confidence. Drive with control.
+          Drive with confidence. Built to perform.
         </h1>
       </div>
     </div>
   );
 };
 
-export default HeroBanner;
+export default HeroBannerWheel;

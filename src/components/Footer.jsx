@@ -30,8 +30,9 @@ const Footer = () => {
                     {/* Logo and Social */}
                     <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
                         <img src={images.logo} alt="Supercheap Tyres Logo" className="w-48 sm:w-56 md:w-60 h-auto mx-auto sm:mx-0" />
-                        <p className="font-plus-jakarta text-white text-sm sm:text-base max-w-72 mx-auto sm:mx-0">
-                            Our vision is to provide convenience and help increase your sales business.
+                        <p className="font-plus-jakarta text-white text-sm sm:text-base  mx-auto sm:mx-0">
+                            Supercheap Tyres Melbourne’s affordable tyre experts.
+                            Our mission is to provide convenience, safety and value for every customer on every road in Australia.
                         </p>
                         <div className="flex space-x-3 sm:space-x-4 justify-center sm:justify-start">
                             <a href="https://www.facebook.com/Supercheaptyre" className="p-2 bg-white rounded-full"><FaFacebookF size={18} className="sm:w-5 sm:h-5 text-black" /></a>

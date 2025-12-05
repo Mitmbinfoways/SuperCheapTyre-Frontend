@@ -14,13 +14,7 @@ const ExperienceExpertiseSection = () => {
 
           <div>
             <p className="font-lexend text-[#6e6d6d] text-base sm:text-lg md:text-xl leading-7 md:leading-[30px]">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              Our team comprises of skilled tyre technicians and industry experts who have been working in the field of tyre fitting, wheel balancing, vehicle repair services and vehicle safety over several years. We deal with tyre brands and we deal with new installations of tyres, all the way up to intricate puncture repair. Whether you drive city streets in Melbourne or travel long highway routes across Australia, we know the expectations of the Australian conditions and suggest the products that are designed to work.
             </p>
           </div>
         </CardContent>

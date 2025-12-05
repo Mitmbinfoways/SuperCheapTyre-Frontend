@@ -713,12 +713,13 @@ const AppointmentSection = () => {
     <section className="py-10 px-4">
       <div className="text-center mb-12">
         <h1 className="text-3xl font-medium text-[#ED1C24] mb-2">Book Your Appointment</h1>
-        <p className="text-xl text-[#7A7A7A]">Choose your preferred date and time, then provide your details to confirm</p>
+        <p className="text-xl max-w-6xl mx-auto text-[#7A7A7A]">Choose your preferred date and time, then provide your details to confirm your booking. We made the process simple, fast and hassle-free so you can get back on the road early.
+        </p>
       </div>
 
-      <div className="max-w-screen-2xl mx-auto grid lg:grid-cols-10 gap-5 items-start">
+      <div className="max-w-screen-2xl mx-auto grid xl:grid-cols-10 gap-5 items-start">
         {/* Left Column */}
-        <div className="bg-[#FDFDFE] p-8 rounded-2xl shadow-card shadow-[0_4px_4px_0_#00000040] lg:col-span-6">
+        <div className="bg-[#FDFDFE] p-8 rounded-2xl shadow-card shadow-[0_4px_4px_0_#00000040] xl:col-span-6">
           <h3 className="text-2xl font-medium mb-7">Choose a Date & Time<span className="text-[#FF0000]">*</span></h3>
           <div className="grid md:grid-cols-2 items-start">
             <Calendar
@@ -746,7 +747,7 @@ const AppointmentSection = () => {
         </div>
 
         {/* Right Column */}
-        <div ref={formRef} className="lg:col-span-4 lg:max-w-2xl">
+        <div ref={formRef} className="xl:col-span-4 xl:max-w-2xl">
           <BookingForm
             selectedDate={selectedDate}
             selectedTime={selectedTime}

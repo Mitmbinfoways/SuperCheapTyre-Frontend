@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent } from "./Card";
 
- const CompanyOverviewSection = () => {
+const CompanyOverviewSection = () => {
   return (
     <section className="w-full h-full  mx-auto">
       <Card className="bg-white rounded-[20px] shadow-sm border-0 h-full flex flex-col">
@@ -10,13 +10,7 @@ import { Card, CardContent } from "./Card";
             Mission Statement
           </h2>
           <p className="font-lexend text-[#6e6d6d] text-base sm:text-lg md:text-xl leading-7 md:leading-[30px]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            Our mission is to provide safe, reliable and affordable tyre solutions without sacrificing quality of it. We aim to offer quick, sincere and professional services to all drivers walking into our stores or shopping with us online. We are committed to make the Australian roads safer by providing the our most desired products, reliable installation and professional advice that suits the needs of every customer.
           </p>
         </CardContent>
       </Card>

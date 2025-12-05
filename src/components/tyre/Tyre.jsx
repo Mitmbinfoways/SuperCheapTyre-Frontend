@@ -68,11 +68,9 @@ function Tyre() {
           brand: item.brand,
           name: item.name,
           size: item.tyreSpecifications
-            ? `${item.tyreSpecifications.width}/${
-                item.tyreSpecifications.profile
-              }${" "}${item.tyreSpecifications.diameter}${" "}${
-                item.tyreSpecifications.loadRating
-              }${item.tyreSpecifications.speedRating}`
+            ? `${item.tyreSpecifications.width}/${item.tyreSpecifications.profile
+            }${" "}${item.tyreSpecifications.diameter}${" "}${item.tyreSpecifications.loadRating
+            }${item.tyreSpecifications.speedRating}`
             : "",
           price: item.price,
           pricetext: item.pricetext,
@@ -145,9 +143,8 @@ function Tyre() {
                     Tyres
                   </h2>
                   <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                    The new attractive asymmetric tread design offers superior
-                    handling and braking performances on both dry and wet
-                    surfaces.
+                    Find performance, safety and durability tyres.
+                  Our advanced tread patterns offer high handling and strong braking performance on both dry and wet roads.
                   </p>
                 </div>
 
@@ -218,10 +215,9 @@ function Tyre() {
                 <h2 className="text-2xl sm:text-3xl font-lexend font-regular text-black py-3 pb-8">
                   Tyres
                 </h2>
-                <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
-                  The new attractive asymmetric tread design offers superior
-                  handling and braking performances on both dry and wet
-                  surfaces.
+                <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-2xl">
+                  Find performance, safety and durability tyres.
+                  Our advanced tread patterns offer high handling and strong braking performance on both dry and wet roads.
                 </p>
               </div>
 

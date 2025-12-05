@@ -102,7 +102,7 @@ export const brands = [
 ];
 
 export const whyChooseUsItems = [
-  { icon: '/home/quality.svg', title: 'Quality' },
+  { icon: '/home/quality.svg', title: 'Quality Guaranteed' },
   { icon: '/home/widerange.svg', title: 'Wide Range' },
   { icon: bookingIcon, title: 'Easy Booking' },
   { icon: '/home/securepayment.svg', title: 'Secure Payments' },

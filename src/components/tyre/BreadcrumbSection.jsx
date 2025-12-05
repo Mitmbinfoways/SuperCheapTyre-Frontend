@@ -4,12 +4,12 @@ const BreadcrumbSection = ({ category = 'tyre', title, description }) => {
   // Default content based on category
   const defaultContent = {
     tyre: {
-      title: 'Tyres Listing',
-      description: 'Find the perfect tyres for your vehicle from top brands'
+      title: 'Explore Our Tyre Range',
+      description: 'Find the perfect tyres for your vehicle from leading brands trusted by the drivers worldwide.'
     },
     wheel: {
-      title: 'Wheels Listing',
-      description: 'Find the perfect wheels for your vehicle from top brands'
+      title: 'Explore Our Wheel Range',
+      description: 'Upgrade your vehicle with wheels from trusted brands built for durability, safety, and attractive.'
     }
   };
 

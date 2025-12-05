@@ -12,13 +12,7 @@ const AboutUsContent = () => {
           </h2>
 
           <p className="font-lexend text-[#6e6d6d] text-base sm:text-lg md:text-xl leading-7 md:leading-[30px] max-w-[741px]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            Supercheap Tyres is a local based tyre shop which deals in the full gamut of tyres, wheels and servicing. We have reputable brands, good prices and enormous choices of cars, SUVs, utes, vans, 4X4 vehicles and work fleets. We are your one stop partner whether you require one tyre replacement, a complete set of replacement including fitting, balancing, and alignment. We proudly serve Melbourne drivers, while also supporting customers Australia-wide with product delivery, quality advice and outstanding service.
           </p>
         </CardContent>
       </Card>
