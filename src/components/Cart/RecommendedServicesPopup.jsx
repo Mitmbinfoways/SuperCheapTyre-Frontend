@@ -16,8 +16,6 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                 const response = await getAllServices({ isActive: true, cart_Recommended: true });
                 const allServices = response.data.data || [];
 
-                console.log(allServices);
-
                 // Filter out services that are already in the cart
                 const cart = secureGetItem('cartItems', []);
                 const cartServiceIds = new Set(cart.map(item => String(item.id)));

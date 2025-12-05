@@ -15,7 +15,6 @@ const WheelProductInfo = ({ product, navigate }) => {
   const fetchdata = async () => {
     try {
       const res = await getTyreSize(product?._id)
-      console.log(res.data.data)
       setRelatedData(res.data.data)
     } catch (error) {
       console.log(error)

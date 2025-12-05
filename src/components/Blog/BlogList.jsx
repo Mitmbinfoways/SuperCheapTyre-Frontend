@@ -26,7 +26,6 @@ const BlogList = () => {
           isActive: true,
         };
         const res = await getblog(payload);
-        console.log(res.data.data)
         const apiBlogs = res?.data?.data?.blogs || [];
         const mapped = apiBlogs.map((b) => {
           const format = b.formate || "card";

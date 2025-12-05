@@ -79,7 +79,6 @@ const Success = () => {
             session_id: sessionId,
           };
           const fetchTransactionData = await TransactionData(data);
-          console.log(fetchTransactionData)
           TID = fetchTransactionData?.data?.transactionId;
         } catch (error) {
           console.error("Error fetching transaction ID:", error);
