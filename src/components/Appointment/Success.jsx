@@ -184,7 +184,7 @@ const Success = () => {
           {isLoading ?
             <Loader
               label="Please Wait we are generating your Invoice"
-              className="h-36"
+              className="max-h-64"
             /> :
             <>
 
