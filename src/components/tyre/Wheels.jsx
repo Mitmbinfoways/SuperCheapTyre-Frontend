@@ -8,6 +8,7 @@ import HeroBannerWheel from "./HeroBannerWheel";
 import { getTyres } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import Loader from "../common/Loader";
+import HeroBanner from "./HeroBanner";
 
 function Wheels() {
   const [searchParams] = useSearchParams();

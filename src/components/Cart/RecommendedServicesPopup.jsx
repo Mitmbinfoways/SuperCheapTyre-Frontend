@@ -131,7 +131,7 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                             >
                                 {/* CHECKBOX */}
                                 <div className="flex-shrink-0">
-                                    <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors ${selectedServices[service._id] ? 'bg-primary border-primary' : 'border-gray-300 bg-white'
+                                    <div className={`w-6 h-6 rounded border flex items-center justify-center transition-colors border-1 ${selectedServices[service._id] ? 'bg-primary border-primary' : 'border-black bg-white'
                                         }`}>
                                         {selectedServices[service._id] && <Check size={16} className="text-white" />}
                                     </div>
