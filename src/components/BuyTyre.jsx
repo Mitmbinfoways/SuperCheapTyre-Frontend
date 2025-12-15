@@ -183,7 +183,7 @@ const BuyTyre = () => {
             <h2 className="font-roboto font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">
               Buy your tyre
             </h2>
-            <p className="font-roboto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-gray-200">
+            <p className="font-roboto text-sm sm:text-base md:text-lg  leading-relaxed text-gray-200 text-justify">
               Whether you’re commuting through Melbourne, heading up the Hume, or exploring the
               outback, your tyres matter. Choosing, purchasing and fitting of tyres is easy and stress-free at
               Supercheap Tyres. At Supercheap Tyres, we make choosing, buying and fitting tyres simple
