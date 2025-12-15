@@ -4,7 +4,7 @@ import appointmentIllustrationSrcSet from '../../assets/appointment/appointmentg
 
 const CtaSection = () => {
   return (
-    <section className="max-w-screen-2xl mx-auto px-3 sm:px-4 md:pt-56 lg:px-8 py-8">
+    <section className="max-w-screen-2xl mx-auto px-3 sm:px-4 md:pt-42 lg:px-8 py-8">
       <div className="relative bg-black rounded-3xl text-white min-h-[380px] flex items-center justify-center">
         <div className="p-4 md:p-12">
           <div className="absolute z-10 order-2 md:order-1 left-0  bottom-1">

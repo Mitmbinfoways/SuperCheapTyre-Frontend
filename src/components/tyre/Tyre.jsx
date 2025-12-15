@@ -144,7 +144,7 @@ function Tyre() {
                   </h2>
                   <p className="text-sm sm:text-base font-lexend font-regular text-[#7A7A7A] max-w-xl">
                     Find performance, safety and durability tyres.
-                  Our advanced tread patterns offer high handling and strong braking performance on both dry and wet roads.
+                    Our advanced tread patterns offer high handling and strong braking performance on both dry and wet roads.
                   </p>
                 </div>
 
@@ -184,7 +184,7 @@ function Tyre() {
             </div>
           </div>
 
-          <div className="sm:ps-96">
+          <div className="flex items-center justify-center">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -227,7 +227,7 @@ function Tyre() {
           </div>
         </div>
 
-        <div className="sm:ps-96">
+        <div className="">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
