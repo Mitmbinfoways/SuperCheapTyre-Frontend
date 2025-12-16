@@ -26,7 +26,7 @@ const Footer = () => {
     return (
         <footer className="relative z-50 bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20]">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-0 mb-8 sm:mb-10 md:mb-4">
                     {/* Logo and Social */}
                     <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
                         <img src={images.logo} alt="Supercheap Tyres Logo" className="w-48 sm:w-56 md:w-60 h-auto mx-auto sm:mx-0" />
@@ -43,14 +43,13 @@ const Footer = () => {
 
                     {/* Quick Links */}
                     <div className="space-y-3 sm:space-y-4 text-center sm:text-left sm:space-x-32">
-                        <h4 className="text-lg sm:text-xl font-semibold font-plus-jakarta mb-3 sm:mb-4 sm:mx-32">Quick Links</h4>
+                        <h4 className="text-lg sm:text-xl font-semibold font-plus-jakarta mb-3 sm:mb-4 sm:mx-32 text-nowrap">Quick Links</h4>
                         <ul className="space-y-2 sm:space-y-6 font-plus-jakarta text-white text-sm sm:text-base">
                             <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
                             <li><Link to="/tyres" className="hover:text-primary transition-colors">Tyres</Link></li>
                             <li><Link to="/wheels" className="hover:text-primary transition-colors">Wheels</Link></li>
                             <li><Link to="/appointment" className="hover:text-primary transition-colors">Book Appointment</Link></li>
                             <li><Link to="/services" className="hover:text-primary transition-colors">Services</Link></li>
-                            {/* <li><Link to="#" className="hover:text-primary transition-colors">My Invoice</Link></li> */}
                             <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
                             <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
                             <li><Link to="/contactus" className="hover:text-primary transition-colors">Contact Us</Link></li>
@@ -80,7 +79,7 @@ const Footer = () => {
                         </div>
                         <div className="border border-white rounded-xl sm:rounded-2xl p-3 sm:p-4 sm:w-[280px]">
                             <h4 className="text-lg sm:text-xl font-semibold font-lexend mb-3 sm:mb-4 ps-5">WE ACCEPT</h4>
-                            <div className="grid grid-cols-3 gap-2 sm:gap-3 ps-5">
+                            <div className="grid grid-cols-3 gap-2 sm:gap-3 md:ps-5 lg:ps-5 ps-10">
                                 {Object.values(images.payment).map((src, i) => (
                                     <div key={i} className="bg-white rounded-md flex items-center justify-center w-14 h-10">
                                         <img src={src} alt="Payment method" className="max-h-full max-w-full object-contain rounded-lg" />
