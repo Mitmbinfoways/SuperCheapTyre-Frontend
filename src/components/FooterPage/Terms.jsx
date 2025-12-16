@@ -10,19 +10,23 @@ function Terms() {
                 <div className="relative z-10">
                     {/* Title */}
                     <h1 className="text-xl sm:text-2xl font-medium px-6 sm:px-10 text-red-600 mb-4 sm:mb-6">
-                        Terms & Condition
+                        Price Match Terms and Conditions
                     </h1>
 
                     {/* List */}
                     <ol className="max-w-5xl list-decimal list-inside space-y-2 sm:space-y-4 px-4 sm:px-10 md:px-12 text-black leading-relaxed text-sm sm:text-base">
-                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</li>
-                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</li>
-                        <li>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</li>
-                        <li>Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla. Etiam porta sem malesuada magna mollis euismod.</li>
-                        <li>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam id dolor id nibh ultricies vehicula ut id elit.</li>
-                        <li>Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</li>
-                        <li>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna. Nulla vitae elit libero.</li>
-
+                        <li>Matching applies to physical retail stores only.</li>
+                        <li>Proof of competitors valid sales quotation required.</li>
+                        <li>No verbal quotations accepted.</li>
+                        <li>Prices must include fitting, balancing, tyre recycling and tubeless valve replacement.</li>
+                        <li>The offer ceases once fitment has started or purchase is done.</li>
+                        <li>Excludes liquidation and aged stock.</li>
+                        <li>Excludes wheel and tyres package deal.</li>
+                        <li>Competitor must have stock available locally for immediate purchase.</li>
+                        <li>Not valid with any promotional offer or cash back.</li>
+                        <li>Excludes purchase made on finance.</li>
+                        <li>Private Buyers only.</li>
+                        <li>Claims are subject to verification/approval and Goodwillmotors Pty Ltd T/A Supercheap Tyres Dandenong reserve the right to refuse a claim that cannot be adequately substantiated.</li>
                     </ol>
                 </div>
                 <img src={terms} className='hidden xl:block absolute -right-0 top-52 h-40 sm:h-72 max-w-full' />
