@@ -52,7 +52,7 @@ const CardGrid = ({ items }) => {
             ) : null}
           </div>
           {it.content ? (
-            <div dangerouslySetInnerHTML={{ __html: it.content }} className="p-4 sm:p-5 px-4 text-sm sm:text-base text-gray-700"></div>
+            <div dangerouslySetInnerHTML={{ __html: it.content }} className="p-4 sm:p-5 px-4 text-sm sm:text-base text-gray-700 prose-content"></div>
           ) : null}
         </article>
       ))}
@@ -75,7 +75,7 @@ const AlternativeList = ({ items }) => {
           </div>
           <div className={`${idx % 2 === 0 ? '' : 'md:order-1'}`}>
             {it.content ? (
-              <p dangerouslySetInnerHTML={{ __html: it.content }} className="text-sm sm:text-base text-gray-700"></p>
+              <div dangerouslySetInnerHTML={{ __html: it.content }} className="text-sm sm:text-base text-gray-700 prose-content"></div>
             ) : null}
           </div>
         </div>
@@ -96,7 +96,7 @@ const CenterList = ({ items }) => {
             ) : null}
           </div>
           {it.content ? (
-            <p dangerouslySetInnerHTML={{ __html: it.content }} className="mt-4 text-sm sm:text-base px-4 text-gray-700"></p>
+            <div dangerouslySetInnerHTML={{ __html: it.content }} className="mt-4 text-sm sm:text-base px-4 text-gray-700 prose-content"></div>
           ) : null}
         </div>
       ))}
@@ -154,7 +154,7 @@ const BlogDetail = () => {
 
           {blog.content ? (
             <div
-              className="mt-5 text-gray-700 text-sm sm:text-base px-4"
+              className="mt-5 text-gray-700 text-sm sm:text-base px-4 prose-content"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             ></div>
           ) : null}
