@@ -44,7 +44,7 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
         {/* Info */}
         <h3 className="text-lg sm:text-xl font-medium text-[#ED1C24] mb-2 underline text-start line-clamp-1">{product.name}</h3>
         <p className="text-start text-sm text-text-secondary font-roboto">{product.brand}</p>
-        <p className="text-text-secondary text-xs sm:text-sm whitespace-pre-line my-1 sm:my-1 leading-relaxed text-start line-clamp-1">
+        <div className="text-text-secondary text-xs sm:text-sm whitespace-pre-line my-1 sm:my-1 leading-relaxed text-start line-clamp-1">
             <div
                 className=""
                 dangerouslySetInnerHTML={{
@@ -53,7 +53,7 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
                         .replace(/<ol>/g, '<ol class="list-decimal pl-4">')
                 }}
             />
-        </p>
+        </div>
         <p className="flex gap-1 text-text-secondary text-xs sm:text-sm mb-12 text-start">
             <span className='font-bold text-[#5A7184]'>Size:</span><span className='line-clamp-1'>{product.size}</span>
         </p>

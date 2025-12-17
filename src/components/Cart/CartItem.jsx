@@ -18,7 +18,7 @@ const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove
         <div className="flex flex-col justify-between cursor-pointer" onClick={() => navigate(`/productdetails/${item.id}`)}>
           <div>
             <h3 className="font-lexend text-xl">{item.name}</h3>
-            <p className=" flex font-lexend text-sm mt-1 text-[#8C8C8C] gap-1"><p className='text-[#888888] font-bold'>Size:</p> {item.size}</p>
+            {item.type !== 'service' ? <p className=" flex font-lexend text-sm mt-1 text-[#8C8C8C] gap-1"><p className='text-[#888888] font-bold'>Size:</p> {item.size}</p> : null}
             <p className="font-roboto text-[#8C8C8C] text-base">{item.description}</p>
           </div>
           {item.type === 'service' ? (
