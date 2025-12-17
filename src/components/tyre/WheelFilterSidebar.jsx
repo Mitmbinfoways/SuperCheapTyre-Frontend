@@ -60,48 +60,40 @@ const WheelFilterSidebar = () => {
           (item) => item.category === "wheel"
         );
 
-        // Process size options
-        const sizeValues = wheelData
-          .filter((item) => item.subCategory === "size")
-          .map((item) => item.values);
-        const uniqueSizes = [...new Set(sizeValues)].sort((a, b) => a - b);
-        const sizeOptions = uniqueSizes.map((size) => ({
-          value: size,
-          label: size,
-        }));
+        // Helper to process options with ID as value and values as label
+        const processOptions = (items, subCat, sortNumeric = false) => {
+          const subItems = items.filter(i => i.subCategory === subCat);
+          const unique = [];
+          const seen = new Set();
+          subItems.forEach(item => {
+            if (!seen.has(item.values)) {
+              seen.add(item.values);
+              unique.push(item);
+            }
+          });
+
+          if (sortNumeric) {
+            unique.sort((a, b) => parseFloat(a.values) - parseFloat(b.values));
+          } else {
+            unique.sort((a, b) => a.values.localeCompare(b.values));
+          }
+
+          return unique.map(item => ({
+            value: item._id, // Use ID for filtering
+            label: item.values
+          }));
+        };
+
+        const sizeOptions = processOptions(wheelData, "size", true);
         setSizeOptions([{ value: "", label: "All Size" }, ...sizeOptions]);
 
-        // Process color options
-        const colorValues = wheelData
-          .filter((item) => item.subCategory === "color")
-          .map((item) => item.values);
-        const uniqueColors = [...new Set(colorValues)].sort();
-        const colorOptions = uniqueColors.map((color) => ({
-          value: color,
-          label: color,
-        }));
+        const colorOptions = processOptions(wheelData, "color", false);
         setColorOptions([{ value: "", label: "All Color" }, ...colorOptions]);
 
-        // Process diameter options
-        const diameterValues = wheelData
-          .filter((item) => item.subCategory === "diameter")
-          .map((item) => item.values);
-        const uniqueDiameters = [...new Set(diameterValues)].sort((a, b) => a - b);
-        const diameterOptions = uniqueDiameters.map((diameter) => ({
-          value: diameter,
-          label: diameter,
-        }));
+        const diameterOptions = processOptions(wheelData, "diameter", true);
         setDiameterOptions([{ value: "", label: "All Diameter" }, ...diameterOptions]);
 
-        // Process fitment options
-        const fitmentValues = wheelData
-          .filter((item) => item.subCategory === "fitments")
-          .map((item) => item.values);
-        const uniqueFitments = [...new Set(fitmentValues)].sort();
-        const fitmentOptions = uniqueFitments.map((fitment) => ({
-          value: fitment,
-          label: fitment,
-        }));
+        const fitmentOptions = processOptions(wheelData, "fitments", false);
         setFitmentOptions([{ value: "", label: "All Fitments" }, ...fitmentOptions]);
       }
     } catch (error) {

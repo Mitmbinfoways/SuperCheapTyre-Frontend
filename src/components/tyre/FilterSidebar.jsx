@@ -64,70 +64,46 @@ const FilterSidebar = () => {
           (item) => item.category === "tyre"
         );
 
-        // Process width options
-        const widthValues = tyreData
-          .filter((item) => item.subCategory === "width")
-          .map((item) => item.values);
-        const uniqueWidths = [...new Set(widthValues)].sort((a, b) => a - b);
-        const widthOptions = uniqueWidths.map((width) => ({
-          value: width,
-          label: width,
-        }));
+        // Helper to process options with ID as value and values as label
+        const processOptions = (items, subCat, sortNumeric = false) => {
+          const subItems = items.filter(i => i.subCategory === subCat);
+          const unique = [];
+          const seen = new Set();
+          subItems.forEach(item => {
+            if (!seen.has(item.values)) {
+              seen.add(item.values);
+              unique.push(item);
+            }
+          });
+
+          if (sortNumeric) {
+            unique.sort((a, b) => parseFloat(a.values) - parseFloat(b.values));
+          } else {
+            unique.sort((a, b) => a.values.localeCompare(b.values));
+          }
+
+          return unique.map(item => ({
+            value: item._id, // Use ID for filtering
+            label: item.values
+          }));
+        };
+
+        const widthOptions = processOptions(tyreData, "width", true);
         setWidthOptions([{ value: "", label: "All Width" }, ...widthOptions]);
 
-        // Process profile options
-        const profileValues = tyreData
-          .filter((item) => item.subCategory === "profile")
-          .map((item) => item.values);
-        const uniqueProfiles = [...new Set(profileValues)].sort((a, b) => a - b);
-        const profileOptions = uniqueProfiles.map((profile) => ({
-          value: profile,
-          label: profile,
-        }));
+        const profileOptions = processOptions(tyreData, "profile", true);
         setProfileOptions([{ value: "", label: "All Profile" }, ...profileOptions]);
 
-        // Process diameter options
-        const diameterValues = tyreData
-          .filter((item) => item.subCategory === "diameter")
-          .map((item) => item.values);
-        const uniqueDiameters = [...new Set(diameterValues)].sort((a, b) => a - b);
-        const diameterOptions = uniqueDiameters.map((diameter) => ({
-          value: diameter,
-          label: diameter,
-        }));
+        const diameterOptions = processOptions(tyreData, "diameter", true);
         setDiameterOptions([{ value: "", label: "All Diameter" }, ...diameterOptions]);
 
-        // Process load rating options
-        const loadRatingValues = tyreData
-          .filter((item) => item.subCategory === "loadRating")
-          .map((item) => item.values);
-        const uniqueLoadRatings = [...new Set(loadRatingValues)].sort((a, b) => a - b);
-        const loadRatingOptions = uniqueLoadRatings.map((loadRating) => ({
-          value: loadRating,
-          label: loadRating,
-        }));
+        const loadRatingOptions = processOptions(tyreData, "loadRating", true);
         setLoadRatingOptions([{ value: "", label: "All Load Rating" }, ...loadRatingOptions]);
 
-        // Process speed rating options
-        const speedRatingValues = tyreData
-          .filter((item) => item.subCategory === "speedRating")
-          .map((item) => item.values);
-        const uniqueSpeedRatings = [...new Set(speedRatingValues)].sort();
-        const speedRatingOptions = uniqueSpeedRatings.map((speedRating) => ({
-          value: speedRating,
-          label: speedRating,
-        }));
+        const speedRatingOptions = processOptions(tyreData, "speedRating", false);
         setSpeedRatingOptions([{ value: "", label: "All Speed Rating" }, ...speedRatingOptions]);
 
-        // Process pattern options
-        const patternValues = tyreData
-          .filter((item) => item.subCategory === "pattern")
-          .map((item) => item.values);
-        const uniquePatterns = [...new Set(patternValues)].sort();
-        const patternOptions = uniquePatterns.map((pattern) => ({
-          value: pattern,
-          label: pattern,
-        }));
+        const patternOptions = processOptions(tyreData, "pattern", false);
         setPatternOptions([{ value: "", label: "All Pattern" }, ...patternOptions]);
       }
     } catch (error) {

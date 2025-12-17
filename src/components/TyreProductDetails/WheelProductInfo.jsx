@@ -5,39 +5,50 @@ import QuantityInput from './ui/QuantityInput';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { getTyreImageUrl } from '../../Utils/Utils';
 import { Toast } from '../../Utils/Toast';
-import { getTyreSize } from '../../axios/axios';
+import { getTyreSize, getAllMasterFilters } from '../../axios/axios';
 
 const WheelProductInfo = ({ product, navigate }) => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("specification");
   const [relatedData, setRelatedData] = useState([]);
+  const [masterFilters, setMasterFilters] = useState([]);
 
   const fetchdata = async () => {
     try {
-      const res = await getTyreSize(product?._id)
-      setRelatedData(res.data.data)
+      const [res, filtersRes] = await Promise.all([
+        getTyreSize(product?._id),
+        getAllMasterFilters({ limit: 1000 })
+      ]);
+      setRelatedData(res.data.data);
+      setMasterFilters(filtersRes.data.data.items || []);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchdata()
-  }, [product?._id])
+    fetchdata();
+  }, [product?._id]);
+
+  const getFilterValue = (val) => {
+    if (!val) return "N/A";
+    const filter = masterFilters.find(f => f._id === val || f.values === val);
+    return filter ? filter.values : val;
+  };
 
   const specifications = [
     { label: 'Brand :', value: product?.brand || 'N/A', icon: '/productdetails/brand.svg' },
     {
       label: 'Size :',
       value: product?.wheelSpecifications
-        ? `${product.wheelSpecifications.size}"`
+        ? `${getFilterValue(product.wheelSpecifications.size)}"`
         : 'N/A',
       icon: '/productdetails/size.svg'
     },
-    { label: 'Diameter :', value: product?.wheelSpecifications?.diameter || 'N/A', icon: '/productdetails/size.svg' },
-    { label: 'Color :', value: product?.wheelSpecifications?.color || 'N/A', icon: '/productdetails/tread.svg' },
-    { label: 'Fitments :', value: product?.wheelSpecifications?.fitments || 'N/A', icon: '/productdetails/bolt.svg' },
-    { label: 'Staggered Options :', value: product?.wheelSpecifications?.staggeredOptions || 'N/A', icon: '/productdetails/bars-staggered.png' },
+    { label: 'Diameter :', value: getFilterValue(product?.wheelSpecifications?.diameter), icon: '/productdetails/size.svg' },
+    { label: 'Color :', value: getFilterValue(product?.wheelSpecifications?.color), icon: '/productdetails/tread.svg' },
+    { label: 'Fitments :', value: getFilterValue(product?.wheelSpecifications?.fitments), icon: '/productdetails/bolt.svg' },
+    { label: 'Staggered Options :', value: getFilterValue(product?.wheelSpecifications?.staggeredOptions), icon: '/productdetails/bars-staggered.png' },
     { label: 'Stock :', value: product?.stock || 0, icon: '/productdetails/stock.svg' },
   ];
 
@@ -77,14 +88,24 @@ const WheelProductInfo = ({ product, navigate }) => {
       }
       cart[existingIndex].quantity = newQuantity;
     } else {
+      // Helper to construct wheel size string consistently
+      const getWheelSizeString = () => {
+        if (!product?.wheelSpecifications) return 'N/A';
+        const sizeVal = getFilterValue(product.wheelSpecifications.size);
+        const diamVal = getFilterValue(product.wheelSpecifications.diameter);
+
+        const parts = [
+          sizeVal ? `${sizeVal}"` : "",
+          diamVal ? `${diamVal}"` : "",
+        ];
+        return parts.filter(Boolean).join(" ");
+      };
       cart.push({
         id: productId,
         image: product?.images?.[0] ? getTyreImageUrl(product.images[0]) : '/cart/carttyre.svg',
         name: product?.name || 'Wheel',
         brand: product?.brand || 'Unknown',
-        size: product?.wheelSpecifications
-          ? `${product.wheelSpecifications.size}" ${product.wheelSpecifications.diameter}"`
-          : 'N/A',
+        size: getWheelSizeString(),
         price: product?.price || 0,
         quantity,
         description: `${product?.brand || ''} ${product?.name || ''}`.trim() || 'Wheel Product'

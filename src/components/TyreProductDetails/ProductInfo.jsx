@@ -11,7 +11,7 @@ import { FaWeight, FaTachometerAlt } from "react-icons/fa";
 import { GiWeightScale } from "react-icons/gi";
 import { MdSpeed } from "react-icons/md";
 import { BsSpeedometer2 } from "react-icons/bs";
-import { getTyreSize } from "../../axios/axios";
+import { getTyreSize, getAllMasterFilters } from "../../axios/axios";
 
 const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
@@ -28,19 +28,34 @@ const ProductInfo = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("specification");
   const [relatedData, setRelatedData] = useState([]);
+  const [masterFilters, setMasterFilters] = useState([]);
 
   const fetchdata = async () => {
     try {
-      const res = await getTyreSize(product?._id)
-      setRelatedData(res.data.data)
+      const [res, filtersRes] = await Promise.all([
+        getTyreSize(product?._id),
+        getAllMasterFilters({ limit: 1000 })
+      ]);
+      setRelatedData(res.data.data);
+      setMasterFilters(filtersRes.data.data.items || []);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchdata()
-  }, [product?._id])
+    fetchdata();
+  }, [product?._id]);
+
+  const getFilterValue = (val, subCat = "") => {
+    if (!val) return "N/A";
+    const filter = masterFilters.find(
+      (f) => f._id === val || f.values === val
+    );
+    // If we have a subcategory, we can be more specific, but ID should be unique enough usually. 
+    // Ideally we match category too if passed, but for display valid ID is likely enough.
+    return filter ? filter.values : val;
+  };
 
   const productStock = product?.stock || 0;
 
@@ -65,7 +80,7 @@ const ProductInfo = ({ product }) => {
     // { label: 'Offset :', value: 'offset', icon: '/productdetails/Offset.svg' },
     {
       label: "Pattern :",
-      value: product?.tyreSpecifications?.pattern || "N/A",
+      value: getFilterValue(product?.tyreSpecifications?.pattern),
       icon: "/productdetails/tread.svg",
     },
     {
@@ -85,27 +100,27 @@ const ProductInfo = ({ product }) => {
     specifications.splice(1, 0,
       {
         label: "Width :",
-        value: product.tyreSpecifications.width || "N/A",
+        value: getFilterValue(product.tyreSpecifications.width),
         icon: <FaWeight className="w-[20px] h-[20px] text-gray-700" />,
       },
       {
         label: "Profile :",
-        value: product.tyreSpecifications.profile || "N/A",
+        value: getFilterValue(product.tyreSpecifications.profile),
         icon: <BsSpeedometer2 className="w-[20px] h-[20px] text-gray-700" />,
       },
       {
         label: "Diameter :",
-        value: product.tyreSpecifications.diameter || "N/A",
+        value: getFilterValue(product.tyreSpecifications.diameter),
         icon: <GiWeightScale className="w-[20px] h-[20px] text-gray-700" />,
       },
       {
         label: "Load Rating :",
-        value: product.tyreSpecifications.loadRating || "N/A",
+        value: getFilterValue(product.tyreSpecifications.loadRating),
         icon: <FaTachometerAlt className="w-[20px] h-[20px] text-gray-700" />,
       },
       {
         label: "Speed Rating :",
-        value: product.tyreSpecifications.speedRating || "N/A",
+        value: getFilterValue(product.tyreSpecifications.speedRating),
         icon: <MdSpeed className="w-[20px] h-[20px] text-gray-700" />,
       }
     );
@@ -155,7 +170,7 @@ const ProductInfo = ({ product }) => {
         name: product?.name || "Tyre",
         brand: product?.brand || "Unknown",
         size: product?.tyreSpecifications
-          ? `${product.tyreSpecifications.width}/${product.tyreSpecifications.profile} ${product.tyreSpecifications.diameter} ${product.tyreSpecifications.loadRating}${product.tyreSpecifications.speedRating}`
+          ? `${getFilterValue(product.tyreSpecifications.width)}/${getFilterValue(product.tyreSpecifications.profile)} ${getFilterValue(product.tyreSpecifications.diameter)} ${getFilterValue(product.tyreSpecifications.loadRating)}${getFilterValue(product.tyreSpecifications.speedRating)}`
           : "N/A",
         price: product?.price || 0,
         quantity,

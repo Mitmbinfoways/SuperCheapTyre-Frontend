@@ -5,7 +5,7 @@ import FilterSidebar from "./FilterSidebar";
 import TyreGrid from "./TyreGrid";
 import Pagination from "./Pagination";
 import HeroBanner from "./HeroBanner";
-import { getTyres } from "../../axios/axios";
+import { getTyres, getAllMasterFilters } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import Loader from "../common/Loader";
 
@@ -55,11 +55,21 @@ function Tyre() {
         if (price) apiParams.sortBy = price; // price is for sorting
         if (search) apiParams.search = search; // Add search parameter
 
-        const response = await getTyres(apiParams);
+        const [response, filtersRes] = await Promise.all([
+          getTyres(apiParams),
+          getAllMasterFilters({ limit: 1000 })
+        ]);
 
         // extract and map response
         const items = response.data?.data?.items || [];
         const pagination = response.data?.data?.pagination || {};
+        const masterFilters = filtersRes.data?.data?.items || [];
+
+        const getFilterValue = (val) => {
+          if (!val) return "";
+          const filter = masterFilters.find(f => f._id === val || f.values === val);
+          return filter ? filter.values : val;
+        };
 
         const mappedProducts = items.map((item) => ({
           id: item._id,
@@ -68,9 +78,9 @@ function Tyre() {
           brand: item.brand,
           name: item.name,
           size: item.tyreSpecifications
-            ? `${item.tyreSpecifications.width}/${item.tyreSpecifications.profile
-            }${" "}${item.tyreSpecifications.diameter}${" "}${item.tyreSpecifications.loadRating
-            }${item.tyreSpecifications.speedRating}`
+            ? `${getFilterValue(item.tyreSpecifications.width)}/${getFilterValue(item.tyreSpecifications.profile)
+            }${" "}${getFilterValue(item.tyreSpecifications.diameter)}${" "}${getFilterValue(item.tyreSpecifications.loadRating)
+            }${getFilterValue(item.tyreSpecifications.speedRating)}`
             : "",
           price: item.price,
           pricetext: item.pricetext,

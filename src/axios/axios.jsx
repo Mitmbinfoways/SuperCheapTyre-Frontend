@@ -117,8 +117,21 @@ export const getAllServices = async (params) => {
   return axiosInstance.get(`/api/v1/service?${queryParams.toString()}`);
 };
 
+export const getServiceById = async (id) => {
+  return axiosInstance.get(`/api/v1/service/${id}`);
+};
+
 export const getTyreSize = async (id) => {
   return axiosInstance.get(`/api/v1/product/${id}/same-brand-pattern`);
+};
+
+export const getAllMasterFilters = async (params = {}) => {
+  const queryParams = new URLSearchParams();
+  if (params.category) queryParams.append("category", params.category);
+  if (params.page) queryParams.append("page", params.page);
+  if (params.limit) queryParams.append("limit", params.limit);
+
+  return axiosInstance.get(`/api/v1/masterFilter?${queryParams.toString()}`);
 };
 
 export default axiosInstance;

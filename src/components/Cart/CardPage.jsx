@@ -5,7 +5,7 @@ import CartItem from './CartItem';
 import OrderSummary from './OrderSummary';
 import { cartData as initialCartData } from './mock';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
-import { getTyreById } from '../../axios/axios';
+import { getTyreById, getAllMasterFilters, getServiceById } from '../../axios/axios';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -34,15 +34,57 @@ const CartPage = () => {
 
       let itemsRemoved = false;
       let pricesUpdated = false;
+      let specsUpdated = false;
       const updatedCartItems = [...cartItems];
       const itemsToRemoveIds = [];
 
       try {
+        const [filtersRes] = await Promise.all([
+          getAllMasterFilters({ limit: 1000 })
+        ]);
+        const masterFilters = filtersRes.data?.data?.items || [];
+
+        const getFilterValue = (val) => {
+          if (!val) return "";
+          const filter = masterFilters.find(f => f._id === val || f.values === val);
+          return filter ? filter.values : val;
+        };
+
         // Create an array of promises to fetch fresh data for each product
         const stockPromises = cartItems.map(async (item, index) => {
-          // Skip check for services
+          // Check for services
           if (item.type === 'service') {
-            return { id: item.id, stock: undefined };
+            try {
+              const response = await getServiceById(item.id);
+              const service = response.data?.data;
+
+              if (!service) {
+                itemsToRemoveIds.push(item.id);
+                itemsRemoved = true;
+                return { id: item.id, stock: undefined };
+              }
+
+              if (service.isActive === false) {
+                itemsToRemoveIds.push(item.id);
+                itemsRemoved = true;
+                return { id: item.id, stock: undefined };
+              }
+
+              // Check if price changed
+              if (parseInt(service.price) !== parseInt(item.price)) {
+                updatedCartItems[index].price = parseInt(service.price);
+                pricesUpdated = true;
+              }
+
+              return { id: item.id, stock: undefined };
+            } catch (error) {
+              console.error(`Error fetching data for service ${item.id}:`, error);
+              if (error.response && error.response.status === 404) {
+                itemsToRemoveIds.push(item.id);
+                itemsRemoved = true;
+              }
+              return { id: item.id, stock: undefined };
+            }
           }
 
           try {
@@ -69,6 +111,39 @@ const CartPage = () => {
               pricesUpdated = true;
             }
 
+            // Validate Specs (Size Check)
+            let currentSize = "";
+            if (product.category === 'tyre' && product.tyreSpecifications) {
+              const width = getFilterValue(product.tyreSpecifications.width);
+              const profile = getFilterValue(product.tyreSpecifications.profile);
+              const diameter = getFilterValue(product.tyreSpecifications.diameter);
+              const loadRating = getFilterValue(product.tyreSpecifications.loadRating);
+              const speedRating = getFilterValue(product.tyreSpecifications.speedRating);
+
+              currentSize = `${width}/${profile} ${diameter} ${loadRating}${speedRating}`;
+            } else if (product.category === 'wheel' && product.wheelSpecifications) {
+              const sizeVal = getFilterValue(product.wheelSpecifications.size);
+              const diamVal = getFilterValue(product.wheelSpecifications.diameter);
+              // const fitVal = getFilterValue(product.wheelSpecifications.fitments);
+              // const stagVal = getFilterValue(product.wheelSpecifications.staggeredOptions);
+
+              const parts = [
+                sizeVal ? `${sizeVal}"` : "",
+                diamVal ? `${diamVal}"` : "",
+                // fitVal,
+                // stagVal
+              ];
+              currentSize = parts.filter(Boolean).join(" ");
+            }
+
+            // If we constructed a size and the cart item has a size, check for mismatch
+            // Note: We trim to avoid whitespace issues
+            if (currentSize && item.size && currentSize.replace(/\s+/g, '') !== item.size.replace(/\s+/g, '')) {
+              // Instead of removing, we update the cart item with the new size
+              updatedCartItems[index].size = currentSize;
+              specsUpdated = true;
+            }
+
             return { id: item.id, stock: product.stock || 0 };
           } catch (error) {
             console.error(`Error fetching data for product ${item.id}:`, error);
@@ -93,13 +168,16 @@ const CartPage = () => {
         setProductStocks(stockMap);
 
         // Update cart if changes detected
-        if (itemsRemoved || pricesUpdated) {
+        if (itemsRemoved || pricesUpdated || specsUpdated) {
           const finalCartItems = updatedCartItems.filter(item => !itemsToRemoveIds.includes(item.id));
 
           setCartItems(finalCartItems);
 
           if (itemsRemoved) {
             toast.info("Some items were removed from your cart because they are no longer available.");
+          }
+          if (specsUpdated) {
+            // toast.info("Specifications for some items in your cart have been updated.");
           }
           if (pricesUpdated) {
             toast.info("Prices for some items in your cart have been updated.");
