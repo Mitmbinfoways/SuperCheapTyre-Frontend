@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import ProductInfo from "./ProductInfo";
-import { getTyreById } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import { formatCurrency } from "../../Utils/Utils";
 import { useParams } from "react-router-dom";
-import Loader from "../common/Loader";
 // Import Swiper components and modules
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Thumbs } from "swiper/modules";
@@ -17,32 +15,13 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import Badge from "../common/Badge";
 
-const HeroSection = () => {
-  const { id } = useParams(); // Get product id from URL
+const HeroSection = ({ product }) => {
   const navigate = useNavigate(); // Add navigate hook
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const mainSwiperRef = useRef(null);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await getTyreById(id);
-        setProduct(response.data?.data);
-      } catch (error) {
-        console.error("Error fetching product:", error);
-        setProduct(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) fetchProduct();
-  }, [id]); // 👈 added id
 
   // Function to open modal with selected image
   const openModal = (index) => {
@@ -80,12 +59,6 @@ const HeroSection = () => {
   };
 
   // Handle thumbnail click
-  const handleThumbnailClick = (index) => {
-    setSelectedImageIndex(index);
-    if (mainSwiperRef.current && mainSwiperRef.current.swiper) {
-      mainSwiperRef.current.swiper.slideToLoop(index);
-    }
-  };
 
   // Navigation functions for main Swiper
   const goToNextSlide = () => {
@@ -100,12 +73,6 @@ const HeroSection = () => {
     }
   };
 
-  if (loading) {
-    return <Loader label="Loading product..." />;
-  }
-  if (!product) {
-    return <div className="text-center py-10">No product found.</div>;
-  }
 
   // Determine if this is a wheel product
   const isWheelProduct = product.category === "wheel";
@@ -167,10 +134,14 @@ const HeroSection = () => {
 
                   <Swiper
                     ref={mainSwiperRef}
-                    modules={[Navigation, Thumbs]}
+                    modules={[Navigation, Thumbs, Autoplay]}
                     spaceBetween={0}
                     loop={true}
                     slidesPerView={1}
+                    autoplay={{
+                      delay: 2500,
+                      disableOnInteraction: false,
+                    }}
                     onSlideChange={handleSlideChange}
                     thumbs={{ swiper: thumbsSwiper && thumbsSwiper.initialized ? thumbsSwiper : null }}
                     className="w-full max-w-[480px] h-auto cursor-pointer"
@@ -193,14 +164,11 @@ const HeroSection = () => {
                 {/* Thumbnail Images Carousel */}
                 <div className="w-full">
                   <Swiper
-                    modules={[Navigation, Thumbs, Autoplay]}
-                    loop={true}
+                    modules={[Navigation, Thumbs]}
+                    loop={false}
+                    watchSlidesProgress={true}
                     spaceBetween={16}
                     slidesPerView="auto"
-                    autoplay={{
-                      delay: 2500,
-                      disableOnInteraction: false,
-                    }}
                     onSwiper={setThumbsSwiper}
                     onSlideChange={(swiper) => {
                       // Update selected index when thumbnail swiper slides
@@ -229,14 +197,10 @@ const HeroSection = () => {
                     {product.images?.map((img, index) => (
                       <SwiperSlide
                         key={index}
-                        className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px]"
+                        className="w-[100px] sm:w-[120px] md:w-[140px] lg:w-[150px] [&.swiper-slide-thumb-active>div]:border-[#ed1c24]"
                       >
                         <div
-                          className={`flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer ${selectedImageIndex === index
-                            ? "border-[#ed1c24]"
-                            : "border-[#6e6d6d]"
-                            }`}
-                          onClick={() => handleThumbnailClick(index)}
+                          className="flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer border-[#6e6d6d]"
                         >
                           <img
                             src={getTyreImageUrl(img)}

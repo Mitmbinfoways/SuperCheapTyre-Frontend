@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
 import OrderSummary from './OrderSummary';
@@ -23,26 +24,59 @@ const CartPage = () => {
   const [totals, setTotals] = useState({ subtotal: 0, discount: 0, delivery: 15, total: 0 });
 
   // Fetch stock information for all products in the cart
+  // Validate cart items and fetch stock information
   useEffect(() => {
-    const fetchProductStocks = async () => {
+    const validateCartAndFetchStock = async () => {
       if (cartItems.length === 0) {
         setLoadingStocks(false);
         return;
       }
 
+      let itemsRemoved = false;
+      let pricesUpdated = false;
+      const updatedCartItems = [...cartItems];
+      const itemsToRemoveIds = [];
+
       try {
-        // Create an array of promises to fetch stock for each product
-        const stockPromises = cartItems.map(async (item) => {
-          // Skip stock check for services
+        // Create an array of promises to fetch fresh data for each product
+        const stockPromises = cartItems.map(async (item, index) => {
+          // Skip check for services
           if (item.type === 'service') {
             return { id: item.id, stock: undefined };
           }
 
           try {
             const response = await getTyreById(item.id);
-            return { id: item.id, stock: response.data.data.stock || 0 };
+            const product = response.data?.data;
+
+            if (!product) {
+              // Product not found, mark for removal
+              itemsToRemoveIds.push(item.id);
+              itemsRemoved = true;
+              return { id: item.id, stock: 0 };
+            }
+
+            // Check if product is inactive
+            if (product.isActive === false) {
+              itemsToRemoveIds.push(item.id);
+              itemsRemoved = true;
+              return { id: item.id, stock: 0 };
+            }
+
+            // Check if price changed
+            if (product.price !== item.price) {
+              updatedCartItems[index].price = product.price;
+              pricesUpdated = true;
+            }
+
+            return { id: item.id, stock: product.stock || 0 };
           } catch (error) {
-            console.error(`Error fetching stock for product ${item.id}:`, error);
+            console.error(`Error fetching data for product ${item.id}:`, error);
+            // If error is 404 (or null product), might want to remove, but safely keep for now unless explicit signal
+            if (error.response && error.response.status === 404) {
+              itemsToRemoveIds.push(item.id);
+              itemsRemoved = true;
+            }
             return { id: item.id, stock: 0 };
           }
         });
@@ -57,15 +91,31 @@ const CartPage = () => {
         });
 
         setProductStocks(stockMap);
+
+        // Update cart if changes detected
+        if (itemsRemoved || pricesUpdated) {
+          const finalCartItems = updatedCartItems.filter(item => !itemsToRemoveIds.includes(item.id));
+
+          setCartItems(finalCartItems);
+
+          if (itemsRemoved) {
+            toast.info("Some items were removed from your cart because they are no longer available.");
+          }
+          if (pricesUpdated) {
+            toast.info("Prices for some items in your cart have been updated.");
+          }
+        }
+
       } catch (error) {
-        console.error("Error fetching product stocks:", error);
+        console.error("Error validating cart:", error);
       } finally {
         setLoadingStocks(false);
       }
     };
 
-    fetchProductStocks();
-  }, [cartItems]);
+    validateCartAndFetchStock();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems.length]); // Only run on mount or when item count changes (not strictly every render to avoid loops)
 
   useEffect(() => {
     // Ensure cartItems is always an array before processing
