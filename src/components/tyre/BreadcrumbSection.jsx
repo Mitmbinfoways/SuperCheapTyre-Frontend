@@ -5,7 +5,7 @@ const BreadcrumbSection = ({ category = 'tyre', title, description }) => {
   const defaultContent = {
     tyre: {
       title: 'Explore Our Tyre Range',
-      description: 'Find the perfect tyres for your vehicle from leading brands trusted by the drivers worldwide.'
+      description: 'Find the perfect tyres for your vehicle from leading brands trusted by the drivers world wide.'
     },
     wheel: {
       title: 'Explore Our Wheel Range',
