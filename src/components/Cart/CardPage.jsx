@@ -98,8 +98,8 @@ const CartPage = () => {
               return { id: item.id, stock: 0 };
             }
 
-            // Check if product is inactive
-            if (product.isActive === false) {
+            // Check if product is inactive or deleted
+            if (product.isActive === false || product.isDelete === true) {
               itemsToRemoveIds.push(item.id);
               itemsRemoved = true;
               return { id: item.id, stock: 0 };
