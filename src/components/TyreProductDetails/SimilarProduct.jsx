@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Link from './ui/Link';
-import { getSimilarProducts, getTyreById } from '../../axios/axios';
+import { getSimilarProducts, getTyreById, getAllMasterFilters } from '../../axios/axios';
 import { formatCurrency, getTyreImageUrl } from '../../Utils/Utils';
 import Loader from '../common/Loader';
 import Badge from '../common/Badge';
@@ -31,6 +31,17 @@ const SimilarProducts = ({ productCategory }) => {
           }
         }
 
+        const [filtersRes] = await Promise.all([
+          getAllMasterFilters({ limit: 1000 })
+        ]);
+        const masterFilters = filtersRes.data?.data?.items || [];
+
+        const getFilterValue = (val) => {
+          if (!val) return "";
+          const filter = masterFilters.find(f => f._id === val || f.values === val);
+          return filter ? filter.values : val;
+        };
+
         const response = await getSimilarProducts(id);
 
         // Determine the category from the first product if not provided and current product fetch failed
@@ -50,14 +61,14 @@ const SimilarProducts = ({ productCategory }) => {
             price: product.price,
             image: getTyreImageUrl(product.images?.[0]) || '/home/product.svg',
             description: isWheel
-              ? product.description || `${product.wheelSpecifications?.size || ''}" ${product.wheelSpecifications?.diameter || ''}`
-              : product.description || `${product.tyreSpecifications?.width || ''}/${product.tyreSpecifications?.profile || ''}${" "}${product.tyreSpecifications?.diameter || ''}${" "}${product.tyreSpecifications?.loadRating || ' '}${product.tyreSpecifications?.speedRating || ''}`,
+              ? product.description || `${getFilterValue(product.wheelSpecifications?.size) || ''}" ${getFilterValue(product.wheelSpecifications?.diameter) || ''}`
+              : product.description || `${getFilterValue(product.tyreSpecifications?.width) || ''}/${getFilterValue(product.tyreSpecifications?.profile) || ''}${" "}${getFilterValue(product.tyreSpecifications?.diameter) || ''}${" "}${getFilterValue(product.tyreSpecifications?.loadRating) || ' '}${getFilterValue(product.tyreSpecifications?.speedRating) || ''}`,
             size: isWheel
               ? product.wheelSpecifications
-                ? `${product.wheelSpecifications.size || ''}" ${product.wheelSpecifications.diameter || ''}`
+                ? `${getFilterValue(product.wheelSpecifications.size) || ''}" ${getFilterValue(product.wheelSpecifications.diameter) || ''}`
                 : 'N/A'
               : product.tyreSpecifications
-                ? `${product.tyreSpecifications?.width || ''}/${product.tyreSpecifications?.profile || ''}${" "}${product.tyreSpecifications?.diameter || ''}${" "}${product.tyreSpecifications?.loadRating || ' '}${product.tyreSpecifications?.speedRating || ''}`.trim()
+                ? `${getFilterValue(product.tyreSpecifications?.width) || ''}/${getFilterValue(product.tyreSpecifications?.profile) || ''}${" "}${getFilterValue(product.tyreSpecifications?.diameter) || ''}${" "}${getFilterValue(product.tyreSpecifications?.loadRating) || ' '}${getFilterValue(product.tyreSpecifications?.speedRating) || ''}`.trim()
                 : 'N/A',
             category: product.category || 'tyre',
             stock: product.stock || 0
