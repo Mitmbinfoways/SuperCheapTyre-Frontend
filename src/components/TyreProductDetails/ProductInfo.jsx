@@ -269,11 +269,13 @@ const ProductInfo = ({ product }) => {
                   {relatedData.map((item) => (
                     <div key={item._id} >
                       <Link to={isWheelProduct ? `/wheel/${item._id}` : `/productdetails/${item._id}`}>
-                        <p className="hover:underline underline-offset-2">{item.tyreSpecifications.width}/{
-                          item.tyreSpecifications.profile
-                        }{" "}{item.tyreSpecifications.diameter}{" "}{
-                            item.tyreSpecifications.loadRating
-                          }{item.tyreSpecifications.speedRating}</p>
+                        <p className="hover:underline underline-offset-2">
+                          {getFilterValue(item?.tyreSpecifications?.width)}/
+                          {getFilterValue(item?.tyreSpecifications?.profile)}{" "}
+                          {getFilterValue(item?.tyreSpecifications?.diameter)}{" "}
+                          {getFilterValue(item?.tyreSpecifications?.loadRating)}
+                          {getFilterValue(item?.tyreSpecifications?.speedRating)}
+                        </p>
                       </Link>
                     </div>
                   ))}

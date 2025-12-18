@@ -198,7 +198,7 @@ const WheelProductInfo = ({ product, navigate }) => {
                       />
                       <p className="text-sm text-gray-700 mt-2 hover:underline underline-offset-2">
                         {item?.wheelSpecifications
-                          ? `${item.wheelSpecifications.size}x${item.wheelSpecifications.diameter}`
+                          ? `${getFilterValue(item.wheelSpecifications.size)} - ${getFilterValue(item.wheelSpecifications.diameter)}`
                           : item.name}
                       </p>
                       <p className="text-xs text-gray-500 truncate w-full">
