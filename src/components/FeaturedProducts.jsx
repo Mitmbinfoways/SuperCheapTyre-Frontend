@@ -14,6 +14,7 @@ import Loader from './common/Loader';
 import Badge from './common/Badge';
 import { secureGetItem, secureSetItem } from '../Utils/encryption';
 import { Toast } from '../Utils/Toast';
+import { getAllMasterFilters } from '../axios/axios';
 
 const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
     <div onClick={onViewDetails} className="flex-shrink-0 w-64 sm:w-72 bg-light rounded-2xl sm:rounded-3xl shadow-lg text-center p-4 sm:p-6 mx-auto sm:mx-4 h-[25rem] relative cursor-pointer">
@@ -82,8 +83,28 @@ const FeaturedProducts = ({ homeData }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [masterFilters, setMasterFilters] = useState([]);
+
     useEffect(() => {
-        if (homeData) {
+        const fetchFilters = async () => {
+            try {
+                const res = await getAllMasterFilters({ limit: 1000 });
+                setMasterFilters(res.data?.data?.items || []);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchFilters();
+    }, []);
+
+    const getFilterValue = (val) => {
+        if (!val) return "";
+        const filter = masterFilters.find(f => f._id === val || f.values === val);
+        return filter ? filter.values : val;
+    };
+
+    useEffect(() => {
+        if (homeData && masterFilters.length > 0) {
             try {
                 const apiProducts = homeData.productData || [];
                 const mapped = apiProducts.map((item) => {
@@ -91,10 +112,10 @@ const FeaturedProducts = ({ homeData }) => {
                     let size = '';
                     if (item.category === 'wheel' && item.wheelSpecifications) {
                         // Wheel product
-                        size = `${item.wheelSpecifications.size || ''}" ${item.wheelSpecifications.diameter || ''}"`;
+                        size = `${getFilterValue(item.wheelSpecifications.size) || ''}" ${getFilterValue(item.wheelSpecifications.diameter) || ''}"`;
                     } else if (item.tyreSpecifications) {
                         // Tyre product
-                        size = `${item.tyreSpecifications.width || ''}/${item.tyreSpecifications.profile || ''}${" "}${item.tyreSpecifications.diameter || ''}${" "}${item.tyreSpecifications.loadRating || ''}${item.tyreSpecifications.speedRating || ''}`;
+                        size = `${getFilterValue(item.tyreSpecifications.width) || ''}/${getFilterValue(item.tyreSpecifications.profile) || ''}${" "}${getFilterValue(item.tyreSpecifications.diameter) || ''}${" "}${getFilterValue(item.tyreSpecifications.loadRating) || ''}${getFilterValue(item.tyreSpecifications.speedRating) || ''}`;
                     }
 
                     return {
@@ -115,10 +136,10 @@ const FeaturedProducts = ({ homeData }) => {
             } finally {
                 setLoading(false);
             }
-        } else {
+        } else if (!homeData) {
             setLoading(false);
         }
-    }, [homeData]);
+    }, [homeData, masterFilters]);
 
     const handleBuyNow = (product) => {
         // Prevent adding to cart if product is invalid
