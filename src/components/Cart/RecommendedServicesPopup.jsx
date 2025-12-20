@@ -154,7 +154,7 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
 
                                 {/* TEXT SECTION */}
                                 <div className="flex-1 min-w-0">
-                                    <h3 className="font-bold text-base sm:text-lg text-gray-900 line-clamp-1">{service.name}</h3>
+                                    <h3 className="font-bold text-base sm:text-lg text-gray-900 line-clamp-3">{service.name}</h3>
 
                                     <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 my-1 pr-0 sm:pr-4" dangerouslySetInnerHTML={{ __html: service.description }}></p>
 
