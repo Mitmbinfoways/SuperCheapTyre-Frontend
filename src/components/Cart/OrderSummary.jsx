@@ -118,14 +118,19 @@ const OrderSummary = ({ totals, refreshCart }) => {
         <h2 className="font-satoshi font-bold text-2xl">Order Summary</h2>
 
         <div className="space-y-5">
-          <SummaryRow label="Subtotal" value={totals.subtotal} />
+          <SummaryRow label="Total" value={totals.subtotal} />
         </div>
 
         <hr className="border-border-gray" />
 
         <div className="flex justify-between items-center">
-          <p className="font-lexend font-medium text-xl">Total</p>
+          <p className="font-lexend font-medium text-xl">Partial Payment (25%)</p>
           <p className="font-lexend font-medium text-2xl">{formatCurrency(displayTotal)}</p>
+        </div>
+
+        <div className="flex justify-between items-center mt-2">
+          <p className="font-lexend font-medium text-xl">Balance Due</p>
+          <p className="font-lexend font-medium text-2xl">{formatCurrency(totals.subtotal - displayTotal)}</p>
         </div>
 
         <div className="space-y-3">
