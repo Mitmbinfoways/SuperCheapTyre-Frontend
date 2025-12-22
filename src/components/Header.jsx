@@ -238,8 +238,15 @@ const Header = () => {
                         </div>
                       ))
                     ) : (
-                      <div className="p-4 text-center text-gray-500">
-                        No products found
+                      <div className="p-12 text-center">
+                        <p className="font-semibold text-gray-900 mb-2">Can’t find what you’re looking for?</p>
+                        <p className="text-sm text-gray-600">
+                          “It looks like this product is not currently listed on our website. Don’t worry our team can help! Call us at{" "}
+                          <a href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
+                            {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
+                          </a>{" "}
+                          to get the product you’re looking for.”
+                        </p>
                       </div>
                     )}
                   </div>
@@ -353,8 +360,15 @@ const Header = () => {
                       </div>
                     ))
                   ) : (
-                    <div className="p-4 text-center text-gray-500">
-                      No products found
+                    <div className="p-4 text-center">
+                      <p className="font-semibold text-gray-900 mb-2">Can’t find what you’re looking for?</p>
+                      <p className="text-sm text-gray-600">
+                        “It looks like this product is not currently listed on our website. Don’t worry our team can help! Call us at{" "}
+                        <a href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
+                          {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
+                        </a>{" "}
+                        to get the product you’re looking for.”
+                      </p>
                     </div>
                   )}
                 </div>

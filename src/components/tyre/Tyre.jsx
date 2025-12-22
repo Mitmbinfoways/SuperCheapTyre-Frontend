@@ -10,9 +10,9 @@ import { getTyreImageUrl } from "../../Utils/Utils";
 import Loader from "../common/Loader";
 
 function Tyre() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -129,6 +129,12 @@ function Tyre() {
     });
   }, [currentPage]);
 
+  const handlePageChange = (page) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", page);
+    setSearchParams(newParams);
+  };
+
   if (loading) {
     return <Loader label="Loading tyres..." />;
   }
@@ -198,7 +204,7 @@ function Tyre() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
             />
           </div>
 
@@ -241,7 +247,7 @@ function Tyre() {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={handlePageChange}
           />
         </div>
 

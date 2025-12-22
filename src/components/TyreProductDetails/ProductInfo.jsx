@@ -265,17 +265,17 @@ const ProductInfo = ({ product }) => {
               </div>
             )) : activeTab === "tyreSize" && (
               relatedData?.length > 0 ? (
-                <div className="grid grid-cols-4 gap-2 h-48 overflow-y-auto">
+                <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-3 max-h-72 overflow-y-auto h-fit ">
                   {relatedData.map((item) => (
                     <div key={item._id} >
                       <Link to={isWheelProduct ? `/wheel/${item._id}` : `/productdetails/${item._id}`}>
-                        <p className="hover:underline underline-offset-2">
+                        <div className="hover:underline underline-offset-2">
                           {getFilterValue(item?.tyreSpecifications?.width)}/
-                          {getFilterValue(item?.tyreSpecifications?.profile)}{" "}
-                          {getFilterValue(item?.tyreSpecifications?.diameter)}{" "}
+                          {getFilterValue(item?.tyreSpecifications?.profile)}
+                          {getFilterValue(item?.tyreSpecifications?.diameter)}<br />
                           {getFilterValue(item?.tyreSpecifications?.loadRating)}
                           {getFilterValue(item?.tyreSpecifications?.speedRating)}
-                        </p>
+                        </div>
                       </Link>
                     </div>
                   ))}
