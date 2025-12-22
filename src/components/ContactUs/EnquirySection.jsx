@@ -8,7 +8,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Toast } from "../../Utils/Toast";
 import ReCAPTCHA from "react-google-recaptcha";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { formatPhoneNumber } from "../../Utils/FormatePhoneNumber";
 
@@ -190,6 +190,23 @@ export const EnquirySection = ({ contactData }) => {
   const [submitting, setSubmitting] = useState(false);
   const recaptchaRef = useRef(null); // Ref for reCAPTCHA
   const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState("AU");
+
+  const handleCursorPosition = (e) => {
+    if (e.target.tagName !== "INPUT" || !selectedCountry) return;
+    try {
+      const callingCode = getCountryCallingCode(selectedCountry);
+      const prefix = `+${callingCode}`;
+      if (e.target.value.startsWith(prefix)) {
+        const minPos = prefix.length;
+        if (e.target.selectionStart < minPos) {
+          e.target.setSelectionRange(minPos, minPos);
+        }
+      }
+    } catch (err) {
+      console.error("Error handling phone input cursor:", err);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -452,15 +469,20 @@ export const EnquirySection = ({ contactData }) => {
                   setTouched((prev) => ({ ...prev, mobile: true }));
                 }}
                 onCountryChange={(country) => {
+                  setSelectedCountry(country);
                   // Clear the phone number when country changes
                   setFormData((prev) => ({ ...prev, mobile: '' }));
                   setErrors((prev) => ({ ...prev, mobile: "" }));
                 }}
+                country={selectedCountry}
+                defaultCountry="AU"
                 international
                 limitMaxLength={true}
-                defaultCountry="AU"
                 countryCallingCodeEditable={false}
                 className={`react-phone-number-input ${errors.mobile && touched.mobile ? 'react-phone-number-input--invalid' : ''}`}
+                onClick={handleCursorPosition}
+                onKeyUp={handleCursorPosition}
+                onFocus={handleCursorPosition}
               />
               <style>
                 {`

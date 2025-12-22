@@ -8,14 +8,21 @@ import { loadStripe } from '@stripe/stripe-js';
 import { secureGetItem, secureSetItem, secureRemoveItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
 
-import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+
+// Helper to get current date in Melbourne time
+const getMelbourneDate = () => {
+  const now = new Date();
+  const melbourneTimeStr = now.toLocaleString("en-US", { timeZone: "Australia/Melbourne" });
+  return new Date(melbourneTimeStr);
+};
 
 const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) => {
   const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(getMelbourneDate());
 
-  const today = new Date();
+  const today = getMelbourneDate();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
 
@@ -230,6 +237,23 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
     const savedOption = secureGetItem('selectedPaymentOption', 'full');
     return savedOption;
   });
+  const [selectedCountry, setSelectedCountry] = useState("AU");
+
+  const handleCursorPosition = (e) => {
+    if (e.target.tagName !== "INPUT" || !selectedCountry) return;
+    try {
+      const callingCode = getCountryCallingCode(selectedCountry);
+      const prefix = `+${callingCode}`;
+      if (e.target.value.startsWith(prefix)) {
+        const minPos = prefix.length;
+        if (e.target.selectionStart < minPos) {
+          e.target.setSelectionRange(minPos, minPos);
+        }
+      }
+    } catch (err) {
+      console.error("Error handling phone input cursor:", err);
+    }
+  };
 
   const formatAppointmentDate = (date) => {
     if (!date) return '';
@@ -511,16 +535,20 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
           <PhoneInput
             international
             countryCallingCodeEditable={false}
+            country={selectedCountry}
             defaultCountry="AU"
             placeholder="Enter your Phone Number"
             value={phone || ''}
             onChange={setPhone}
             onCountryChange={(country) => {
+              setSelectedCountry(country);
               // Clear the phone number when country changes
               setPhone('');
             }}
             limitMaxLength={true}
-
+            onClick={handleCursorPosition}
+            onKeyUp={handleCursorPosition}
+            onFocus={handleCursorPosition}
             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
             className={`react-phone-number-input ${errors.phone && touched.phone ? 'react-phone-number-input--invalid' : ''}`}
           />
@@ -589,7 +617,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 };
 
 const AppointmentSection = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Set today as default
+  const [selectedDate, setSelectedDate] = useState(getMelbourneDate()); // Set today as default
   const [selectedTime, setSelectedTime] = useState(null);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [slots, setSlots] = useState([]);
@@ -645,12 +673,33 @@ const AppointmentSection = () => {
       const res = await getAppointmentSlots(dateString, timeSlotId);
       const slotsData = res?.data?.data?.slots || [];
 
+      // Get current time in Australia/Melbourne
+      const melbourneDate = getMelbourneDate();
+
+      const isToday = date.getDate() === melbourneDate.getDate() &&
+        date.getMonth() === melbourneDate.getMonth() &&
+        date.getFullYear() === melbourneDate.getFullYear();
+
       // Map all slots including unavailable ones with label and isAvailable
-      const allSlots = slotsData.map(slot => ({
-        label: `${formatTo12Hour(slot.startTime)} - ${formatTo12Hour(slot.endTime)}`,
-        isAvailable: !!slot.isAvailable,
-        slotId: slot.slotId // Store slotId for appointment creation
-      }));
+      const allSlots = slotsData.map(slot => {
+        let isAvailable = !!slot.isAvailable;
+
+        if (isToday && isAvailable) {
+          const [slotHour, slotMinute] = slot.startTime.split(':').map(Number);
+          const currentHour = melbourneDate.getHours();
+          const currentMinute = melbourneDate.getMinutes();
+
+          if (slotHour < currentHour || (slotHour === currentHour && slotMinute <= currentMinute)) {
+            isAvailable = false;
+          }
+        }
+
+        return {
+          label: `${formatTo12Hour(slot.startTime)} - ${formatTo12Hour(slot.endTime)}`,
+          isAvailable: isAvailable,
+          slotId: slot.slotId // Store slotId for appointment creation
+        };
+      });
 
       setSlots(allSlots);
     } catch (error) {
@@ -669,7 +718,7 @@ const AppointmentSection = () => {
         const holidayItems = res?.data?.data?.items || [];
         setHolidays(holidayItems);
         // Auto-select today unless it's a holiday; if holiday, pick next non-holiday
-        const today = new Date();
+        const today = getMelbourneDate();
         const isHoliday = (d) => {
           return holidayItems.some(h => {
             const hd = new Date(h.date);
