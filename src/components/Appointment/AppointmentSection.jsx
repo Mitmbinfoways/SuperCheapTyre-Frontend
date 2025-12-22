@@ -157,7 +157,7 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
       {showError && (
         <p className="text-xs text-[#FF0000] mt-3">Please select a date.</p>
       )}
-      <div className="text-xs sm:text-sm text-[#7A7A7A] mt-3 text-nowrap sm:mt-5 text-center sm:text-left">Appointments can be booked for 45 minutes only.</div>
+      <div className="text-xs sm:text-sm text-[#7A7A7A] mt-3 text-nowrap sm:mt-5 text-center sm:text-left">Note: Wait time may vary according to workshop load.</div>
       {/* Legend for time slot status */}
       <div className="col-span-1 sm:col-span-2 flex py-3">
         <div className="flex flex-wrap gap-4 justify-center">

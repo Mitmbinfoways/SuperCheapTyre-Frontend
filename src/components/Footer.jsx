@@ -87,6 +87,12 @@ const Footer = () => {
                                 ))}
                             </div>
                         </div>
+                        <div className="mt-4 flex flex-col items-center sm:items-start">
+                            <p className="font-plus-jakarta text-white text-sm sm:text-base mb-2">Designed and Developed by</p>
+                            <a href="https://mavixtech.com/" target="_blank" rel="noopener noreferrer">
+                                <img src="/logo.svg" alt="Mavix Tech" className="h-6 w-auto hover:opacity-80 transition-opacity" />
+                            </a>
+                        </div>
                     </div>
                 </div>
 
