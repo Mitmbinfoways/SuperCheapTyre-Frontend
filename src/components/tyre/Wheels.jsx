@@ -5,14 +5,16 @@ import WheelFilterSidebar from "./WheelFilterSidebar";
 import TyreGrid from "./TyreGrid";
 import Pagination from "./Pagination";
 import HeroBannerWheel from "./HeroBannerWheel";
-import { getTyres, getAllMasterFilters } from "../../axios/axios";
+import { getTyres, getAllMasterFilters, getContactInfoDetail } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import Loader from "../common/Loader";
+import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 import HeroBanner from "./HeroBanner";
 
 function Wheels() {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
+  const [contactData, setContactData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -103,6 +105,19 @@ function Wheels() {
     fetchWheels();
   }, [currentPage, pageSize, brand, size, color, diameter, fitments, price, search]); // Add search to dependency array
 
+  const fetchContactInfo = async () => {
+    try {
+      const response = await getContactInfoDetail();
+      setContactData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching contact info:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContactInfo();
+  }, []);
+
   // Scroll to top when page changes
   useEffect(() => {
     window.scrollTo({
@@ -158,12 +173,17 @@ function Wheels() {
                     </svg>
                   </div>
                   <h3 className="text-2xl font-lexend font-semibold text-gray-800 mb-2">
-                    Sorry, no products were found
+                    Can’t find what you’re looking for?
                   </h3>
-                  <p className="text-base font-lexend text-gray-600 max-w-md text-center mb-6">
-                    We couldn't find any wheels matching your current selection.
-                    Please try adjusting your filters or check back later.
-                  </p>
+                  <div className="p-4 text-center">
+                    <p className="text-base font-lexend text-gray-600 max-w-lg text-center mb-6">
+                      “It looks like this product is not currently listed on our website. Don’t worry our team can help! Call us at{" "}
+                      <a href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
+                        {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
+                      </a>{" "}
+                      to get the product you’re looking for.”
+                    </p>
+                  </div>
                   <button
                     onClick={() => window.location.reload()}
                     className="px-6 py-3 bg-[#ED1C24] text-white font-lexend font-medium rounded-lg hover:bg-[#d11920] transition-colors duration-300"
