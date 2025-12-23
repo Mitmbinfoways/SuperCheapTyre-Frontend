@@ -87,17 +87,17 @@ const Footer = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="mt-4 flex flex-col items-center sm:items-start">
-                            <p className="font-plus-jakarta text-white text-sm sm:text-base mb-2">Designed and Developed by</p>
-                            <a href="https://mavixtech.com/" target="_blank" rel="noopener noreferrer">
-                                <img src="/logo.svg" alt="Mavix Tech" className="h-6 w-auto hover:opacity-80 transition-opacity" />
-                            </a>
-                        </div>
                     </div>
                 </div>
 
                 <div className="border-t border-white py-4 sm:py-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left space-y-3 sm:space-y-0">
                     <p className="font-plus-jakarta text-white text-sm sm:text-base">©2025 Copyright SupercheapTyre Dandenong</p>
+                    {/* <div className="flex gap-2 items-center">
+                        <p className="font-plus-jakarta text-white text-sm sm:text-base">Designed and Developed by</p>
+                        <a href="https://mavixtech.com/" target="_blank" rel="noopener noreferrer">
+                            <img src="/logo.svg" alt="Mavix Tech" className="h-4 w-auto hover:opacity-80 transition-opacity" />
+                        </a>
+                    </div> */}
                     <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 font-plus-jakarta text-gray-400 text-sm sm:text-base">
                         <Link to="/privacy" className="text-white transition-colors">Privacy & Policy</Link>
                         <Link to="/terms" className="text-white transition-colors">Terms & Condition</Link>

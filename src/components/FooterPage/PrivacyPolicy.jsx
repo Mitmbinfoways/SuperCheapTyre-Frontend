@@ -88,7 +88,7 @@ function PrivacyPolicy() {
                                 <p className="font-semibold">Supercheap Tyres Dandenong</p>
                                 <p>📞 Phone: <a href={`tel:${formatPhoneNumber(contactInfo?.phone)}`} className="text-red-600 hover:underline">{formatPhoneNumber(contactInfo?.phone)}</a></p>
                                 <p>📧 Email: <a href={`mailto:${contactInfo?.email}`} className="text-red-600 hover:underline">{contactInfo?.email}</a></p>
-                                <p>📍 Address: {contactInfo?.address}</p>
+                                <p>📍 Address: <a href={`${contactInfo?.mapLocation}`} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{contactInfo?.address}</a></p>
                             </div>
                         </section>
                     </div>
