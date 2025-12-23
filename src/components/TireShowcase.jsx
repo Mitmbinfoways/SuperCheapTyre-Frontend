@@ -50,12 +50,12 @@ const TireShowcase = ({ homeData }) => {
   }
 
   return (
-    <section className="bg-dark py-10 sm:py-14 md:py-10 md:h-[37rem]">
-      <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
+    <section className="bg-dark py-10 sm:py-14 md:py-10 lg:h-[37rem]">
+      <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 h-full">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch h-full">
           {/* Best Selling Section */}
-          <div className="bg-white rounded-lg p-4 sm:p-6 md:col-span-2 w-full h-full flex flex-col">
+          <div className="bg-white rounded-lg p-4 sm:p-6 lg:col-span-2 w-full h-full flex flex-col">
             <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 text-center">
               Best Selling
             </h3>
@@ -85,11 +85,11 @@ const TireShowcase = ({ homeData }) => {
                   onClick={() => navigate(`/productdetails/${newArrival._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
                     <img
                       src={getImage(newArrival.images)}
                       alt={newArrival.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain rounded-lg"
                     />
                   </div>
                   <div className="text-white mb-8">
@@ -116,11 +116,11 @@ const TireShowcase = ({ homeData }) => {
                   onClick={() => navigate(`/productdetails/${popularProduct._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
                     <img
                       src={getImage(popularProduct.images)}
                       alt={popularProduct.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain rounded-lg"
                     />
                   </div>
                   <div className="text-white mb-8">
