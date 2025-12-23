@@ -4,9 +4,11 @@ import { imagetools } from 'vite-imagetools';
 
 export default defineConfig({
   plugins: [react(), imagetools()],
+
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+
   build: {
     target: 'es2019',
     cssCodeSplit: true,
@@ -33,5 +35,21 @@ export default defineConfig({
       },
     },
     chunkSizeWarningLimit: 900,
+  },
+
+  preview: {
+    host: true,
+    port: 4173,
+    allowedHosts: [
+      'frontend.supercheaptyre.com.au',
+      'localhost',
+      '127.0.0.1',
+      'supercheaptyre.com.au'
+    ],
+  },
+
+  server: {
+    host: true,
+    port: 4173,
   },
 });
