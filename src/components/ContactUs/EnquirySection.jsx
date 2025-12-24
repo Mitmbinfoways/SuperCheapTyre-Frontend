@@ -366,10 +366,10 @@ export const EnquirySection = ({ contactData }) => {
                           />
                         </div>
                         <div className="flex flex-col">
-                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-sm tracking-[0] leading-[normal] mb-1">
+                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-[14px] tracking-[0] leading-[normal] mb-1">
                             {info.title}
                           </div>
-                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal] break-all">
+                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[14px] tracking-[0] leading-[normal] break-all">
                             {info.value}
                           </div>
                         </div>
@@ -389,7 +389,7 @@ export const EnquirySection = ({ contactData }) => {
                         <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[14px] sm:text-[15px] tracking-[0] leading-[normal] mb-1">
                           Opening Hours
                         </div>
-                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[11px] tracking-[0] leading-[normal]">
+                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[14px] tracking-[0] leading-[normal]">
                           {contactData?.openingHours ? (
                             contactData.openingHours.map((h, i) => (
                               <React.Fragment key={i}>
@@ -399,11 +399,11 @@ export const EnquirySection = ({ contactData }) => {
                             ))
                           ) : (
                             <>
-                              Mon - Fri: 9:00am - 5pm
+                              Monday to Friday: 9:00 AM - 5:00 PM
                               <br />
-                              Sat: 9:00am - 3pm
+                              Saturday: 9:00 AM - 3:00 PM
                               <br />
-                              Sun: Closed
+                              Sunday: Closed
                               <br />
                             </>
                           )}

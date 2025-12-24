@@ -114,7 +114,7 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
 
   return (
     <div>
-      <div className="bg-white p-6 rounded-2xl shadow-calendar shadow-[8px_3px_22px_10px_#9696961C] w-full max-w-80">
+      <div className="bg-white p-3 sm:p-6 rounded-2xl shadow-calendar shadow-[8px_3px_22px_10px_#9696961C] w-full max-w-80 mx-auto">
         <div className="flex justify-between items-center mb-4">
           <button
             onClick={() => navigateMonth('prev')}
@@ -132,10 +132,10 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
             <ChevronRight size={20} className="text-icon-gray" />
           </button>
         </div>
-        <div className="grid grid-cols-7 gap-2 text-center mb-4">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center mb-4">
           {days.map(day => <div key={day} className="font-sf-pro text-xs text-icon-gray">{day}</div>)}
         </div>
-        <div className="grid grid-cols-7 gap-2 text-center">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center">
           {calendarDays.map((day, index) => (
             <button
               key={index}
@@ -157,7 +157,7 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
       {showError && (
         <p className="text-xs text-[#FF0000] mt-3">Please select a date.</p>
       )}
-      <div className="text-xs sm:text-sm text-[#7A7A7A] mt-3 text-nowrap sm:mt-5 text-center sm:text-left">Note: Wait time may vary according to workshop load.</div>
+      <div className="text-xs sm:text-sm text-[#7A7A7A] mt-3 sm:mt-5 text-center sm:text-left">Note: Wait time may vary according to workshop load.</div>
       {/* Legend for time slot status */}
       <div className="col-span-1 sm:col-span-2 flex py-3">
         <div className="flex flex-wrap gap-4 justify-center">
@@ -768,7 +768,7 @@ const AppointmentSection = () => {
 
       <div className="max-w-screen-2xl mx-auto grid xl:grid-cols-10 gap-5 items-start">
         {/* Left Column */}
-        <div className="bg-[#FDFDFE] p-8 rounded-2xl shadow-card shadow-[0_4px_4px_0_#00000040] xl:col-span-6">
+        <div className="bg-[#FDFDFE] p-4 sm:p-8 rounded-2xl shadow-card shadow-[0_4px_4px_0_#00000040] xl:col-span-6">
           <h3 className="text-2xl font-medium mb-7">Choose a Date & Time<span className="text-[#FF0000]">*</span></h3>
           <div className="grid md:grid-cols-2 items-start">
             <Calendar

@@ -9,7 +9,7 @@ function cn(...inputs) {
 
 const Card = React.forwardRef(function Card({ className, href, ...props }, ref) {
   const Element = href ? 'a' : 'div';
-  
+
   return (
     <Element
       ref={ref}
@@ -33,7 +33,7 @@ const CardContent = React.forwardRef(function CardContent(
 });
 
 export const ContactSection = ({ contactData }) => {
-  
+
   const contactCards = [
     {
       title: "Call Us",
@@ -46,9 +46,31 @@ export const ContactSection = ({ contactData }) => {
     },
     {
       title: "Hours",
-      content: contactData?.openingHours
-        ? contactData.openingHours.map((h) => `${h.day}: ${h.time}`).join("\n")
-        : "Mon-Fri: 9AM-5PM\nSat: 9AM-3PM",
+      content: contactData?.openingHours ? (
+        <div className="flex flex-col gap-1">
+          {contactData.openingHours.map((h, i) => (
+            <div key={i} className="flex flex-col">
+              <span className="font-medium">{h.day} :</span>
+              <span>{h.time}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-col">
+            <span className="font-medium">Monday to Friday:</span>
+            <span>9:00 AM - 5:00 PM</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-medium">Saturday:</span>
+            <span>9:00 AM - 3:00 PM</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-medium">Sunday:</span>
+            <span>Closed</span>
+          </div>
+        </div>
+      ),
       icon: "/contactus/clock.svg",
       delay: "400ms",
     },
@@ -84,11 +106,11 @@ export const ContactSection = ({ contactData }) => {
             >
               <CardContent className="relative h-full p-4 sm:p-5 flex flex-col items-center justify-center gap-2">
                 <div className="flex justify-center">
-                <img
-                  className="object-contain w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11"
-                  alt="Contact icon"
-                  src={card.icon}
-                />
+                  <img
+                    className="object-contain w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11"
+                    alt="Contact icon"
+                    src={card.icon}
+                  />
                 </div>
 
                 <div className="flex flex-col items-center justify-center px-2.5 py-2 mt-1 sm:mt-2">

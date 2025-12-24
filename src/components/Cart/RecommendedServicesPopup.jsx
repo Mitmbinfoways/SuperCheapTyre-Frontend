@@ -159,8 +159,17 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                                     <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 my-1 pr-0 sm:pr-4" dangerouslySetInnerHTML={{ __html: service.description }}></p>
 
                                     <div className="text-sm sm:text-xl font-semibold text-gray-900 mt-1 sm:mt-0">
-                                        Starting From AU${service.price}
-                                        <span className="text-xs align-top"> EA</span>
+                                        {(service?.name?.toUpperCase() || "").includes("WHEEL ALIGNMENT") ? (
+                                            <>
+                                                AU${service.price}
+                                                <span className="text-xs align-top"> EA</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Starting From AU${service.price}
+                                                <span className="text-xs align-top"> EA</span>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             </div>

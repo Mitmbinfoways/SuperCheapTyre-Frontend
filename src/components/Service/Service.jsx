@@ -125,7 +125,15 @@ const Service = () => {
                                     {service?.name?.toUpperCase()}
                                 </h3>
                                 <p className="font-bold text-gray-900 mb-3">
-                                    Starting From AU${service?.price} <sup className='text-md'>EA</sup>
+                                    {(service?.name?.toUpperCase() || "").includes("WHEEL ALIGNMENT") ? (
+                                        <>
+                                            AU${service?.price} <sup className='text-md'>EA</sup>
+                                        </>
+                                    ) : (
+                                        <>
+                                            Starting From AU${service?.price} <sup className='text-md'>EA</sup>
+                                        </>
+                                    )}
                                 </p>
                                 <div
                                     className="text-gray-600 mb-4 flex-1 line-clamp-4 prose prose-sm max-w-none"

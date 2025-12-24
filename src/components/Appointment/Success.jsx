@@ -17,6 +17,7 @@ const Success = () => {
   const [orderId, setOrderId] = useState(null);
   const hasRunRef = useRef(false);
   const appointmentData = secureGetItem("appointmentData", {});
+  const [transactionId, setTransactionId] = useState(null);
 
   const createAppointmentAndOrder = async () => {
     try {
@@ -81,6 +82,7 @@ const Success = () => {
           };
           const fetchTransactionData = await TransactionData(data);
           TID = fetchTransactionData?.data?.transactionId;
+          if (TID) setTransactionId(TID);
         } catch (error) {
           console.error("Error fetching transaction ID:", error);
         }
@@ -239,6 +241,11 @@ const Success = () => {
                           Thank you for your payment. Your appointment details have
                           been sent to your email.
                         </p>
+                        {transactionId && (
+                          <p className="mt-2 font-medium">
+                            Transaction ID: {transactionId}
+                          </p>
+                        )}
                         {/* <p className="mt-2 font-medium">
                       Payment Option: {appointmentData.paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)'}
                     </p> */}
