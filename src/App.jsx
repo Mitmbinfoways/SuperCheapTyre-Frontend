@@ -47,6 +47,32 @@ function ScrollToTopOnRouteChange() {
 
 function App() {
   useGlobalImageOptimization();
+
+  // useEffect(() => {
+  //   const handleContextMenu = (e) => {
+  //     e.preventDefault();
+  //   };
+
+  //   const handleKeyDown = (e) => {
+  //     // Disable F12
+  //     if (e.key === 'F12') {
+  //       e.preventDefault();
+  //     }
+  //     // Disable Ctrl+Shift+I, J, C, U
+  //     if (e.ctrlKey && e.shiftKey && (['I', 'J', 'C', 'U'].includes(e.key) || ['i', 'j', 'c', 'u'].includes(e.key))) {
+  //       e.preventDefault();
+  //     }
+  //   };
+
+  //   document.addEventListener('contextmenu', handleContextMenu);
+  //   document.addEventListener('keydown', handleKeyDown);
+
+  //   return () => {
+  //     document.removeEventListener('contextmenu', handleContextMenu);
+  //     document.removeEventListener('keydown', handleKeyDown);
+  //   };
+  // }, []);
+
   return (
     <div className="bg-[#F3F3F3] overflow-x-hidden">
       <ScrollToTopOnRouteChange />

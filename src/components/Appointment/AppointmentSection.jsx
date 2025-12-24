@@ -89,6 +89,9 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
     // Check if date is in the past
     if (date < todayDate) return true;
 
+    // Check if date is Sunday
+    if (date.getDay() === 0) return true;
+
     // Check if date is a holiday
     const isHoliday = holidays.some(holiday => {
       // Create date from holiday string and compare with calendar date
@@ -103,6 +106,9 @@ const Calendar = ({ selectedDate, setSelectedDate, showError, holidays = [] }) =
 
   const isHolidayDate = (day) => {
     if (!day) return false;
+    const date = new Date(currentYear, currentMonth, day);
+    if (date.getDay() === 0) return true; // Sunday is holiday
+
     return holidays.some(holiday => {
       // Create date from holiday string and compare with calendar date
       const holidayDate = new Date(holiday.date);
@@ -680,12 +686,29 @@ const AppointmentSection = () => {
         date.getMonth() === melbourneDate.getMonth() &&
         date.getFullYear() === melbourneDate.getFullYear();
 
+      const isSaturday = date.getDay() === 6;
+
       // Map all slots including unavailable ones with label and isAvailable
-      const allSlots = slotsData.map(slot => {
+      const allSlots = slotsData.reduce((acc, slot) => {
         let isAvailable = !!slot.isAvailable;
+        const [slotHour, slotMinute] = slot.startTime.split(':').map(Number);
+
+        // Filter Saturday slots: only show 9am to 3pm.
+        // Slots should END by 3:00 PM (15:00).
+        if (isSaturday) {
+          // Check start time (must be >= 9)
+          if (slotHour < 9) {
+            return acc;
+          }
+
+          // Check end time (must be <= 15:00)
+          const [endHour, endMinute] = slot.endTime.split(':').map(Number);
+          if (endHour > 15 || (endHour === 15 && endMinute > 0)) {
+            return acc;
+          }
+        }
 
         if (isToday && isAvailable) {
-          const [slotHour, slotMinute] = slot.startTime.split(':').map(Number);
           const currentHour = melbourneDate.getHours();
           const currentMinute = melbourneDate.getMinutes();
 
@@ -694,12 +717,13 @@ const AppointmentSection = () => {
           }
         }
 
-        return {
+        acc.push({
           label: `${formatTo12Hour(slot.startTime)} - ${formatTo12Hour(slot.endTime)}`,
           isAvailable: isAvailable,
           slotId: slot.slotId // Store slotId for appointment creation
-        };
-      });
+        });
+        return acc;
+      }, []);
 
       setSlots(allSlots);
     } catch (error) {
@@ -720,6 +744,7 @@ const AppointmentSection = () => {
         // Auto-select today unless it's a holiday; if holiday, pick next non-holiday
         const today = getMelbourneDate();
         const isHoliday = (d) => {
+          if (d.getDay() === 0) return true; // Sunday is holiday
           return holidayItems.some(h => {
             const hd = new Date(h.date);
             return hd.getFullYear() === d.getFullYear() && hd.getMonth() === d.getMonth() && hd.getDate() === d.getDate();
