@@ -44,10 +44,10 @@ export default defineConfig({
       'frontend.supercheaptyre.com.au',
       'localhost',
       '127.0.0.1',
-      'supercheaptyre.com.au'
+      'supercheaptyre.com.au',
+      'www.supercheaptyre.com.au'
     ],
   },
-
   server: {
     host: true,
     port: 4173,
