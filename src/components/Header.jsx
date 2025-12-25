@@ -320,7 +320,7 @@ const Header = () => {
               );
             })}
             {/* Mobile Search Form */}
-            <form onSubmit={handleSearch} className="w-full px-4" ref={searchRef}>
+            <form onSubmit={handleSearch} className="w-full px-4 md:w-96" ref={searchRef}>
               <div className="relative">
                 <input
                   type="text"
