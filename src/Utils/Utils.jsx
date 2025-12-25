@@ -1,8 +1,8 @@
 export function getTyreImageUrl(filename) {
     const BASE_URL = import.meta.env.VITE_BASE_URL; // 👈 for Vite projects
     return `${BASE_URL}/Product/${filename}`; // adjust path if backend uses /Product or /uploads
-  }
-  
+}
+
 export function getBlogImageUrl(pathOrFilename) {
     if (!pathOrFilename) return '';
     const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -36,4 +36,21 @@ export function formatDateTime(isoString) {
  */
 export function formatCurrency(amount) {
     return `AU$${Number(amount).toFixed(2)}`;
+}
+
+/**
+ * Calculate Stripe transaction fee
+ * Formula: Total = (Base + Fixed) / (1 - Percent)
+ * Fee = Total - Base
+ * @param {number} amount - The base amount
+ * @returns {number} The transaction fee
+ */
+export function calculateTransactionFee(amount) {
+    const amountInCents = Math.round(amount * 100);
+    const fixedFee = 30; // 30 cents
+    const percentFee = 0.017; // 1.7%
+
+    const totalInCents = Math.ceil((amountInCents + fixedFee) / (1 - percentFee));
+    const feeInCents = totalInCents - amountInCents;
+    return feeInCents / 100;
 }

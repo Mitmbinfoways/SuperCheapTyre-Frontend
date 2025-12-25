@@ -47,6 +47,7 @@ const Success = () => {
 
       // Apply payment option logic
       const totalAmount = paymentOption === "full" ? subtotal : subtotal * 0.25;
+      const transactionCharge = secureGetItem("transactionCharge", 0);
 
       const appointmentPayload = {
         firstname: appointmentData.firstName,
@@ -102,7 +103,8 @@ const Success = () => {
           quantity: item.quantity,
         })),
         subtotal: Number(subtotal),
-        total: Number(totalAmount), // Use the calculated amount based on payment option
+        total: Number(totalAmount) + Number(transactionCharge), // Use the calculated amount based on payment option
+        charges: Number(transactionCharge),
         appointmentId,
         customer: {
           name: `${appointmentData.firstName} ${appointmentData.lastName}`,
@@ -112,7 +114,7 @@ const Success = () => {
         payment: {
           method: "stripe",
           status: paymentOption,
-          amount: Number(totalAmount),
+          amount: Number(totalAmount) + Number(transactionCharge),
           transactionId: TID ? TID : null, // Include the transaction ID
         },
       };
@@ -132,6 +134,7 @@ const Success = () => {
       localStorage.removeItem("selectedSlotId");
       localStorage.removeItem("transactionId"); // Clean up the transaction ID
       secureRemoveItem("selectedPaymentOption"); // Clean up the payment option
+      secureRemoveItem("transactionCharge");
 
       window.dispatchEvent(
         new StorageEvent("storage", {

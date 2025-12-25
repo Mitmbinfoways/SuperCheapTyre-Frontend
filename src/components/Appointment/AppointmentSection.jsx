@@ -11,6 +11,9 @@ import { Toast } from '../../Utils/Toast';
 import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
+
+import { calculateTransactionFee } from '../../Utils/Utils';
+
 // Helper to get current date in Melbourne time
 const getMelbourneDate = () => {
   const now = new Date();
@@ -412,10 +415,20 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       const subtotal = transformedCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const totalAmount = paymentOption === 'full' ? subtotal : subtotal * 0.25;
 
+      const transactionFee = calculateTransactionFee(totalAmount);
+      secureSetItem('transactionCharge', transactionFee);
+
       const paymentCart = transformedCart.map(item => ({
         ...item,
         price: paymentOption === 'full' ? item.price : item.price * 0.25
       }));
+
+      // Add Transaction Fee to payment cart
+      paymentCart.push({
+        name: "Transaction Fee",
+        price: transactionFee,
+        quantity: 1,
+      });
 
       const body = { Product: paymentCart };
 

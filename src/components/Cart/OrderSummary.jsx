@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
-import { formatCurrency } from '../../Utils/Utils';
+import { formatCurrency, calculateTransactionFee } from '../../Utils/Utils';
 import RecommendedServicesPopup from './RecommendedServicesPopup';
 
 const SummaryRow = ({ label, value, isDiscount = false }) => (
@@ -39,7 +39,9 @@ const OrderSummary = ({ totals, refreshCart }) => {
     }
   };
 
-  const displayTotal = calculateDisplayTotal();
+  const baseDisplayTotal = calculateDisplayTotal();
+  const transactionFee = calculateTransactionFee(baseDisplayTotal);
+  const displayTotal = baseDisplayTotal + transactionFee;
 
   const handleCheckout = () => {
     const cartItems = secureGetItem('cartItems', []);
@@ -118,7 +120,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
         <h2 className="font-satoshi font-bold text-2xl">Order Summary</h2>
 
         <div className="space-y-5">
-          <SummaryRow label="Total" value={totals.subtotal} />
+          <SummaryRow label="SubTotal" value={totals.subtotal} />
         </div>
 
         <hr className="border-border-gray" />
@@ -128,9 +130,21 @@ const OrderSummary = ({ totals, refreshCart }) => {
           <p className="font-lexend font-medium text-2xl">{formatCurrency(displayTotal)}</p>
         </div>
 
+        <div className="flex justify-between items-center">
+          <p className="font-lexend font-medium text-xl">Transaction Fees</p>
+          <p className="font-lexend font-medium text-xl">{formatCurrency(transactionFee)}</p>
+        </div>
+
         <div className="flex justify-between items-center mt-2">
           <p className="font-lexend font-medium text-xl">Balance Due</p>
-          <p className="font-lexend font-medium text-2xl">{formatCurrency(totals.subtotal - displayTotal)}</p>
+          <p className="font-lexend font-medium text-2xl">{formatCurrency(totals.subtotal - baseDisplayTotal)}</p>
+        </div>
+
+        <hr className="border-border-gray" />
+
+        <div className="flex justify-between items-center mt-2">
+          <p className="font-lexend font-medium text-xl">Total</p>
+          <p className="font-lexend font-medium text-2xl">{formatCurrency(totals.subtotal + transactionFee)}</p>
         </div>
 
         <div className="space-y-3">
