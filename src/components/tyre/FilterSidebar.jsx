@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronDown, CloudCog } from 'lucide-react';
 import SingleSelect from '../common/SingleSelect';
+import SearchableSingleSelect from '../common/SearchableSingleSelect';
 import axiosInstance from '../../axios/axios';
 
 const FilterSidebar = () => {
@@ -187,7 +188,7 @@ const FilterSidebar = () => {
             Brand
           </div>
           <div className="relative">
-            <SingleSelect
+            <SearchableSingleSelect
               options={brandOptions}
               value={selected.brand}
               onChange={handleChange('brand')}
