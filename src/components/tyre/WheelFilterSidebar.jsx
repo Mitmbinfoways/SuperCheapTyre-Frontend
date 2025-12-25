@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import SingleSelect from '../common/SingleSelect';
+import SearchableSingleSelect from '../common/SearchableSingleSelect';
 import axiosInstance from '../../axios/axios';
 
 const WheelFilterSidebar = () => {
@@ -73,7 +74,11 @@ const WheelFilterSidebar = () => {
           });
 
           if (sortNumeric) {
-            unique.sort((a, b) => parseFloat(a.values) - parseFloat(b.values));
+            unique.sort((a, b) => {
+              const valA = parseFloat(a.values.toString().replace(/[^\d.]/g, ''));
+              const valB = parseFloat(b.values.toString().replace(/[^\d.]/g, ''));
+              return valA - valB;
+            });
           } else {
             unique.sort((a, b) => a.values.localeCompare(b.values));
           }
@@ -173,7 +178,7 @@ const WheelFilterSidebar = () => {
             Brand
           </div>
           <div className="relative">
-            <SingleSelect
+            <SearchableSingleSelect
               options={brandOptions}
               value={selected.brand}
               onChange={handleChange('brand')}

@@ -78,7 +78,11 @@ const FilterSidebar = () => {
           });
 
           if (sortNumeric) {
-            unique.sort((a, b) => parseFloat(a.values) - parseFloat(b.values));
+            unique.sort((a, b) => {
+              const valA = parseFloat(a.values.toString().replace(/[^\d.]/g, ''));
+              const valB = parseFloat(b.values.toString().replace(/[^\d.]/g, ''));
+              return valA - valB;
+            });
           } else {
             unique.sort((a, b) => a.values.localeCompare(b.values));
           }
