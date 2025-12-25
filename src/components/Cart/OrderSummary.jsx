@@ -40,7 +40,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
   };
 
   const baseDisplayTotal = calculateDisplayTotal();
-  const transactionFee = calculateTransactionFee(baseDisplayTotal);
+  const transactionFee = baseDisplayTotal > 0 ? calculateTransactionFee(baseDisplayTotal) : 0;
   const displayTotal = baseDisplayTotal + transactionFee;
 
   const handleCheckout = () => {
