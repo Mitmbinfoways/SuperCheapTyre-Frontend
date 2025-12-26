@@ -51,12 +51,12 @@ import axios from 'axios';
 function CheckPendingOrder() {
   useEffect(() => {
     const checkOrder = async () => {
-      const pendingOrderId = secureGetItem('pendingOrderId');
-      if (!pendingOrderId) return;
+      const pendingSessionId = secureGetItem('pendingSessionId');
+      if (!pendingSessionId) return;
 
       try {
-        // Use the new PUBLIC status check endpoint
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/check-status/${pendingOrderId}`);
+        // Use the new PUBLIC status check endpoint by SESSION ID
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/check-session/${pendingSessionId}`);
 
         if (response.data && response.data.status) {
           const paymentStatus = response.data.status;
@@ -71,8 +71,9 @@ function CheckPendingOrder() {
             secureRemoveItem('timeSlotId');
             localStorage.removeItem('tkID');
 
-            // Clear pending flag so we don't check again
-            secureRemoveItem('pendingOrderId');
+            // Clear pending flag
+            secureRemoveItem('pendingSessionId');
+            secureRemoveItem('pendingOrderId'); // clean old one too if exists
 
             // Optional: Dispatch event to update cart UI count
             window.dispatchEvent(new Event("storage"));
@@ -80,10 +81,9 @@ function CheckPendingOrder() {
         }
       } catch (error) {
         console.error("Error checking pending order:", error);
-        // If 404, maybe order was deleted? Remove pending flag.
-        if (error.response && error.response.status === 404) {
-          secureRemoveItem('pendingOrderId');
-        }
+        // If 404, usually means webhook hasn't fired yet OR failed. 
+        // We do NOT remove the flag on 404 immediately, because webhook might be slow.
+        // But if it's been days? For now let's keep it simple.
       }
     };
 

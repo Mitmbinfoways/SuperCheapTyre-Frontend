@@ -460,9 +460,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
       const session = await response.json();
 
       localStorage.setItem('tkID', session.id);
-      if (session.orderId) {
-        secureSetItem('pendingOrderId', session.orderId);
-      }
+      secureSetItem('pendingSessionId', session.id);
 
       if (session.url) {
         window.location.href = session.url;
