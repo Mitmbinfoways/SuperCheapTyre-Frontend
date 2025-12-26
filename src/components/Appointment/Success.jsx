@@ -175,6 +175,32 @@ const Success = () => {
   useEffect(() => {
     if (!hasRunRef.current) {
       hasRunRef.current = true;
+
+      const orderIdParam = searchParams.get('order_id');
+      if (orderIdParam) {
+        setOrderId(orderIdParam);
+
+        // Cleanup local storage
+        secureRemoveItem("cartItems");
+        secureRemoveItem("cartItemsForOrder");
+        secureRemoveItem("appointmentData");
+        localStorage.removeItem("timeSlotId");
+        localStorage.removeItem("selectedSlotId");
+        localStorage.removeItem("transactionId");
+        secureRemoveItem("selectedPaymentOption");
+        secureRemoveItem("transactionCharge");
+
+        window.dispatchEvent(
+          new StorageEvent("storage", {
+            key: "cartCount",
+            newValue: "0",
+          })
+        );
+
+        toast.success("Payment successful! Your appointment and order have been confirmed.");
+        return;
+      }
+
       const cartItems = secureGetItem("cartItemsForOrder", []);
       if (cartItems && cartItems.length > 0) {
         createAppointmentAndOrder();

@@ -397,6 +397,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         remarks: payload.remarks,
         date: payload.appointment.date, // This is now in ISO format (YYYY-MM-DD)
         time: payload.appointment.time,
+        slotId: localStorage.getItem('selectedSlotId'),
+        timeSlotId: localStorage.getItem('timeSlotId'),
         paymentOption: paymentOption // Include the payment option
       };
 
@@ -406,6 +408,8 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
       // Transform cart data to match expected format
       const transformedCart = validCart.map(item => ({
+        id: item._id || item.id,
+        type: item.type,
         name: item.name || item.title || 'Tyre Product',
         price: item.price ? parseFloat(item.price) : 0,
         quantity: item.quantity || 1,
@@ -430,7 +434,17 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         quantity: 1,
       });
 
-      const body = { Product: paymentCart };
+      const body = {
+        Product: paymentCart,
+        OrderDetails: {
+          appointment: appointmentData,
+          items: transformedCart.filter(item => item.type !== 'service'),
+          serviceItems: transformedCart.filter(item => item.type === 'service'),
+          paymentOption: paymentOption,
+          paymentAmount: totalAmount + transactionFee,
+          charges: transactionFee
+        }
+      };
 
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/payment`, {
         method: "POST",
