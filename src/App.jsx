@@ -45,6 +45,54 @@ function ScrollToTopOnRouteChange() {
   return null;
 };
 
+import { secureGetItem, secureRemoveItem } from './Utils/encryption';
+import axios from 'axios';
+
+function CheckPendingOrder() {
+  useEffect(() => {
+    const checkOrder = async () => {
+      const pendingOrderId = secureGetItem('pendingOrderId');
+      if (!pendingOrderId) return;
+
+      try {
+        // Use the new PUBLIC status check endpoint
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/check-status/${pendingOrderId}`);
+
+        if (response.data && response.data.status) {
+          const paymentStatus = response.data.status;
+
+          if (paymentStatus === 'full' || paymentStatus === 'partial') {
+            // Order is paid! Clear cart.
+            secureRemoveItem('cartItems');
+            secureRemoveItem('appointmentData');
+            secureRemoveItem('cartItemsForOrder');
+            secureRemoveItem('transactionCharge');
+            secureRemoveItem('selectedSlotId');
+            secureRemoveItem('timeSlotId');
+            localStorage.removeItem('tkID');
+
+            // Clear pending flag so we don't check again
+            secureRemoveItem('pendingOrderId');
+
+            // Optional: Dispatch event to update cart UI count
+            window.dispatchEvent(new Event("storage"));
+          }
+        }
+      } catch (error) {
+        console.error("Error checking pending order:", error);
+        // If 404, maybe order was deleted? Remove pending flag.
+        if (error.response && error.response.status === 404) {
+          secureRemoveItem('pendingOrderId');
+        }
+      }
+    };
+
+    checkOrder();
+  }, []);
+
+  return null;
+}
+
 function App() {
   useGlobalImageOptimization();
 
@@ -76,6 +124,7 @@ function App() {
   return (
     <div className="bg-[#F3F3F3] overflow-x-hidden">
       <ScrollToTopOnRouteChange />
+      <CheckPendingOrder />
       <Header />
       <Suspense fallback={<Loader label="Loading page..." className="min-h-[60vh]" />}>
         <Routes>
