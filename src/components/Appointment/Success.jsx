@@ -172,35 +172,72 @@ const Success = () => {
     navigate("/");
   };
 
+  const clearCartData = () => {
+    secureRemoveItem("cartItems");
+    secureRemoveItem("cartItemsForOrder");
+    secureRemoveItem("appointmentData");
+    localStorage.removeItem("timeSlotId");
+    localStorage.removeItem("selectedSlotId");
+    localStorage.removeItem("transactionId");
+    secureRemoveItem("selectedPaymentOption");
+    secureRemoveItem("transactionCharge");
+    localStorage.removeItem("tkID");
+    secureRemoveItem("pendingSessionId");
+
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: "cartCount",
+        newValue: "0",
+      })
+    );
+  };
+
   useEffect(() => {
     if (!hasRunRef.current) {
       hasRunRef.current = true;
 
       const orderIdParam = searchParams.get('order_id');
+      const sessionIdParam = searchParams.get('session_id');
+
       if (orderIdParam) {
         setOrderId(orderIdParam);
-
-        // Cleanup local storage
-        secureRemoveItem("cartItems");
-        secureRemoveItem("cartItemsForOrder");
-        secureRemoveItem("appointmentData");
-        localStorage.removeItem("timeSlotId");
-        localStorage.removeItem("selectedSlotId");
-        localStorage.removeItem("transactionId");
-        secureRemoveItem("selectedPaymentOption");
-        secureRemoveItem("transactionCharge");
-
-        window.dispatchEvent(
-          new StorageEvent("storage", {
-            key: "cartCount",
-            newValue: "0",
-          })
-        );
-
+        clearCartData();
         toast.success("Payment successful! Your appointment and order have been confirmed.");
         return;
       }
 
+      if (sessionIdParam) {
+        // New Flow: Poll for Order Creation via Session ID
+        setIsLoading(true);
+        const intervalId = setInterval(async () => {
+          try {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/check-session/${sessionIdParam}`);
+            if (response.ok) {
+              const data = await response.json();
+              if (data.status === 'paid' || data.status === 'full' || data.status === 'partial') {
+                if (data.orderId) {
+                  clearInterval(intervalId);
+                  setOrderId(data.orderId);
+                  setIsLoading(false);
+                  clearCartData();
+                  toast.success("Payment successful! Invoice ready.");
+                }
+              }
+            }
+          } catch (error) {
+            console.error("Error checking session:", error);
+          }
+        }, 2000); // Check every 2 seconds
+
+        // Stop polling after 30 seconds to prevent infinite loop
+        setTimeout(() => {
+          clearInterval(intervalId);
+          setIsLoading(false);
+        }, 30000);
+        return;
+      }
+
+      // Legacy/Manual Flow ONLY if no session_id
       const cartItems = secureGetItem("cartItemsForOrder", []);
       if (cartItems && cartItems.length > 0) {
         createAppointmentAndOrder();

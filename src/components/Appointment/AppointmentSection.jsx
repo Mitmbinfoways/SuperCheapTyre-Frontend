@@ -247,6 +247,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
     return savedOption;
   });
   const [selectedCountry, setSelectedCountry] = useState("AU");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCursorPosition = (e) => {
     if (e.target.tagName !== "INPUT" || !selectedCountry) return;
@@ -475,6 +476,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isLoading) return; // Prevent double submission
     markAllTouched();
     if (onSubmitAttempt) {
       onSubmitAttempt(true);
@@ -499,7 +501,15 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
     };
 
     // Make payment with the payload
-    await makePayment(payload);
+    try {
+      setIsLoading(true);
+      await makePayment(payload);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Payment Error:", error);
+      Toast({ message: "Payment initialization failed.", type: "error" });
+    }
+    // Note: On success, makePayment redirects, so no need to set isLoading(false)
   };
 
   return (
@@ -641,9 +651,10 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
         <button
           type="submit"
-          className={`w-full text-white font-semibold py-2.5 rounded-lg transition-colors ${isFormReady ? 'bg-[#ED1C24] hover:bg-opacity-90' : 'bg-[#ED1C24]'}`}
+          className={`w-full text-white font-semibold py-2.5 rounded-lg transition-colors ${isFormReady && !isLoading ? 'bg-[#ED1C24] hover:bg-opacity-90' : 'bg-gray-400 cursor-not-allowed'}`}
+          disabled={!isFormReady || isLoading}
         >
-          Confirm Booking & Proceed to Payment
+          {isLoading ? "Processing..." : "Confirm Booking & Proceed to Payment"}
         </button>
       </div>
     </form>
