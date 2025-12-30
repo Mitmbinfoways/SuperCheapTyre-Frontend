@@ -291,7 +291,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
     'No appointment selected';
 
   // Get payment option text for display
-  const paymentOptionText = paymentOption === 'full' ? 'Full Payment' : 'Partial Payment (25%)';
+  const paymentOptionText = 'Partial Payment (25%)';
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

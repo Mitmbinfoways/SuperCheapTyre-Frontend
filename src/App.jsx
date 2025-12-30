@@ -49,7 +49,12 @@ import { secureGetItem, secureRemoveItem } from './Utils/encryption';
 import axios from 'axios';
 
 function CheckPendingOrder() {
+  const location = useLocation();
+
   useEffect(() => {
+    // If on Success page, let Success component handle cleanup to avoid race conditions
+    if (location.pathname.includes('/success')) return;
+
     const checkOrder = async () => {
       const pendingSessionId = secureGetItem('pendingSessionId');
       if (!pendingSessionId) return;

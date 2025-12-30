@@ -22,8 +22,9 @@ const OrderSummary = ({ totals, refreshCart }) => {
   const [cart, setCart] = useState([])
 
   useEffect(() => {
-    const savedPaymentOption = secureGetItem('selectedPaymentOption', 'partial');
-    setPaymentOption(savedPaymentOption);
+    // const savedPaymentOption = secureGetItem('selectedPaymentOption', 'partial');
+    // setPaymentOption(savedPaymentOption);
+    setPaymentOption('partial');
   }, []);
 
   useEffect(() => {
@@ -162,14 +163,14 @@ const OrderSummary = ({ totals, refreshCart }) => {
             Full Payment
           </label> */}
             <label className="flex items-center gap-2 cursor-pointer font-lexend text-lg">
-              <input
+              {/* <input
                 type="radio"
                 name="payment"
                 value="partial"
                 checked={paymentOption === 'partial'}
                 onChange={(e) => setPaymentOption(e.target.value)}
                 className="w-4 h-4 accent-black"
-              />
+              /> */}
               Partial Payment (25%)
             </label>
           </div>
