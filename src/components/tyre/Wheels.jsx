@@ -126,6 +126,26 @@ function Wheels() {
     });
   }, [currentPage]);
 
+  // Scroll to product grid on mobile filter change
+  const productGridRef = React.useRef(null);
+  const isFirstRender = React.useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const isMobile = window.innerWidth < 1024; // lg breakpoint
+    if (isMobile && productGridRef.current) {
+      // Scroll with offset
+      const yOffset = -100; // Adjust as needed for header/sticky elements
+      const element = productGridRef.current;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }, [brand, size, color, diameter, fitments, price, search]);
+
   if (loading) {
     return <Loader label="Loading wheels..." />;
   }
@@ -144,7 +164,7 @@ function Wheels() {
               </div>
 
               {/* Right Content */}
-              <div className="flex-1">
+              <div className="flex-1" ref={productGridRef}>
                 <div className="mb-6 sm:mb-8">
                   <h2 className="text-2xl sm:text-3xl font-lexend font-regular text-black py-3 pb-8">
                     Wheels
@@ -221,7 +241,7 @@ function Wheels() {
             </div>
 
             {/* Right Content */}
-            <div className="flex-1">
+            <div className="flex-1" ref={productGridRef}>
               <div className="mb-6 sm:mb-8">
                 <h2 className="text-2xl sm:text-3xl font-lexend font-regular text-black py-3 pb-8">
                   Wheels
