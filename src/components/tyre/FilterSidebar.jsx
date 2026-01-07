@@ -186,21 +186,6 @@ const FilterSidebar = () => {
       <h2 className="text-xl sm:text-2xl font-lexend font-medium text-center mb-6 sm:mb-8">Filters</h2>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-1 grid-cols-1 gap-6">
-        {/* Brand Filter */}
-        <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
-            Brand
-          </div>
-          <div className="relative">
-            <SearchableSingleSelect
-              options={brandOptions}
-              value={selected.brand}
-              onChange={handleChange('brand')}
-              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-            />
-          </div>
-        </div>
-
         {/* Width Filter */}
         <div>
           <div className="text-xs sm:text-sm text-black mb-1 ps-2">
@@ -241,6 +226,21 @@ const FilterSidebar = () => {
               options={diameterOptions}
               value={selected.diameter}
               onChange={handleChange('diameter')}
+              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
+            />
+          </div>
+        </div>
+
+        {/* Brand Filter */}
+        <div>
+          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
+            Brand
+          </div>
+          <div className="relative">
+            <SearchableSingleSelect
+              options={brandOptions}
+              value={selected.brand}
+              onChange={handleChange('brand')}
               selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
             />
           </div>

@@ -70,7 +70,11 @@ const BuyTyre = () => {
           });
 
           if (sortNumeric) {
-            unique.sort((a, b) => parseFloat(a.values) - parseFloat(b.values));
+            unique.sort((a, b) => {
+              const valA = parseFloat(String(a.values).replace(/[^\d.]/g, ""));
+              const valB = parseFloat(String(b.values).replace(/[^\d.]/g, ""));
+              return (isNaN(valA) ? 0 : valA) - (isNaN(valB) ? 0 : valB);
+            });
           } else {
             unique.sort((a, b) => a.values.localeCompare(b.values));
           }
@@ -208,13 +212,13 @@ const BuyTyre = () => {
                   />
                 </div>
                 {/* <div className="relative">
-                                    <div className="absolute inset-0 blur-xl opacity-30 rounded-full transform -rotate-12"></div>
-                                    <img
-                                        src={images.b}
-                                        alt="Tyre"
-                                        className="w-40 sm:w-48 md:w-56 lg:w-64 xl:w-72 relative z-20 transform -rotate-12 drop-shadow-2xl"
-                                    />
-                                </div> */}
+                  <div className="absolute inset-0 blur-xl opacity-30 rounded-full transform -rotate-12"></div>
+                  <img
+                    src={images.b}
+                    alt="Tyre"
+                    className="w-40 sm:w-48 md:w-56 lg:w-64 xl:w-72 relative z-20 transform -rotate-12 drop-shadow-2xl"
+                  />
+                </div> */}
               </div>
             </div>
           </div>
