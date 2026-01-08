@@ -49,9 +49,8 @@ export const ContactSection = ({ contactData }) => {
       content: contactData?.openingHours ? (
         <div className="flex flex-col gap-1">
           {contactData.openingHours.map((h, i) => (
-            <div key={i} className="flex flex-col">
-              <span className="font-medium">{h.day} :</span>
-              <span>{h.time}</span>
+            <div key={i} className="flex flex-wrap">
+              <span className="font-medium">{h.day} : {h.time} </span>
             </div>
           ))}
         </div>
@@ -101,7 +100,7 @@ export const ContactSection = ({ contactData }) => {
             <Card
               key={index}
               href={card.href}
-              className={`translate-y-[-1rem] animate-fade-in w-full xs:w-[240px] sm:w-[260px] md:w-[280px] h-auto min-h-[180px] sm:min-h-[190px] md:min-h-[205px] bg-[#ff0009] rounded-[16px] sm:rounded-[18px] md:rounded-[20px] border border-[#bfbfbf] overflow-hidden`}
+              className={`translate-y-[-1rem] animate-fade-in w-full xs:w-[240px] sm:w-[260px] md:w-[300px] h-auto min-h-[180px] sm:min-h-[190px] md:min-h-[205px] bg-[#ff0009] rounded-[16px] sm:rounded-[18px] md:rounded-[20px] border border-[#bfbfbf] overflow-hidden`}
               style={{ "--animation-delay": card.delay }}
             >
               <CardContent className="relative h-full p-4 sm:p-5 flex flex-col items-center justify-center gap-2">

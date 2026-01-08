@@ -327,11 +327,11 @@ export const EnquirySection = ({ contactData }) => {
               <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0] leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-4">
                 Our Location
               </h2>
-              <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0">
-                <CardContent className="p-1 sm:p-2">
+              <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0 xl:flex-1">
+                <CardContent className="p-1 sm:p-2 h-full">
                   <iframe
                     title="Supercheap Tyres Dandenong Location"
-                    className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-lg"
+                    className="w-full h-56 sm:h-72 md:h-80 xl:h-full object-cover rounded-lg"
                     src={getMapEmbedUrl(contactData?.mapLocation)}
                     style={{ border: 0 }}
                     allowFullScreen=""
@@ -347,7 +347,7 @@ export const EnquirySection = ({ contactData }) => {
               <h2 className="[font-family:'Lexend',Helvetica] font-semibold text-[#000000] text-[22px] sm:text-[26px] md:text-[28px] tracking-[0] leading-tight sm:leading-snug md:leading-normal mb-3 sm:mb-4">
                 Contact Information
               </h2>
-              <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0 h-auto lg:h-[336px]">
+              <Card className="bg-[#fdfdfe] rounded-[16px] sm:rounded-[20px] shadow-[0px_4px_4px_#00000040] border-0 h-auto xl:flex-1">
                 <CardContent className="p-4 sm:p-5 h-full flex flex-col justify-center">
                   <div className="flex flex-col gap-4 sm:gap-5">
                     {contactInfo.map((info, index) => (
@@ -369,7 +369,7 @@ export const EnquirySection = ({ contactData }) => {
                           <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-[14px] tracking-[0] leading-[normal] mb-1">
                             {info.title}
                           </div>
-                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[14px] tracking-[0] leading-[normal] break-all">
+                          <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[14px] tracking-[0] leading-[normal] break-words">
                             {info.value}
                           </div>
                         </div>
@@ -386,7 +386,7 @@ export const EnquirySection = ({ contactData }) => {
                         />
                       </div>
                       <div className="flex flex-col">
-                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[14px] sm:text-[15px] tracking-[0] leading-[normal] mb-1">
+                        <div className="[font-family:'Lexend',Helvetica] font-normal text-[#000000] text-[13px] sm:text-[14px] tracking-[0] leading-[normal] mb-1">
                           Opening Hours
                         </div>
                         <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[14px] tracking-[0] leading-[normal]">
