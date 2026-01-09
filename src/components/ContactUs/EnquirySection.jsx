@@ -8,7 +8,10 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Toast } from "../../Utils/Toast";
 import ReCAPTCHA from "react-google-recaptcha";
-import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from "react-phone-number-input";
+import PhoneInput, {
+  isValidPhoneNumber,
+  getCountryCallingCode,
+} from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { formatPhoneNumber } from "../../Utils/FormatePhoneNumber";
 
@@ -133,7 +136,8 @@ const Textarea = React.forwardRef(function Textarea(
 });
 
 const getMapEmbedUrl = (url) => {
-  const defaultEmbed = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin";
+  const defaultEmbed =
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d315.5593216427424!2d145.2069111!3d-38.0078424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad613f6637330fb%3A0xd763a0ab7822508d!2sSupercheap%20Tyres%20Dandenong!5e0!3m2!1sen!2sin!4v1739450000000!5m2!1sen!2sin";
 
   if (!url) return defaultEmbed;
 
@@ -293,19 +297,27 @@ export const EnquirySection = ({ contactData }) => {
       icon: "/contactus/call.svg",
       title: "Phone",
       value: formatPhoneNumber(contactData?.phone) || "(03) 97936190",
-      link: contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97936190",
+      link: contactData?.phone
+        ? `tel:${contactData.phone}`
+        : "tel:(03)97936190",
     },
     {
       icon: "/contactus/email.svg",
       title: "Email",
       value: contactData?.email || "supercheaptyredandenong@gmail.com",
-      link: contactData?.email ? `mailto:${contactData.email}` : "mailto:supercheaptyredandenong@gmail.com",
+      link: contactData?.email
+        ? `mailto:${contactData.email}`
+        : "mailto:supercheaptyredandenong@gmail.com",
     },
     {
       icon: "/contactus/location.svg",
       title: "Address",
-      value: contactData?.address || "114 Hammond Rd, Dandenong South VIC 3175, Australia",
-      link: contactData?.mapLocation || "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+      value:
+        contactData?.address ||
+        "114 Hammond Rd, Dandenong South VIC 3175, Australia",
+      link:
+        contactData?.mapLocation ||
+        "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
     },
   ];
 
@@ -316,9 +328,12 @@ export const EnquirySection = ({ contactData }) => {
         <div>
           {/* Our Location */}
           <div className="mb-4">
-            <h2 className="text-primary font-medium text-3xl mb-4">GET IN TOUCH</h2>
+            <h2 className="text-primary font-medium text-3xl mb-4">
+              GET IN TOUCH
+            </h2>
             <p className="text-[#7A7A7A] leading-relaxed">
-              At Supercheap Tyres, we’re here to help with all your tyre and wheel needs call, email or visit us for fast, reliable service.
+              At Supercheap Tyres, we’re here to help with all your tyre and
+              wheel needs call, email or visit us for fast, reliable service.
             </p>
           </div>
 
@@ -391,12 +406,15 @@ export const EnquirySection = ({ contactData }) => {
                         </div>
                         <div className="[font-family:'Lexend',Helvetica] font-normal text-[#6f6f6f] text-[10px] sm:text-[14px] tracking-[0] leading-[normal]">
                           {contactData?.openingHours ? (
-                            contactData.openingHours.map((h, i) => (
-                              <React.Fragment key={i}>
-                                {h.day}: {h.time}
-                                <br />
-                              </React.Fragment>
-                            ))
+                            <div className="grid grid-cols-[auto_auto_1fr] gap-x-2 w-fit">
+                              {contactData.openingHours.map((h, i) => (
+                                <React.Fragment key={i}>
+                                  <span>{h.day}</span>
+                                  <span>:</span>
+                                  <span>{h.time}</span>
+                                </React.Fragment>
+                              ))}
+                            </div>
                           ) : (
                             <>
                               Monday to Friday: 9:00 AM - 5:00 PM
@@ -407,7 +425,8 @@ export const EnquirySection = ({ contactData }) => {
                               <br />
                             </>
                           )}
-                          {contactData?.openingHoursNote || "Please check Google for public holiday opening hours."}
+                          {contactData?.openingHoursNote ||
+                            "Please check Google for public holiday opening hours."}
                         </div>
                       </div>
                     </div>
@@ -426,7 +445,18 @@ export const EnquirySection = ({ contactData }) => {
         </h2>
 
         <div className="[font-family:'Lexend',Helvetica] max-w-6xl font-normal text-[#6E6E6E] text-sm sm:text-base tracking-[0.48px] leading-[26px] sm:leading-[30px] mb-6 sm:mb-8">
-          Supercheap Tyres Dandenong is a leading tyre dealer proudly servicing the South East Melbourne region including Dandenong. Our products are spread out to a wide range that consists of budget tyres, premium tyres, SUV tyres, van tyres, 4×4 tyres, trailer tyres and more. Whether you need tyres for a daily driver, family vehicle or commercial use, we have quality options to suit every requirement. We’re committed to providing great value, offering some of the most competitive tyre prices in Melbourne along with expert fitting, wheel alignment and repair services. If you’re searching online for “tyres near me” or a reliable tyre shop in Dandenong, look no further. You can find the best deals and qualitative service on tyres at our store or online. Contact us today for assistance or a free quote.
+          Supercheap Tyres Dandenong is a leading tyre dealer proudly servicing
+          the South East Melbourne region including Dandenong. Our products are
+          spread out to a wide range that consists of budget tyres, premium
+          tyres, SUV tyres, van tyres, 4×4 tyres, trailer tyres and more.
+          Whether you need tyres for a daily driver, family vehicle or
+          commercial use, we have quality options to suit every requirement.
+          We’re committed to providing great value, offering some of the most
+          competitive tyre prices in Melbourne along with expert fitting, wheel
+          alignment and repair services. If you’re searching online for “tyres
+          near me” or a reliable tyre shop in Dandenong, look no further. You
+          can find the best deals and qualitative service on tyres at our store
+          or online. Contact us today for assistance or a free quote.
         </div>
 
         {/* Contact Form */}
@@ -471,7 +501,7 @@ export const EnquirySection = ({ contactData }) => {
                 onCountryChange={(country) => {
                   setSelectedCountry(country);
                   // Clear the phone number when country changes
-                  setFormData((prev) => ({ ...prev, mobile: '' }));
+                  setFormData((prev) => ({ ...prev, mobile: "" }));
                   setErrors((prev) => ({ ...prev, mobile: "" }));
                 }}
                 country={selectedCountry}
@@ -479,7 +509,11 @@ export const EnquirySection = ({ contactData }) => {
                 international
                 limitMaxLength={true}
                 countryCallingCodeEditable={false}
-                className={`react-phone-number-input ${errors.mobile && touched.mobile ? 'react-phone-number-input--invalid' : ''}`}
+                className={`react-phone-number-input ${
+                  errors.mobile && touched.mobile
+                    ? "react-phone-number-input--invalid"
+                    : ""
+                }`}
                 onClick={handleCursorPosition}
                 onKeyUp={handleCursorPosition}
                 onFocus={handleCursorPosition}

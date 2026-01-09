@@ -7,8 +7,11 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-const Card = React.forwardRef(function Card({ className, href, ...props }, ref) {
-  const Element = href ? 'a' : 'div';
+const Card = React.forwardRef(function Card(
+  { className, href, ...props },
+  ref
+) {
+  const Element = href ? "a" : "div";
 
   return (
     <Element
@@ -19,7 +22,7 @@ const Card = React.forwardRef(function Card({ className, href, ...props }, ref) 
         className,
         href && "cursor-pointer"
       )}
-      {...(href ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      {...(href ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       {...props}
     />
   );
@@ -27,13 +30,12 @@ const Card = React.forwardRef(function Card({ className, href, ...props }, ref) 
 
 const CardContent = React.forwardRef(function CardContent(
   { className, ...props },
-  ref,
+  ref
 ) {
   return <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
 });
 
 export const ContactSection = ({ contactData }) => {
-
   const contactCards = [
     {
       title: "Call Us",
@@ -42,16 +44,20 @@ export const ContactSection = ({ contactData }) => {
         : "0397936190\n24/7 Emergency Line",
       icon: "/contactus/call.svg",
       delay: "200ms",
-      href: contactData?.phone ? `tel:${contactData.phone}` : "tel:(03)97942222",
+      href: contactData?.phone
+        ? `tel:${contactData.phone}`
+        : "tel:(03)97942222",
     },
     {
       title: "Hours",
       content: contactData?.openingHours ? (
-        <div className="flex flex-col gap-1">
+        <div className="grid grid-cols-[auto_auto_1fr] gap-x-2 w-fit mx-auto text-center">
           {contactData.openingHours.map((h, i) => (
-            <div key={i} className="flex flex-wrap">
-              <span className="font-medium">{h.day} : {h.time} </span>
-            </div>
+            <React.Fragment key={i}>
+              <span className="font-medium">{h.day}</span>
+              <span className="font-medium">:</span>
+              <span className="font-medium">{h.time}</span>
+            </React.Fragment>
           ))}
         </div>
       ) : (
@@ -75,10 +81,14 @@ export const ContactSection = ({ contactData }) => {
     },
     {
       title: "Location",
-      content: contactData?.address || "114 Hammond Rd, Dandenong South VIC 3175, Australia",
+      content:
+        contactData?.address ||
+        "114 Hammond Rd, Dandenong South VIC 3175, Australia",
       icon: "/contactus/location.svg",
       delay: "600ms",
-      href: contactData?.mapLocation || "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
+      href:
+        contactData?.mapLocation ||
+        "https://www.google.com/maps/place/Supercheap+Tyres+Dandenong/@-38.0077899,145.2065489,20.47z/data=!4m15!1m8!3m7!1s0x6ad613c03393e259:0x6e08fd31f52665a5!2s114+Hammond+Rd,+Dandenong+South+VIC+3175,+Australia!3b1!8m2!3d-38.0078006!4d145.206244!16s%2Fg%2F11csllhb_6!3m5!1s0x6ad613f6637330fb:0xd763a0ab7822508d!8m2!3d-38.0078313!4d145.2066405!16s%2Fg%2F1s04wr9dv?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D",
     },
   ];
 
@@ -95,12 +105,12 @@ export const ContactSection = ({ contactData }) => {
           Contact Supercheaptyres Dandenong
         </h2>
 
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6 max-w-full md:max-w-[960px] w-full px-2 md:px-0 py-10 cursor-pointer">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6 max-w-full md:max-w-[1024px] w-full px-2 md:px-0 py-10 cursor-pointer">
           {contactCards.map((card, index) => (
             <Card
               key={index}
               href={card.href}
-              className={`translate-y-[-1rem] animate-fade-in w-full xs:w-[240px] sm:w-[260px] md:w-[300px] h-auto min-h-[180px] sm:min-h-[190px] md:min-h-[205px] bg-[#ff0009] rounded-[16px] sm:rounded-[18px] md:rounded-[20px] border border-[#bfbfbf] overflow-hidden`}
+              className={`translate-y-[-1rem] animate-fade-in w-full xs:w-[260px] sm:w-[260px] md:w-[320px] h-auto min-h-[180px] sm:min-h-[190px] md:min-h-[205px] bg-[#ff0009] rounded-[16px] sm:rounded-[18px] md:rounded-[20px] border border-[#bfbfbf] overflow-hidden`}
               style={{ "--animation-delay": card.delay }}
             >
               <CardContent className="relative h-full p-4 sm:p-5 flex flex-col items-center justify-center gap-2">
