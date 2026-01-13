@@ -51,7 +51,7 @@ export const ContactSection = ({ contactData }) => {
     {
       title: "Hours",
       content: contactData?.openingHours ? (
-        <div className="grid grid-cols-[auto_auto_1fr] gap-x-2 w-fit mx-auto text-center">
+        <div className="grid grid-cols-[auto_auto_1fr] gap-x-2 w-fit mx-auto text-center text-nowrap">
           {contactData.openingHours.map((h, i) => (
             <React.Fragment key={i}>
               <span className="font-medium">{h.day}</span>
