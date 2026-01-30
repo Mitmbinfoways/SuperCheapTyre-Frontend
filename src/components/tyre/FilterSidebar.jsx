@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { ChevronDown, CloudCog } from 'lucide-react';
 import SingleSelect from '../common/SingleSelect';
 import SearchableSingleSelect from '../common/SearchableSingleSelect';
 import axiosInstance from '../../axios/axios';
 
 const FilterSidebar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   // State for filter options from API
   const [brandOptions, setBrandOptions] = useState([{ value: '', label: 'All Brand' }]);
@@ -144,26 +146,30 @@ const FilterSidebar = () => {
     const updatedSelected = { ...selected, [key]: value };
     setSelected(updatedSelected);
 
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     Object.keys(updatedSelected).forEach((k) => {
       if (updatedSelected[k]) {
         params.set(k, updatedSelected[k]);
+      } else {
+        params.delete(k);
       }
     });
-    setSearchParams(params);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleApply = () => {
     // Update URL query parameters with selected filters
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
 
     Object.keys(selected).forEach(key => {
       if (selected[key]) {
         params.set(key, selected[key]);
+      } else {
+        params.delete(key);
       }
     });
 
-    setSearchParams(params);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleReset = () => {
@@ -178,7 +184,7 @@ const FilterSidebar = () => {
       price: '',
     };
     setSelected(resetState);
-    setSearchParams(new URLSearchParams());
+    router.push(pathname);
   };
 
   return (
@@ -246,65 +252,6 @@ const FilterSidebar = () => {
           </div>
         </div>
 
-        {/* Load Rating Filter */}
-        {/* <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
-            Load Rating
-          </div>
-          <div className="relative">
-            <SingleSelect
-              options={loadRatingOptions}
-              value={selected.loadRating}
-              onChange={handleChange('loadRating')}
-              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-            />
-          </div>
-        </div> */}
-
-        {/* Speed Rating Filter */}
-        {/* <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
-            Speed Rating
-          </div>
-          <div className="relative">
-            <SingleSelect
-              options={speedRatingOptions}
-              value={selected.speedRating}
-              onChange={handleChange('speedRating')}
-              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-            />
-          </div>
-        </div> */}
-
-        {/* Pattern Filter */}
-        {/* <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
-            Pattern
-          </div>
-          <div className="relative">
-            <SingleSelect
-              options={patternOptions}
-              value={selected.pattern}
-              onChange={handleChange('pattern')}
-              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-            />
-          </div>
-        </div> */}
-
-        {/* Price Sorting */}
-        {/* <div>
-          <div className="text-xs sm:text-sm text-black mb-1 ps-2">
-            Sort by Price
-          </div>
-          <div className="relative">
-            <SingleSelect
-              options={priceOptions}
-              value={selected.price}
-              onChange={handleChange('price')}
-              selectStyle="w-full appearance-none border border-[#7E7E7E] rounded bg-white text-[#6F6F6F] text-xs sm:text-sm h-8 sm:h-10 px-2 sm:px-3 pr-6 focus:outline-none focus:ring-1 focus:ring-[#ED1C24]"
-            />
-          </div>
-        </div> */}
       </div>
 
       <button onClick={handleApply} className="w-full bg-brand-red text-white rounded-[8px] py-2 sm:py-3 mt-6 sm:mt-6 font-lexend font-semibold text-xs sm:text-sm bg-[#ED1C24] hover:bg-red-700 transition-colors">

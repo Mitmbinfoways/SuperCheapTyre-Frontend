@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      
+
       <div className="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8 sm:p-10 transition-all duration-300 hover:shadow-2xl">
           <div className="text-center">
@@ -23,8 +23,8 @@ const NotFound = () => {
               Sorry, we couldn't find the page you're looking for. It might have been removed, had its name changed, or is temporarily unavailable.
             </p>
             <div className="mt-8">
-              <Link 
-                to="/" 
+              <Link
+                href="/"
                 className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300"
               >
                 <svg className="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -32,8 +32,8 @@ const NotFound = () => {
                 </svg>
                 Go Back Home
               </Link>
-              <Link 
-                to="/tyres" 
+              <Link
+                href="/tyres"
                 className="ml-4 inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300"
               >
                 Browse Tyres
@@ -42,7 +42,7 @@ const NotFound = () => {
           </div>
         </div>
       </div>
-  
+
     </div>
   );
 };

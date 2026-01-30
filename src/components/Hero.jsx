@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { images } from '../assets/data';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import heroDesktopFallback from '../assets/home/tyrebanner1.png?imagetools&format=webp&width=1600&quality=65';
-import heroDesktopSrcSet from '../assets/home/tyrebanner1.png?imagetools&format=webp&width=960;1280;1536;1920&as=srcset&quality=65';
-import heroMobileFallback from '../assets/home/mobilebanner.png?imagetools&format=webp&width=768&quality=65';
-import heroMobileSrcSet from '../assets/home/mobilebanner.png?imagetools&format=webp&width=360;480;640;768&as=srcset&quality=65';
+import heroDesktopFallback from '../assets/home/tyrebanner1.png';
+import heroMobileFallback from '../assets/home/mobilebanner.png';
 import BuyTyre from './BuyTyre';
 import SingleSelect from './common/SingleSelect';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -53,7 +51,7 @@ const Hero = ({ homeData }) => {
   };
 
   const getImageUrl = (imagePath) => {
-    const baseURL = import.meta.env.VITE_BASE_URL;
+    const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
     const fullUrl = `${baseURL}${imagePath}`;
     return fullUrl;
   };
@@ -250,8 +248,7 @@ const Hero = ({ homeData }) => {
           ) : (
             <div className="relative w-full h-[520px] md:h-[500px] lg:h-[600px] xl:h-[650px]">
               <img
-                src={heroDesktopFallback}
-                srcSet={heroDesktopSrcSet}
+                src={heroDesktopFallback.src}
                 alt="Super Cheap Tyres Banner"
                 className="w-full h-full hidden md:block object-cover object-center"
                 loading="eager"
@@ -261,8 +258,7 @@ const Hero = ({ homeData }) => {
                 sizes="(min-width: 768px) 100vw, 0px"
               />
               <img
-                src={heroMobileFallback}
-                srcSet={heroMobileSrcSet}
+                src={heroMobileFallback.src}
                 alt="Super Cheap Tyres Banner"
                 className="w-full h-full md:hidden object-cover object-center"
                 loading="eager"

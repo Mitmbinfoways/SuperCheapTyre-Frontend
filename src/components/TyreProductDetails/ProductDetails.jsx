@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import HeroSection from './HeroSection';
 import SimilarProducts from './SimilarProduct';
 import Loader from "../common/Loader";

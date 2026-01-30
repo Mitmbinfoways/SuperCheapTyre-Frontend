@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, CloudCog } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { getTimeslot, getGetHolidays, getAppointmentSlots } from '../../axios/axios';
@@ -234,7 +234,7 @@ const TimePicker = ({ selectedTime, setSelectedTime, showError, slots, loading }
 };
 
 const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -359,21 +359,21 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
 
         if (tyresBtn) {
           tyresBtn.addEventListener('click', () => {
-            navigate('/tyres');
+            router.push('/tyres');
             close();
           });
         }
 
         if (wheelsBtn) {
           wheelsBtn.addEventListener('click', () => {
-            navigate('/wheels');
+            router.push('/wheels');
             close();
           });
         }
 
         if (servicesButton) {
           servicesButton.addEventListener('click', () => {
-            navigate('/services');
+            router.push('/services');
             close();
           });
         }
@@ -447,7 +447,7 @@ const BookingForm = ({ selectedDate, selectedTime, onSubmitAttempt }) => {
         }
       };
 
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/payment`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

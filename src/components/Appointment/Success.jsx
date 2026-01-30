@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { secureGetItem, secureRemoveItem } from "../../Utils/encryption";
 import {
@@ -11,8 +11,8 @@ import { Toast } from "../../Utils/Toast";
 import Loader from "../common/Loader";
 
 const Success = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const hasRunRef = useRef(false);
@@ -159,7 +159,7 @@ const Success = () => {
 
   const downloadInvoice = (orderId) => {
     const link = document.createElement("a");
-    link.href = `${import.meta.env.VITE_BASE_URL}/api/v1/order/download/${orderId}`;
+    link.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/order/download/${orderId}`;
     link.setAttribute("download", `invoice-${orderId}.pdf`);
     document.body.appendChild(link);
     link.click();
@@ -169,7 +169,7 @@ const Success = () => {
   const handleGoHome = () => {
     localStorage.removeItem("appointmentCreated");
     localStorage.removeItem("cartItemsForOrder");
-    navigate("/");
+    router.push("/");
   };
 
   const clearCartData = () => {
@@ -211,7 +211,7 @@ const Success = () => {
         const pendingSessionId = secureGetItem("pendingSessionId");
         // If no pending session or mismatch, redirect home immediately (Security Requirement)
         if (!pendingSessionId || pendingSessionId !== sessionIdParam) {
-          navigate('/', { replace: true });
+          router.push('/');
           return;
         }
 
@@ -219,7 +219,7 @@ const Success = () => {
         setIsLoading(true);
         const intervalId = setInterval(async () => {
           try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/check-session/${sessionIdParam}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/payment/check-session/${sessionIdParam}`);
             if (response.ok) {
               const data = await response.json();
               if (data.status === 'paid' || data.status === 'full' || data.status === 'partial') {

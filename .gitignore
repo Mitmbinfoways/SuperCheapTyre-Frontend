@@ -1,8 +1,42 @@
+# Node dependencies
 node_modules/
-.continue/
-.vercel
+
+# Next.js build output
+.next/
+out/
+
+# Vercel
+.vercel/
+
+# Turbopack / cache
+.next/cache/
+.next/dev/
+.turbo/
 
 # Environment variables
 .env
 .env.*
 !.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Build tools
+.eslintcache
+tsconfig.tsbuildinfo
+
+# Misc
+coverage/
+.next

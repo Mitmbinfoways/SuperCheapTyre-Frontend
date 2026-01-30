@@ -611,7 +611,7 @@ export const EnquirySection = ({ contactData }) => {
             <div>
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
                 onChange={handleRecaptchaChange}
               />
               {errors.recaptcha ? (

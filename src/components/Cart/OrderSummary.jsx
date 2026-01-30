@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { Toast } from '../../Utils/Toast';
@@ -18,7 +18,7 @@ const SummaryRow = ({ label, value, isDiscount = false }) => (
 const OrderSummary = ({ totals, refreshCart }) => {
   const [paymentOption, setPaymentOption] = useState('partial');
   const [showRecommendedPopup, setShowRecommendedPopup] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [cart, setCart] = useState([])
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
     const cartItems = secureGetItem('cartItems', []);
 
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
-      openEmptyCartModal(navigate);
+      openEmptyCartModal(router.push);
       return;
     }
     secureSetItem('selectedPaymentOption', paymentOption);
@@ -58,7 +58,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
 
   const proceedToCheckout = () => {
     setShowRecommendedPopup(false);
-    navigate('/appointment');
+    router.push('/appointment');
   };
 
   const openEmptyCartModal = (navigate) => {

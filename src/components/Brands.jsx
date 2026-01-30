@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllBrands } from "../axios/axios";
-import brandsBg from "../assets/bglogo.png?imagetools&format=webp&width=900&quality=60";
+import brandsBg from "../assets/bglogo.png";
 import Loader from "./common/Loader";
 
 const Brands = () => {
@@ -13,7 +13,7 @@ const Brands = () => {
       try {
         setLoading(true);
         const response = await getAllBrands();
-        
+
         if (response.data.statusCode === 200) {
           // Filter active brands only
           const activeBrands = response.data.data.items.filter(brand => brand.isActive);
@@ -62,11 +62,11 @@ const Brands = () => {
   return (
     <section className="py-12 sm:py-16 md:py-16 bg-white relative">
       <img
-        src={brandsBg}
+        src={brandsBg.src}
         alt=""
         loading="lazy"
         decoding="async"
-        className="h-[300px] w-[500px] absolute -right-2 -rotate-6 -top-5"
+        className="h-[300px] w-[500px] absolute right-2 -top-5"
       />
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="flex ">
@@ -100,15 +100,15 @@ const BrandDisplay = ({ brand }) => {
           <div className="w-6 h-6 border-t-2 border-r-2 border-red-500 rounded-full animate-spin"></div>
         </div>
       )}
-      
+
       {imageError ? (
         <div className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain text-center font-bold text-gray-700 flex items-center justify-center"
-             style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>
+          style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>
           {brand.name}
         </div>
       ) : (
         <img
-          src={`${import.meta.env.VITE_BASE_URL}/Brand/${brand.image}`}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}/Brand/${brand.image}`}
           alt={brand.name}
           className={`max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain ${loading ? 'hidden' : 'block'}`}
           onLoad={() => setLoading(false)}

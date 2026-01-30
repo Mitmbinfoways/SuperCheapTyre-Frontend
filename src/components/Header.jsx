@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { images, navLinks } from '../assets/data';
 import { Phone, Search, Menu, X, Moon } from 'lucide-react';
 import { HiMoon } from "react-icons/hi";
@@ -15,14 +16,19 @@ import { formatPhoneNumber } from '../Utils/FormatePhoneNumber';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(() => Number(localStorage.getItem('cartCount') || 0));
+  const [cartCount, setCartCount] = useState(0); // Initialize with 0 for consistent hydration
   const [searchQuery, setSearchQuery] = useState(''); // State for search input
   const [suggestions, setSuggestions] = useState([]); // State for product suggestions
   const [showSuggestions, setShowSuggestions] = useState(false); // State to toggle suggestions dropdown
   const searchRef = useRef(null); // Ref for search container
-  const navigate = useNavigate(); // Hook for navigation
+  const router = useRouter(); // Hook for navigation
+  const pathname = usePathname();
   const [contactData, setContactData] = useState(null);
 
+  useEffect(() => {
+    // Client-side only hydration for cart count
+    setCartCount(Number(localStorage.getItem('cartCount') || 0));
+  }, []);
 
   useEffect(() => {
     const onStorage = (e) => {
@@ -114,7 +120,7 @@ const Header = () => {
           handleSuggestionClick(suggestions[0]._id);
         } else {
           // Navigate to tyres page with search query
-          navigate(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
+          router.push(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
         }
       } catch (error) {
         console.error('Search error:', error);
@@ -125,7 +131,7 @@ const Header = () => {
   // Handle suggestion click
   const handleSuggestionClick = (productId) => {
     // Navigate directly to product details page
-    navigate(`/productdetails/${productId}`);
+    router.push(`/productdetails/${productId}`);
     setSearchQuery(''); // Clear search query
     setShowSuggestions(false); // Hide suggestions
     setIsMenuOpen(false); // Close mobile menu
@@ -144,13 +150,19 @@ const Header = () => {
     fetchContactInfo();
   }, []);
 
+  // Helper for NavLink active state
+  const isLinkActive = (to) => {
+    if (to === '/') return pathname === '/';
+    return pathname.startsWith(to) && to !== '#';
+  };
+
   return (
     <header className="relative z-50">
       {/* Main Row */}
       <div className="bg-[#000000] text-white">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex lg:items-start items-center justify-between h-16 sm:h-20 md:h-[160px] py-0">
           {/* Logo */}
-          <Link to="/" className="w-40 sm:w-52 md:w-64 lg:w-64 xl:w-72 2xl:w-80 shrink-0">
+          <Link href="/" className="w-40 sm:w-52 md:w-64 lg:w-64 xl:w-72 2xl:w-80 shrink-0">
             <img src={images.logo} alt="Supercheap Tyres Logo" className="block h-16 sm:h-28 md:h-32 lg:h-32 xl:h-36 2xl:h-40 object-contain" />
           </Link>
 
@@ -181,14 +193,14 @@ const Header = () => {
 
                   {/* Mobile Menu Button and Cart Icon */}
                   <div className="xl:hidden flex items-center space-x-3">
-                    <NavLink to="/cart" className="relative p-2 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
+                    <Link href="/cart" className="relative p-2 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
                       <FaShoppingCart size={18} className="sm:w-5 sm:h-5" />
                       {cartCount > 0 && (
                         <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full px-1 py-0.5 min-w-[16px] text-center">
                           {cartCount}
                         </span>
                       )}
-                    </NavLink>
+                    </Link>
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-1">
                       {isMenuOpen ? <X size={24} className="xl:w-7 xl:h-7 lg:w-8 lg:h-8" /> : <Menu size={24} className="xl:w-7 xl:h-7 lg:w-10 lg:h-10 md:w-7 md:h-7" />}
                     </button>
@@ -260,14 +272,14 @@ const Header = () => {
               >
                 <FaLocationDot size={20} className="xl:w-5 xl:h-5" />
               </a>
-              <NavLink to="/cart" className="relative p-2 xl:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
+              <Link href="/cart" className="relative p-2 xl:p-3 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
                 <FaShoppingCart size={20} className="xl:w-5 xl:h-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 min-w-[16px] text-center">
                     {cartCount}
                   </span>
                 )}
-              </NavLink>
+              </Link>
             </div>
             {/* Center Search */}
             <div className="hidden xl:block bg-[#000000] text-white mt-6 h-[10px]">
@@ -275,17 +287,17 @@ const Header = () => {
                 <nav className="flex gap-2 xl:gap-2 2xl:gap-3 items-center justify-center flex-nowrap">
                   {navLinks.map((link) => {
                     const to = link.href || '#';
+                    const isActive = isLinkActive(to);
                     return (
-                      <NavLink
+                      <Link
                         key={link.name}
-                        to={to}
-                        className={({ isActive }) =>
+                        href={to}
+                        className={
                           `text-base pb-3 xl:text-base 2xl:text-lg font-medium px-3 xl:px-3 2xl:px-5 transition-colors hover:text-primary whitespace-nowrap flex-shrink-0 ${isActive && (to !== '#' ? 'text-primary border-b-2 border-primary' : '')}`
                         }
-                        end={link.name === 'Home'}
                       >
                         <span className="inline-block">{link.name}</span>
-                      </NavLink>
+                      </Link>
                     );
                   })}
                 </nav>
@@ -301,22 +313,23 @@ const Header = () => {
           <nav className="flex flex-col items-center space-y-3 sm:space-y-4 py-6 sm:py-8">
             {navLinks.map((link) => {
               const to = link.href || '#';
+              const isActive = isLinkActive(to);
+
               return to === '#' ? (
                 <span key={link.name} className="text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg opacity-50 cursor-not-allowed">
                   {link.name}
                 </span>
               ) : (
-                <NavLink
+                <Link
                   key={link.name}
-                  to={to}
-                  className={({ isActive }) =>
+                  href={to}
+                  className={
                     `text-base sm:text-lg font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-800 ${isActive && (to !== '#' ? 'text-primary' : '')}`
                   }
-                  end={link.name === 'Home'}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.name}
-                </NavLink>
+                </Link>
               );
             })}
             {/* Mobile Search Form */}

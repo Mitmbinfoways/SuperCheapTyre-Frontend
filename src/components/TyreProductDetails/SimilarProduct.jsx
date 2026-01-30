@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import Link from './ui/Link';
 import { getSimilarProducts, getTyreById, getAllMasterFilters } from '../../axios/axios';
 import { formatCurrency, getTyreImageUrl } from '../../Utils/Utils';
@@ -8,7 +8,7 @@ import Badge from '../common/Badge';
 
 const SimilarProducts = ({ productCategory }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [similarProducts, setSimilarProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -143,7 +143,7 @@ const SimilarProducts = ({ productCategory }) => {
                   {similarProducts?.map((product) => (
                     <div
                       key={product?.id}
-                      onClick={() => navigate(`/productdetails/${product.id}`)}
+                      onClick={() => router.push(`/productdetails/${product.id}`)}
                       className="relative flex flex-col justify-end items-start w-full border border-[#c8c8c8] rounded-[10px] bg-white p-[20px] sm:p-[24px] md:p-[26px] lg:p-[28px_30px] hover:shadow-lg transition-shadow cursor-pointer"
                     >
                       {product.stock === 0 && (

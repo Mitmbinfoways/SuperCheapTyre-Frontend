@@ -1,12 +1,11 @@
 export function getTyreImageUrl(filename) {
-    const BASE_URL = import.meta.env.VITE_BASE_URL; // 👈 for Vite projects
-    return `${BASE_URL}/Product/${filename}`; // adjust path if backend uses /Product or /uploads
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+    return `${BASE_URL}/Product/${filename}`;
 }
 
 export function getBlogImageUrl(pathOrFilename) {
     if (!pathOrFilename) return '';
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
-    // Backend returns values like "Blog/blog-123.jpg". Ensure we don't duplicate slashes
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const normalized = pathOrFilename.startsWith('/') ? pathOrFilename.slice(1) : pathOrFilename;
     return `${BASE_URL}/${normalized}`;
 }

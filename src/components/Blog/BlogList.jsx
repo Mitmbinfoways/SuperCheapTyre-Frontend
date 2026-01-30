@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { getblog } from "../../axios/axios";
 import { getBlogImageUrl, formatDateTime } from "../../Utils/Utils";
 import Loader from "../common/Loader";
@@ -12,14 +12,14 @@ const BlogList = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(undefined);
   const [totalPages, setTotalPages] = useState(1);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const payload = {
           page,
           limit,
@@ -53,7 +53,7 @@ const BlogList = () => {
           if (typeof p.limit === "number") setLimit(p.limit);
           if (typeof p.totalPages === "number") setTotalPages(p.totalPages);
         }
-        
+
         // Set error state if no blogs are found
         if (mapped.length === 0) {
           setError("No blogs found");
@@ -127,7 +127,7 @@ const BlogList = () => {
           {blogs.map((post) => (
             <article
               key={post.id}
-              onClick={() => navigate(`/blog/${post.id}`)}
+              onClick={() => router.push(`/blog/${post.id}`)}
               className="bg-white rounded-2xl p-3 sm:p-4 md:p-5 shadow-[8px_3px_22px_10px_#9696961C] cursor-pointer"
             >
               <div className="w-full h-48 sm:h-56 rounded-xl bg-gray-50 flex items-center justify-center p-2 mb-3">
@@ -187,8 +187,8 @@ const BlogList = () => {
                   key={n}
                   onClick={() => setPage(n)}
                   className={`min-w-9 h-9 px-3 rounded-md text-sm ${n === page
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-800"
+                    ? "bg-black text-white"
+                    : "bg-gray-100 text-gray-800"
                     }`}
                 >
                   {n}
@@ -201,8 +201,8 @@ const BlogList = () => {
             disabled={page >= totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             className={`min-w-9 h-9 px-3 rounded-md text-sm ${page >= totalPages
-                ? "bg-gray-200 text-gray-400"
-                : "bg-black text-white"
+              ? "bg-gray-200 text-gray-400"
+              : "bg-black text-white"
               }`}
           >
             <GrNext />

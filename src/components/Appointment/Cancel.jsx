@@ -1,16 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Toast } from '../../Utils/Toast';
 
 const Cancel = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleGoBack = () => {
-    navigate('/cart');
+    router.push('/cart');
   };
 
   const handleRetryPayment = () => {
-    navigate('/appointment');
+    router.push('/appointment');
   };
 
   return (

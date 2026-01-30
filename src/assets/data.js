@@ -1,8 +1,11 @@
 import img from '../assets/image.png'
-import img1 from '/home/logo.svg'
-import applePay from '../assets/home/apple-pay.png?imagetools&format=webp&width=120&quality=75'
-import bookingIcon from '../assets/home/booking.png?imagetools&format=webp&width=160&quality=75'
-import heroCardImage from '../assets/home/tyrebanner1.png?imagetools&format=webp&width=800&quality=65'
+import applePayImport from '../assets/home/apple-pay.png';
+import bookingIconImport from '../assets/home/booking.png';
+import heroCardImageImport from '../assets/home/tyrebanner1.png';
+
+const applePay = applePayImport.src || applePayImport;
+const bookingIcon = bookingIconImport.src || bookingIconImport;
+const heroCardImage = heroCardImageImport.src || heroCardImageImport;
 
 export const images = {
   logo: '/home/logo.svg',

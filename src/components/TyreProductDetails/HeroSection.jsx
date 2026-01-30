@@ -2,12 +2,11 @@ import React, { useState, useRef } from "react";
 import ProductInfo from "./ProductInfo";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import { formatCurrency } from "../../Utils/Utils";
-import { useParams } from "react-router-dom";
-// Import Swiper components and modules
+import { useParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Thumbs } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
 
 // Import Swiper styles
 import "swiper/css";
@@ -16,7 +15,7 @@ import "swiper/css/thumbs";
 import Badge from "../common/Badge";
 
 const HeroSection = ({ product }) => {
-  const navigate = useNavigate(); // Add navigate hook
+  const router = useRouter(); // Add navigate hook
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
@@ -81,9 +80,9 @@ const HeroSection = ({ product }) => {
   // Function to go back to products listing
   const goBackToProducts = () => {
     if (isWheelProduct) {
-      navigate("/wheels");
+      router.push("/wheels");
     } else {
-      navigate("/tyres");
+      router.push("/tyres");
     }
   };
 

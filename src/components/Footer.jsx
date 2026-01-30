@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { images } from '../assets/data';
 import { Mail } from 'lucide-react';
 import { FaFacebookF } from "react-icons/fa";
@@ -45,14 +45,14 @@ const Footer = () => {
                     <div className="space-y-3 sm:space-y-4 text-center sm:text-left sm:space-x-32">
                         <h4 className="text-lg sm:text-xl font-semibold font-plus-jakarta mb-3 sm:mb-4 sm:mx-32 text-nowrap">Quick Links</h4>
                         <ul className="space-y-2 sm:space-y-6 font-plus-jakarta text-white text-sm sm:text-base">
-                            <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
-                            <li><Link to="/tyres" className="hover:text-primary transition-colors">Tyres</Link></li>
-                            <li><Link to="/wheels" className="hover:text-primary transition-colors">Wheels</Link></li>
-                            <li><Link to="/appointment" className="hover:text-primary transition-colors">Book Appointment</Link></li>
-                            <li><Link to="/services" className="hover:text-primary transition-colors">Services</Link></li>
-                            <li><Link to="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
-                            <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-                            <li><Link to="/contactus" className="hover:text-primary transition-colors">Contact Us</Link></li>
+                            <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
+                            <li><Link href="/tyres" className="hover:text-primary transition-colors">Tyres</Link></li>
+                            <li><Link href="/wheels" className="hover:text-primary transition-colors">Wheels</Link></li>
+                            <li><Link href="/appointment" className="hover:text-primary transition-colors">Book Appointment</Link></li>
+                            <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
+                            <li><Link href="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
+                            <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+                            <li><Link href="/contactus" className="hover:text-primary transition-colors">Contact Us</Link></li>
                         </ul>
                     </div>
 
@@ -99,8 +99,8 @@ const Footer = () => {
                         </a>
                     </div> */}
                     <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 font-plus-jakarta text-gray-400 text-sm sm:text-base">
-                        <Link to="/privacy" className="text-white transition-colors">Privacy & Policy</Link>
-                        <Link to="/terms" className="text-white transition-colors">Terms & Condition</Link>
+                        <Link href="/privacy" className="text-white transition-colors">Privacy & Policy</Link>
+                        <Link href="/terms" className="text-white transition-colors">Terms & Condition</Link>
                     </div>
                 </div>
             </div>

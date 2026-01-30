@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 // import { featuredProducts } from '../assets/data'; // replaced by API data
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 // Swiper imports
@@ -79,7 +79,7 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
 
 const FeaturedProducts = ({ homeData }) => {
     const scrollRef = React.useRef(null);
-    const navigate = useNavigate();
+    const router = useRouter();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -196,7 +196,7 @@ const FeaturedProducts = ({ homeData }) => {
             Toast({ message: "Added to cart", type: "success" });
 
             // Redirect to cart page
-            navigate("/cart");
+            router.push("/cart");
         } catch (error) {
             console.error("Error adding item to cart:", error);
             Toast({ message: "Failed to add item to cart", type: "error" });
@@ -204,7 +204,7 @@ const FeaturedProducts = ({ homeData }) => {
     };
 
     const handleViewDetails = (productId) => {
-        navigate(`/productdetails/${productId}`);
+        router.push(`/productdetails/${productId}`);
     };
 
     const scroll = (direction) => {

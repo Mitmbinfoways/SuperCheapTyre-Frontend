@@ -1,5 +1,5 @@
-import img from '/privacy/privacybg.svg'
-import terms from '/terms/terms.svg'
+import img from '../../../public/privacy/privacybg.svg'
+import terms from '../../../public/terms/terms.svg'
 import { getContactInfoDetail } from '../../axios/axios';
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 import { useEffect, useState } from 'react';

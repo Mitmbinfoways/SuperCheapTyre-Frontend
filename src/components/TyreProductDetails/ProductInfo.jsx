@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import Button from "./ui/Button";
 import QuantityInput from "./ui/QuantityInput";
 import { secureGetItem, secureSetItem } from "../../Utils/encryption";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import { Toast } from "../../Utils/Toast";
 import WheelProductInfo from "./WheelProductInfo";
-// Import React Icons from appropriate libraries
 import { FaWeight, FaTachometerAlt } from "react-icons/fa";
 import { GiWeightScale } from "react-icons/gi";
+import Link from 'next/link';
 import { MdSpeed } from "react-icons/md";
 import { BsSpeedometer2 } from "react-icons/bs";
 import { getTyreSize, getAllMasterFilters } from "../../axios/axios";
 
 const ProductInfo = ({ product }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Check if this is a wheel product
   const isWheelProduct = product.category === "wheel";
 
   // If it's a wheel product, render the wheel-specific component
   if (isWheelProduct) {
-    return <WheelProductInfo product={product} navigate={navigate} />;
+    return <WheelProductInfo product={product} />;
   }
 
   // Otherwise, render the tyre-specific component (existing logic)
@@ -188,7 +188,7 @@ const ProductInfo = ({ product }) => {
       Toast({ message: "Added to cart", type: "success" });
 
       // Redirect to cart page
-      navigate("/cart");
+      router.push("/cart");
     } catch (error) {
       console.error("Error adding item to cart:", error);
       Toast({ message: "Failed to add item to cart", type: "error" });

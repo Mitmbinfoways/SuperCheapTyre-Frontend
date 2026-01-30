@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 import BreadcrumbSection from "./BreadcrumbSection";
 import FilterSidebar from "./FilterSidebar";
 import TyreGrid from "./TyreGrid";
@@ -11,7 +11,8 @@ import Loader from "../common/Loader";
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 
 function Tyre() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
   const [contactData, setContactData] = useState(null);
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
@@ -147,7 +148,7 @@ function Tyre() {
   const handlePageChange = (page) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("page", page);
-    setSearchParams(newParams);
+    router.push(`?${newParams.toString()}`);
   };
 
   // Scroll to product grid on mobile filter change

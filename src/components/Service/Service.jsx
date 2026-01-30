@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { getAllServices } from '../../axios/axios';
 import Loader from '../common/Loader';
 import { getBlogImageUrl } from '../../Utils/Utils';
@@ -10,7 +10,7 @@ const Service = () => {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const fetchServices = async () => {
         try {
@@ -71,7 +71,7 @@ const Service = () => {
             Toast({ message: "Added to cart", type: "success" });
 
             // Redirect to cart page
-            navigate("/cart");
+            router.push("/cart");
         } catch (error) {
             console.error("Error adding item to cart:", error);
             Toast({ message: "Failed to add item to cart", type: "error" });

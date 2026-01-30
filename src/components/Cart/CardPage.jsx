@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import CartItem from './CartItem';
 import OrderSummary from './OrderSummary';
 import { cartData as initialCartData } from './mock';
@@ -8,7 +8,7 @@ import { secureGetItem, secureSetItem } from '../../Utils/encryption';
 import { getTyreById, getAllMasterFilters, getServiceById } from '../../axios/axios';
 
 const CartPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = secureGetItem('cartItems', []);
     return Array.isArray(savedCart) ? savedCart : [];
@@ -357,16 +357,16 @@ const CartPage = () => {
                     };
 
                     tyresBtn.addEventListener('click', () => {
-                      navigate('/tyres');
+                      router.push('/tyres');
                       close();
                     });
 
                     wheelsBtn.addEventListener('click', () => {
-                      navigate('/wheels');
+                      router.push('/wheels');
                       close();
                     });
                     servicesBtn.addEventListener('click', () => {
-                      navigate('/services');
+                      router.push('/services');
                       close();
                     });
                     closeModalBtn.addEventListener('click', close);
@@ -427,16 +427,16 @@ const CartPage = () => {
                     };
 
                     tyresBtn.addEventListener('click', () => {
-                      navigate('/tyres');
+                      router.push('/tyres');
                       close();
                     });
 
                     wheelsBtn.addEventListener('click', () => {
-                      navigate('/wheels');
+                      router.push('/wheels');
                       close();
                     });
                     servicesBtn.addEventListener('click', () => {
-                      navigate('/services');
+                      router.push('/services');
                       close();
                     });
                     closeModalBtn.addEventListener('click', close);

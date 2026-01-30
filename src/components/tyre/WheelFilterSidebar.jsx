@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import SingleSelect from '../common/SingleSelect';
 import SearchableSingleSelect from '../common/SearchableSingleSelect';
 import axiosInstance from '../../axios/axios';
 
 const WheelFilterSidebar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   // State for filter options from API
   const [brandOptions, setBrandOptions] = useState([{ value: '', label: 'All Brand' }]);
@@ -132,26 +134,30 @@ const WheelFilterSidebar = () => {
     const updatedSelected = { ...selected, [key]: value };
     setSelected(updatedSelected);
 
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     Object.keys(updatedSelected).forEach((k) => {
       if (updatedSelected[k]) {
         params.set(k, updatedSelected[k]);
+      } else {
+        params.delete(k);
       }
     });
-    setSearchParams(params);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleApply = () => {
     // Update URL query parameters with selected filters
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
 
     Object.keys(selected).forEach(key => {
       if (selected[key]) {
         params.set(key, selected[key]);
+      } else {
+        params.delete(key);
       }
     });
 
-    setSearchParams(params);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleReset = () => {
@@ -164,7 +170,7 @@ const WheelFilterSidebar = () => {
       price: '',
     };
     setSelected(resetState);
-    setSearchParams(new URLSearchParams());
+    router.push(pathname);
   };
 
   return (

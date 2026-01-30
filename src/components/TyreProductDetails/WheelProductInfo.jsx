@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Button from './ui/Button';
 import QuantityInput from './ui/QuantityInput';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
@@ -7,7 +8,8 @@ import { getTyreImageUrl } from '../../Utils/Utils';
 import { Toast } from '../../Utils/Toast';
 import { getTyreSize, getAllMasterFilters } from '../../axios/axios';
 
-const WheelProductInfo = ({ product, navigate }) => {
+const WheelProductInfo = ({ product }) => {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("specification");
   const [relatedData, setRelatedData] = useState([]);
@@ -117,7 +119,7 @@ const WheelProductInfo = ({ product, navigate }) => {
       Toast({ message: 'Added to cart', type: 'success' });
 
       // Redirect to cart page
-      navigate("/cart");
+      router.push("/cart");
     } catch (error) {
       console.error('Error adding item to cart:', error);
       Toast({ message: 'Failed to add item to cart', type: 'error' });
@@ -188,7 +190,7 @@ const WheelProductInfo = ({ product, navigate }) => {
                   {relatedData.map((item) => (
                     <Link
                       key={item._id}
-                      to={`/wheel/${item._id}`}
+                      href={`/wheel/${item._id}`}
                       className="flex flex-col items-center border p-3 rounded-lg text-center hover:scale-105 transition-transform cursor-pointer"
                     >
                       <img

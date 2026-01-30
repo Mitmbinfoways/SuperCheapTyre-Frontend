@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 import { getBlogById } from '../../axios/axios';
 import { getBlogImageUrl, formatDateTime } from '../../Utils/Utils';
 import Loader from '../common/Loader';
@@ -106,7 +106,7 @@ const CenterList = ({ items }) => {
 
 const BlogDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -129,7 +129,7 @@ const BlogDetail = () => {
   if (!blog) return (
     <main className="bg-[#F3F3F3] py-10">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
-        <button className="text-sm text-[#ED1C24] mb-4" onClick={() => navigate(-1)}>← Back</button>
+        <button className="text-sm text-[#ED1C24] mb-4" onClick={() => router.back()}>← Back</button>
         <div className="bg-white p-6 rounded-2xl">Not found</div>
       </div>
     </main>
@@ -140,7 +140,7 @@ const BlogDetail = () => {
   return (
     <main className="bg-[#F3F3F3] py-8 sm:py-10 md:py-12">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-28">
-        <button className="text-sm text-[#ED1C24] mb-4" onClick={() => navigate(-1)}>← Back</button>
+        <button className="text-sm text-[#ED1C24] mb-4" onClick={() => router.back()}>← Back</button>
         <article className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-[8px_3px_22px_10px_#9696961C]">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">{blog.title}</h1>
           <div className="mt-1.5 text-xs sm:text-sm text-gray-500">{formatDateTime(blog.createdAt)}</div>

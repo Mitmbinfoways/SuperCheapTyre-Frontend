@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { getTyreImageUrl, formatCurrency } from "../Utils/Utils";
 import Loader from "./common/Loader";
 import Badge from "./common/Badge";
@@ -29,7 +29,7 @@ const TireCard = ({ image, name, price, onClick }) => (
 
 const TireShowcase = ({ homeData }) => {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Fixed: Correct keys from your API response
   const bestSelling = homeData?.bestSeller || [];           // ← was bestSelling → bestSeller
@@ -66,7 +66,7 @@ const TireShowcase = ({ homeData }) => {
                   image={getImage(p.images)}
                   name={p.name}
                   price={getPrice(p.price)}
-                  onClick={() => navigate(`/productdetails/${p._id}`)}
+                  onClick={() => router.push(`/productdetails/${p._id}`)}
                 />
               ))}
             </div>

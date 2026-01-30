@@ -61,7 +61,7 @@ function CheckPendingOrder() {
 
       try {
         // Use the new PUBLIC status check endpoint by SESSION ID
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/payment/check-session/${pendingSessionId}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/payment/check-session/${pendingSessionId}`);
 
         if (response.data && response.data.status) {
           const paymentStatus = response.data.status;

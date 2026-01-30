@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 import BreadcrumbSection from "./BreadcrumbSection";
 import WheelFilterSidebar from "./WheelFilterSidebar";
 import TyreGrid from "./TyreGrid";
@@ -12,10 +12,11 @@ import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 import HeroBanner from "./HeroBanner";
 
 function Wheels() {
-  const [searchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
   const [contactData, setContactData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -126,6 +127,12 @@ function Wheels() {
     });
   }, [currentPage]);
 
+  const handlePageChange = (page) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("page", page);
+    router.push(`?${newParams.toString()}`);
+  };
+
   // Scroll to product grid on mobile filter change
   const productGridRef = React.useRef(null);
   const isFirstRender = React.useRef(true);
@@ -219,11 +226,11 @@ function Wheels() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={(page) => handlePageChange(page)}
             />
           </div>
 
-          <HeroBanner />
+          <HeroBannerWheel />
         </div>
       </main>
     );
@@ -261,7 +268,7 @@ function Wheels() {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={(page) => handlePageChange(page)}
           />
         </div>
 

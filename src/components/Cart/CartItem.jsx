@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { RiDeleteBin5Fill, RiDeleteBinFill, RiDeleteBinLine } from "react-icons/ri";
 import { formatCurrency } from '../../Utils/Utils';
 
 const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const isIncrementDisabled = loadingStock || (productStock !== undefined && item.quantity >= productStock);
 

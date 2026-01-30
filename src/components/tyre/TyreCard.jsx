@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { secureGetItem, secureSetItem } from "../../Utils/encryption";
 import { Toast } from "../../Utils/Toast";
 import { formatCurrency } from "../../Utils/Utils";
@@ -17,7 +17,7 @@ const TyreCard = ({
   stock = 0,
   isPopular,
 }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Use either id or _id for consistency
   const productId = String(id || _id);
@@ -48,7 +48,7 @@ const TyreCard = ({
   // };
 
   const handleCardClick = () => {
-    navigate(`/productdetails/${id}`); // Pass the id in URL
+    router.push(`/productdetails/${productId}`); // Pass the id in URL
   };
 
   const handleAddToCart = (e) => {

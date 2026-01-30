@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import img from '/privacy/privacybg.svg'
+import img from '../../../public/privacy/privacybg.svg'
 import { getContactInfoDetail } from '../../axios/axios';
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 
