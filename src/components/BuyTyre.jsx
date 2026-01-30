@@ -118,7 +118,6 @@ const BuyTyre = () => {
     if (diameter) params.append("diameter", diameter);
     if (brand) params.append("brand", brand);
 
-    // Navigate to tyres page with query parameters
     const queryString = params.toString();
     router.push(`/tyres${queryString ? `?${queryString}` : ""}`);
   };

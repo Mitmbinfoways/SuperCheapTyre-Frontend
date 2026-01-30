@@ -48,7 +48,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
     const cartItems = secureGetItem('cartItems', []);
 
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
-      openEmptyCartModal(router.push);
+      openEmptyCartModal(router);
       return;
     }
     secureSetItem('selectedPaymentOption', paymentOption);
@@ -61,7 +61,7 @@ const OrderSummary = ({ totals, refreshCart }) => {
     router.push('/appointment');
   };
 
-  const openEmptyCartModal = (navigate) => {
+  const openEmptyCartModal = (router) => {
     const modal = document.createElement('div');
     modal.className =
       'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -94,25 +94,25 @@ const OrderSummary = ({ totals, refreshCart }) => {
     modal.querySelector('#close-modal-btn').addEventListener('click', close);
 
     modal.querySelector('#tyres-btn').addEventListener('click', () => {
-      navigate('/tyres');
+      router.push('/tyres');
       close();
     });
 
     modal.querySelector('#wheels-btn').addEventListener('click', () => {
-      navigate('/wheels');
+      router.push('/wheels');
       close();
     });
 
     modal.querySelector('#services-btn').addEventListener('click', () => {
-      navigate('/services');
+      router.push('/services');
       close();
     });
 
-    // Close when clicking outside
     modal.addEventListener('click', (e) => {
       if (e.target === modal) close();
     });
   };
+
 
 
   return (

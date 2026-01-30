@@ -85,7 +85,7 @@ const TireShowcase = ({ homeData }) => {
               {newArrival && (
                 <div
                   key={newArrival._id}
-                  onClick={() => navigate(`/productdetails/${newArrival._id}`)}
+                  onClick={() => router.push(`/productdetails/${newArrival._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
                   <div className="relative bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
@@ -118,7 +118,7 @@ const TireShowcase = ({ homeData }) => {
               {popularProduct && (
                 <div
                   key={popularProduct._id}
-                  onClick={() => navigate(`/productdetails/${popularProduct._id}`)}
+                  onClick={() => router.push(`/productdetails/${popularProduct._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
                   <div className="relative bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">

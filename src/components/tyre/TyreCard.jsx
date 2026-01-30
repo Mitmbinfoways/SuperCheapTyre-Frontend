@@ -108,7 +108,7 @@ const TyreCard = ({
       Toast({ message: "Added to cart", type: "success" });
 
       // Redirect to cart page
-      navigate("/cart");
+      router.push("/cart");
     } catch (error) {
       console.error("Error adding item to cart:", error);
       Toast({ message: "Failed to add item to cart", type: "error" });
@@ -118,7 +118,7 @@ const TyreCard = ({
   return (
     <div
       className="bg-white sm:p-6 p-3 space-y-8 relative  w-full max-w-[15rem] sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto  rounded-2xl shadow-[0px_0px_4px_0px_#00000040] group hover:shadow-[0px_0px_8px_1px_#00000040] transition-shadow cursor-pointer"
-      // onClick={() => navigate('/productdetails')}
+      // onClick={() => router.push('/productdetails')}
       onClick={handleCardClick}
       role="button"
       tabIndex={0}

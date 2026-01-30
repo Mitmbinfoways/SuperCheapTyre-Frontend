@@ -11,11 +11,11 @@ const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">
-      <div className="flex-shrink-0 w-full sm:w-32 h-32 rounded-lg flex items-center justify-center cursor-pointer border border-black" onClick={() => navigate(`/productdetails/${item.id}`)}>
+      <div className="flex-shrink-0 w-full sm:w-32 h-32 rounded-lg flex items-center justify-center cursor-pointer border border-black" onClick={() => router.push(`/productdetails/${item.id}`)}>
         <img src={item.image} alt={item.name} className="w-28 h-28 object-contain" />
       </div>
       <div className="flex-grow flex flex-col sm:flex-row justify-between gap-4">
-        <div className="flex flex-col justify-between cursor-pointer" onClick={() => navigate(`/productdetails/${item.id}`)}>
+        <div className="flex flex-col justify-between cursor-pointer" onClick={() => router.push(`/productdetails/${item.id}`)}>
           <div>
             <h3 className="font-lexend text-xl">{item.name}</h3>
             {item.type !== 'service' ? <p className=" flex font-lexend text-sm mt-1 text-[#8C8C8C] gap-1"><p className='text-[#888888] font-bold'>Size:</p> {item.size}</p> : null}

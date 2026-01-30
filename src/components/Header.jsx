@@ -116,11 +116,9 @@ const Header = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       try {
-        // If there are suggestions, navigate to the first product
         if (suggestions.length > 0) {
           handleSuggestionClick(suggestions[0]._id);
         } else {
-          // Navigate to tyres page with search query
           router.push(`/tyres?search=${encodeURIComponent(searchQuery.trim())}`);
         }
       } catch (error) {
@@ -131,7 +129,6 @@ const Header = () => {
 
   // Handle suggestion click
   const handleSuggestionClick = (productId) => {
-    // Navigate directly to product details page
     router.push(`/productdetails/${productId}`);
     setSearchQuery(''); // Clear search query
     setShowSuggestions(false); // Hide suggestions

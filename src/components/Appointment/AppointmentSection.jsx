@@ -819,7 +819,7 @@ const AppointmentSection = () => {
     localStorage.removeItem("appointmentCreated");
     localStorage.removeItem("cartItemsForOrder");
     secureRemoveItem("selectedPaymentOption"); // Clean up the payment option
-    navigate("/");
+    router.push("/");
   };
 
   return (
