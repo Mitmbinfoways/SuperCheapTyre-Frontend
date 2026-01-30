@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 // import { featuredProducts } from '../assets/data'; // replaced by API data
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 // Swiper imports
@@ -22,7 +23,13 @@ const ProductCard = ({ product, onBuyNow, onViewDetails }) => (
         {/* Image */}
         <div className="relative h-40 sm:h-48 md:h-52 flex items-center justify-center mb-3 sm:mb-4">
             <div className="absolute inset-0 bg-black/5 rounded-full blur-xl"></div>
-            <img src={product.image} alt={product.name} className="max-h-full max-w-full object-contain" />
+            <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                className="max-h-full max-w-full object-contain"
+            />
         </div>
 
         {/* Stock Badge */}
@@ -224,7 +231,7 @@ const FeaturedProducts = ({ homeData }) => {
     }
 
     return (
-        <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <section className="py-12 sm:py-16 md:py-20 bg-white overflow-x-hidden">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-8 sm:mb-10 md:mb-12 text-center sm:text-left">Featured Products</h2>
                 <div className="relative overflow-visible">

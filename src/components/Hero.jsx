@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { images } from '../assets/data';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import heroDesktopFallback from '../assets/home/tyrebanner1.png';
@@ -87,13 +88,16 @@ const Hero = ({ homeData }) => {
       );
     } else {
       return (
-        <img
+        <Image
           src={getImageUrl(src)}
           alt={alt}
+          fill
+          sizes="100vw"
           className={className}
           onError={(e) => {
-            console.error(`Failed to load ${isDesktop ? 'laptop' : 'mobile'} image:`, e.target.src);
-            e.target.style.display = 'none';
+            console.error(`Failed to load ${isDesktop ? 'laptop' : 'mobile'} image:`, src);
+            // Handling undefined display logic on Image component might be different, but typically we handle via state if needed.
+            // keeping simple for now as changing other things is discouraged.
           }}
         />
       );
@@ -207,7 +211,7 @@ const Hero = ({ homeData }) => {
                     <SwiperSlide key={banner._id}>
                       <div className="relative w-full">
                         {/* Desktop Media */}
-                        <div className="w-full h-full aspect-video hidden md:block">
+                        <div className="relative w-full h-full aspect-video hidden md:block">
                           {renderMedia(
                             banner.laptopImage,
                             "Banner",
@@ -218,7 +222,7 @@ const Hero = ({ homeData }) => {
                         </div>
 
                         {/* Mobile Media */}
-                        <div className="w-full h-full aspect-[4/5] md:hidden block">
+                        <div className="relative w-full h-full aspect-[4/5] md:hidden block">
                           {renderMedia(
                             banner.mobileImage,
                             "Banner",
@@ -247,25 +251,23 @@ const Hero = ({ homeData }) => {
             </div>
           ) : (
             <div className="relative w-full h-[520px] md:h-[500px] lg:h-[600px] xl:h-[650px]">
-              <img
-                src={heroDesktopFallback.src}
+              <Image
+                src={heroDesktopFallback}
                 alt="Super Cheap Tyres Banner"
                 className="w-full h-full hidden md:block object-cover object-center"
                 loading="eager"
-                fetchPriority="high"
-                data-priority="high"
-                decoding="async"
-                sizes="(min-width: 768px) 100vw, 0px"
+                fill
+                sizes="100vw"
+                priority
               />
-              <img
-                src={heroMobileFallback.src}
+              <Image
+                src={heroMobileFallback}
                 alt="Super Cheap Tyres Banner"
                 className="w-full h-full md:hidden object-cover object-center"
                 loading="eager"
-                fetchPriority="high"
-                data-priority="high"
-                decoding="async"
-                sizes="(max-width: 767px) 100vw, 0px"
+                fill
+                sizes="100vw"
+                priority
               />
             </div>
           )}

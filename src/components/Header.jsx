@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { images, navLinks } from '../assets/data';
 import { Phone, Search, Menu, X, Moon } from 'lucide-react';
@@ -162,8 +163,8 @@ const Header = () => {
       <div className="bg-[#000000] text-white">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 flex lg:items-start items-center justify-between h-16 sm:h-20 md:h-[160px] py-0">
           {/* Logo */}
-          <Link href="/" className="w-40 sm:w-52 md:w-64 lg:w-64 xl:w-72 2xl:w-80 shrink-0">
-            <img src={images.logo} alt="Supercheap Tyres Logo" className="block h-16 sm:h-28 md:h-32 lg:h-32 xl:h-36 2xl:h-40 object-contain" />
+          <Link href="/" className="relative w-40 sm:w-52 md:w-64 lg:w-64 xl:w-72 2xl:w-80 shrink-0 h-16 sm:h-28 md:h-32 lg:h-32 xl:h-36 2xl:h-40">
+            <Image src={images.logo} alt="Supercheap Tyres Logo" fill className="object-contain" />
           </Link>
 
           <div className='flex xl:flex-col xl:items-end items-center h-full'>
@@ -237,10 +238,12 @@ const Header = () => {
                           className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
                           onClick={() => handleSuggestionClick(product._id)}
                         >
-                          <img
+                          <Image
                             src={getTyreImageUrl(product.images?.[0])}
                             alt={product.name}
-                            className="w-12 h-12 object-contain mr-3"
+                            width={48}
+                            height={48}
+                            className="object-contain mr-3"
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
@@ -360,10 +363,12 @@ const Header = () => {
                         className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 last:border-b-0"
                         onClick={() => handleSuggestionClick(product._id)}
                       >
-                        <img
+                        <Image
                           src={getTyreImageUrl(product.images?.[0])}
                           alt={product.name}
-                          className="w-10 h-10 object-contain mr-3"
+                          width={40}
+                          height={40}
+                          className="object-contain mr-3"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>

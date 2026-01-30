@@ -35,7 +35,7 @@ function Home() {
   }
 
   return (
-    <main>
+    <main className='overflow-x-hidden'>
       <Hero homeData={homeData} />
       {/* <BuyTyre /> */}
       <FeaturedProducts homeData={homeData} />

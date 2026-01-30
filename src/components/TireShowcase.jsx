@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getTyreImageUrl, formatCurrency } from "../Utils/Utils";
 import Loader from "./common/Loader";
@@ -9,11 +10,13 @@ const TireCard = ({ image, name, price, onClick }) => (
     onClick={onClick}
     className="bg-dark rounded-xl sm:rounded-2xl p-3 text-white w-full cursor-pointer"
   >
-    <div className="bg-white rounded-xl sm:rounded-2xl mb-2 sm:mb-3 relative">
-      <img
+    <div className="bg-white rounded-xl sm:rounded-2xl mb-2 sm:mb-3 relative w-full h-56 sm:h-64 md:h-72">
+      <Image
         src={image}
         alt={name}
-        className="w-full h-56 sm:h-64 md:h-72 object-contain rounded-xl"
+        fill
+        className="object-contain rounded-xl"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
       <div className="absolute top-2 right-2 z-40">
         <Badge label="Best Selling" color="purple" />
@@ -85,11 +88,13 @@ const TireShowcase = ({ homeData }) => {
                   onClick={() => navigate(`/productdetails/${newArrival._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
-                    <img
+                  <div className="relative bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
+                    <Image
                       src={getImage(newArrival.images)}
                       alt={newArrival.name}
-                      className="w-full h-full object-contain rounded-lg"
+                      fill
+                      className="object-contain rounded-lg"
+                      sizes="150px"
                     />
                   </div>
                   <div className="text-white mb-8">
@@ -116,11 +121,13 @@ const TireShowcase = ({ homeData }) => {
                   onClick={() => navigate(`/productdetails/${popularProduct._id}`)}
                   className="bg-dark rounded-xl p-3 sm:p-2 flex items-center gap-3 sm:gap-4 flex-1 cursor-pointer"
                 >
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
-                    <img
+                  <div className="relative bg-white rounded-lg sm:rounded-xl p-2 h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0">
+                    <Image
                       src={getImage(popularProduct.images)}
                       alt={popularProduct.name}
-                      className="w-full h-full object-contain rounded-lg"
+                      fill
+                      className="object-contain rounded-lg"
+                      sizes="150px"
                     />
                   </div>
                   <div className="text-white mb-8">

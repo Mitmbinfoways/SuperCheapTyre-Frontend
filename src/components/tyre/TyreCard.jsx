@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { secureGetItem, secureSetItem } from "../../Utils/encryption";
 import { Toast } from "../../Utils/Toast";
 import { formatCurrency } from "../../Utils/Utils";
@@ -124,9 +125,11 @@ const TyreCard = ({
     >
       {/* Product Image */}
       <div className="bg-white rounded-t-3xl flex items-center justify-center">
-        <img
+        <Image
           src={image}
           alt={`${brand} ${name}`}
+          width={224}
+          height={224}
           className="w-32 h-32 sm:w-40 sm:h-40 lg:w-56 lg:h-56 object-contain"
         />
       </div>

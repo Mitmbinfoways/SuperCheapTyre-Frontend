@@ -13,12 +13,12 @@ const ENCRYPTION_KEY = 'supercheap_tyre_cart_encryption_key_2025';
  */
 const encrypt = (text) => {
   if (!text) return '';
-  
+
   try {
     const textToChars = (text) => text.split('').map(c => c.charCodeAt(0));
     const byteHex = (n) => ('0' + Number(n).toString(16)).substr(-2);
     const applyKeyToChar = (code) => textToChars(ENCRYPTION_KEY).reduce((a, b) => a ^ b, code);
-    
+
     return text.split('')
       .map(textToChars)
       .map(applyKeyToChar)
@@ -37,11 +37,11 @@ const encrypt = (text) => {
  */
 const decrypt = (encoded) => {
   if (!encoded) return '';
-  
+
   try {
     const textToChars = (text) => text.split('').map(c => c.charCodeAt(0));
     const applyKeyToChar = (code) => textToChars(ENCRYPTION_KEY).reduce((a, b) => a ^ b, code);
-    
+
     return encoded.match(/.{1,2}/g)
       .map(hex => parseInt(hex, 16))
       .map(applyKeyToChar)
@@ -63,11 +63,11 @@ const sanitizeData = (data) => {
     // Replace problematic characters that might cause issues with encryption
     return data.replace(/[\u2013\u2014]/g, '-'); // Replace en-dash and em-dash with regular dash
   }
-  
+
   if (Array.isArray(data)) {
     return data.map(sanitizeData);
   }
-  
+
   if (data && typeof data === 'object') {
     const sanitized = {};
     for (const key in data) {
@@ -77,7 +77,7 @@ const sanitizeData = (data) => {
     }
     return sanitized;
   }
-  
+
   return data;
 };
 
@@ -87,6 +87,7 @@ const sanitizeData = (data) => {
  * @param {any} data - Data to store (will be JSON stringified)
  */
 export const secureSetItem = (key, data) => {
+  if (typeof window === 'undefined') return;
   try {
     // Sanitize data before processing
     const sanitizedData = sanitizeData(data);
@@ -105,13 +106,14 @@ export const secureSetItem = (key, data) => {
  * @returns {any} - Decrypted data or defaultValue
  */
 export const secureGetItem = (key, defaultValue = null) => {
+  if (typeof window === 'undefined') return defaultValue;
   try {
     const encryptedData = localStorage.getItem(key);
     if (!encryptedData) return defaultValue;
-    
+
     const decryptedData = decrypt(encryptedData);
     if (!decryptedData) return defaultValue;
-    
+
     const parsedData = JSON.parse(decryptedData);
     return parsedData;
   } catch (error) {
@@ -125,6 +127,7 @@ export const secureGetItem = (key, defaultValue = null) => {
  * @param {string} key - localStorage key
  */
 export const secureRemoveItem = (key) => {
+  if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(key);
   } catch (error) {

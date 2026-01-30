@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { getAllBrands } from "../axios/axios";
 import brandsBg from "../assets/bglogo.png";
 import Loader from "./common/Loader";
@@ -61,8 +62,8 @@ const Brands = () => {
 
   return (
     <section className="py-12 sm:py-16 md:py-16 bg-white relative">
-      <img
-        src={brandsBg.src}
+      <Image
+        src={brandsBg}
         alt=""
         loading="lazy"
         decoding="async"
@@ -107,9 +108,11 @@ const BrandDisplay = ({ brand }) => {
           {brand.name}
         </div>
       ) : (
-        <img
+        <Image
           src={`${process.env.NEXT_PUBLIC_BASE_URL}/Brand/${brand.image}`}
           alt={brand.name}
+          width={200}
+          height={100}
           className={`max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain ${loading ? 'hidden' : 'block'}`}
           onLoad={() => setLoading(false)}
           onError={() => {

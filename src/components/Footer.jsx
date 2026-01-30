@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { images } from '../assets/data';
 import { Mail } from 'lucide-react';
 import { FaFacebookF } from "react-icons/fa";
@@ -29,7 +30,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-0 mb-8 sm:mb-10 md:mb-4">
                     {/* Logo and Social */}
                     <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
-                        <img src={images.logo} alt="Supercheap Tyres Logo" className="w-48 sm:w-56 md:w-60 h-auto mx-auto sm:mx-0" />
+                        <Image src={images.logo} alt="Supercheap Tyres Logo" width={200} height={60} className="w-48 sm:w-56 md:w-60 h-auto mx-auto sm:mx-0" />
                         <p className="font-plus-jakarta text-white text-sm sm:text-base  mx-auto sm:mx-0">
                             Supercheap Tyres Melbourne’s affordable tyre experts.
                             Our mission is to provide convenience, safety and value for every customer on every road in Australia.
@@ -62,7 +63,7 @@ const Footer = () => {
                             <h4 className="text-lg sm:text-xl font-semibold font-plus-jakarta mb-3 sm:mb-4">Contact Us</h4>
                             <ul className="space-y-2 sm:space-y-3 font-plus-jakarta text-white text-sm sm:text-base">
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
-                                    <img src='/contactus/call.svg' size={16} className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
+                                    <Image src='/contactus/call.svg' alt="Phone" width={20} height={20} className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
                                     <a href={`tel:${contactData?.phone || "(03)97936190"}`}>
                                         {formatPhoneNumber(contactData?.phone) || "(03)97936190"}
                                     </a>
@@ -81,8 +82,8 @@ const Footer = () => {
                             <h4 className="text-lg sm:text-xl font-semibold font-lexend mb-3 sm:mb-4 ps-5">WE ACCEPT</h4>
                             <div className="grid grid-cols-3 gap-2 sm:gap-3 md:ps-5 lg:ps-5 ps-10">
                                 {Object.values(images.payment).map((src, i) => (
-                                    <div key={i} className="bg-white rounded-md flex items-center justify-center w-14 h-10">
-                                        <img src={src} alt="Payment method" className="max-h-full max-w-full object-contain rounded-lg" />
+                                    <div key={i} className="relative bg-white rounded-md flex items-center justify-center w-14 h-10">
+                                        <Image src={src} alt="Payment method" fill className="object-contain p-1 rounded-lg" />
                                     </div>
                                 ))}
                             </div>
