@@ -92,16 +92,9 @@ const Brands = () => {
 
 const BrandDisplay = ({ brand }) => {
   const [imageError, setImageError] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   return (
     <>
-      {loading && !imageError && (
-        <div className="flex items-center justify-center h-full">
-          <div className="w-6 h-6 border-t-2 border-r-2 border-red-500 rounded-full animate-spin"></div>
-        </div>
-      )}
-
       {imageError ? (
         <div className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain text-center font-bold text-gray-700 flex items-center justify-center"
           style={{ fontSize: 'clamp(12px, 2vw, 16px)' }}>
@@ -113,11 +106,10 @@ const BrandDisplay = ({ brand }) => {
           alt={brand.name}
           width={200}
           height={100}
-          className={`max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain ${loading ? 'hidden' : 'block'}`}
-          onLoad={() => setLoading(false)}
+          unoptimized
+          className="max-h-12 sm:max-h-14 md:max-h-20 w-auto object-contain"
           onError={() => {
             setImageError(true);
-            setLoading(false);
           }}
         />
       )}

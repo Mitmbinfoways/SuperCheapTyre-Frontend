@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { images, whyChooseUsItems } from '../assets/data';
 
 const WhyChooseUs = () => {
@@ -33,11 +34,12 @@ const WhyChooseUs = () => {
                             key={index}
                             className="bg-medium-gray/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-2 border-[#B7B7B7] shadow-lg text-center flex flex-col items-center hover:scale-105 transition-transform duration-200"
                         >
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-4 sm:mb-6">
-                                <img
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-4 sm:mb-6 relative">
+                                <Image
                                     src={item.icon}
                                     alt={item.title}
-                                    className="w-full h-full object-contain"
+                                    fill
+                                    className="object-contain"
                                 />
                             </div>
                             <h3 className="text-white text-base sm:text-lg md:text-xl font-semibold">

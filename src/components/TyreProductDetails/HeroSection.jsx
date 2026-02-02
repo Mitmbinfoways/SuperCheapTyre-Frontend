@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import ProductInfo from "./ProductInfo";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import { formatCurrency } from "../../Utils/Utils";
@@ -57,9 +58,6 @@ const HeroSection = ({ product }) => {
     }
   };
 
-  // Handle thumbnail click
-
-  // Navigation functions for main Swiper
   const goToNextSlide = () => {
     if (mainSwiperRef.current && mainSwiperRef.current.swiper) {
       mainSwiperRef.current.swiper.slideNext();
@@ -149,11 +147,14 @@ const HeroSection = ({ product }) => {
                     {product.images?.map((img, index) => (
                       <SwiperSlide key={index}>
                         <div className="flex items-center justify-center w-full h-[300px] sm:h-[400px] md:h-[500px]">
-                          <img
-                            src={getTyreImageUrl(img)}
-                            alt={`${product.name} ${index + 1}`}
-                            className="max-h-full max-w-full object-contain"
-                          />
+                          <div className="relative w-full h-full">
+                            <Image
+                              src={getTyreImageUrl(img)}
+                              alt={`${product.name} ${index + 1}`}
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
                         </div>
                       </SwiperSlide>
                     ))}
@@ -201,9 +202,11 @@ const HeroSection = ({ product }) => {
                         <div
                           className="flex justify-center items-center w-full h-full border rounded-[20px] bg-white p-[4px] cursor-pointer border-[#6e6d6d]"
                         >
-                          <img
+                          <Image
                             src={getTyreImageUrl(img)}
                             alt={`${product.name} ${index + 1}`}
+                            width={112}
+                            height={112}
                             className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain"
                           />
                         </div>
@@ -346,11 +349,14 @@ const HeroSection = ({ product }) => {
             )}
 
             {/* Main Modal Image */}
-            <img
-              src={getTyreImageUrl(product.images?.[modalImageIndex])}
-              alt={`${product.name} - Large View`}
-              className="w-full max-h-[80vh] object-contain"
-            />
+            <div className="relative w-full h-[80vh]">
+              <Image
+                src={getTyreImageUrl(product.images?.[modalImageIndex])}
+                alt={`${product.name} - Large View`}
+                fill
+                className="object-contain"
+              />
+            </div>
 
             {/* Image Counter */}
             {product.images.length > 1 && (

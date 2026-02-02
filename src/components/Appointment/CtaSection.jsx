@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import appointmentIllustration from '../../assets/appointment/appointmentgirl.png';
 
 const CtaSection = () => {
@@ -7,8 +8,8 @@ const CtaSection = () => {
       <div className="relative bg-black rounded-3xl text-white min-h-[380px] flex items-center justify-center">
         <div className="p-4 md:p-12">
           <div className="absolute z-10 order-2 md:order-1 left-0  bottom-1">
-            <img
-              src={appointmentIllustration.src}
+            <Image
+              src={appointmentIllustration}
               sizes="(min-width: 1024px) 28vw, 40vw"
               alt="Professional holding a clipboard"
               className="h-auto max-lg:max-h-96 aspect-[2/3] hidden md:block max-lg:opacity-70"
@@ -20,10 +21,12 @@ const CtaSection = () => {
             </h2>
           </div>
         </div>
-        <img
+        <Image
           src="/appointment/appointmenttyre.svg"
           alt="Stack of tyres"
-          className="aspect-[4/3] h-full absolute -right-5 -bottom-5 hidden md:block max-lg:h-[80%] max-lg:opacity-70"
+          width={400}
+          height={300}
+          className="aspect-[4/3] h-full w-auto absolute -right-5 -bottom-5 hidden md:block max-lg:h-[80%] max-lg:opacity-70"
         />
       </div>
     </section>

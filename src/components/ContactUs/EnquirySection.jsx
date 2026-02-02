@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { toast } from "react-toastify";
 import { CreateContact } from "../../axios/axios";
 import { Slot } from "@radix-ui/react-slot";
@@ -374,10 +375,12 @@ export const EnquirySection = ({ contactData }) => {
                         className="flex items-start gap-3 hover:opacity-80 transition-opacity duration-200"
                       >
                         <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] bg-[#000000] rounded-[5px] flex items-center justify-center flex-shrink-0">
-                          <img
+                          <Image
                             className="w-5 h-5 sm:w-6 sm:h-6"
                             alt={info.title}
                             src={info.icon}
+                            width={24}
+                            height={24}
                           />
                         </div>
                         <div className="flex flex-col">
@@ -394,10 +397,12 @@ export const EnquirySection = ({ contactData }) => {
                     {/* Opening Hours */}
                     <div className="flex items-start gap-3">
                       <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] bg-[#000000] rounded-[5px] flex items-center justify-center flex-shrink-0">
-                        <img
-                          className="p-2.5 sm:p-3"
+                        <Image
+                          className="w-5 h-5 sm:w-6 sm:h-6"
                           alt="Clock"
                           src="/contactus/clock.svg"
+                          width={24}
+                          height={24}
                         />
                       </div>
                       <div className="flex flex-col">
@@ -509,11 +514,10 @@ export const EnquirySection = ({ contactData }) => {
                 international
                 limitMaxLength={true}
                 countryCallingCodeEditable={false}
-                className={`react-phone-number-input ${
-                  errors.mobile && touched.mobile
+                className={`react-phone-number-input ${errors.mobile && touched.mobile
                     ? "react-phone-number-input--invalid"
                     : ""
-                }`}
+                  }`}
                 onClick={handleCursorPosition}
                 onKeyUp={handleCursorPosition}
                 onFocus={handleCursorPosition}

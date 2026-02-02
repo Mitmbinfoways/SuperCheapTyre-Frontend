@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Button from "./ui/Button";
 import QuantityInput from "./ui/QuantityInput";
@@ -240,9 +241,11 @@ const ProductInfo = ({ product }) => {
                   } ${index === specifications?.length - 1 ? "mb-[8px]" : ""}`}
               >
                 {typeof spec?.icon === 'string' ? (
-                  <img
+                  <Image
                     src={spec?.icon}
                     alt="specification icon"
+                    width={20}
+                    height={20}
                     className="w-[20px] h-[20px] object-contain flex-shrink-0"
                   />
                 ) : (

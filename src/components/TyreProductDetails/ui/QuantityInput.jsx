@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 
-const QuantityInput = ({ 
-  initialValue = 1, 
-  min = 1, 
-  max = 99, 
+const QuantityInput = ({
+  initialValue = 1,
+  min = 1,
+  max = 99,
   onChange,
-  className = "" 
+  className = ""
 }) => {
   const [quantity, setQuantity] = useState(initialValue);
 
@@ -34,17 +35,19 @@ const QuantityInput = ({
         className="w-[22px] h-[22px] flex items-center justify-center hover:opacity-70 transition-opacity disabled:opacity-50"
         aria-label="Decrease quantity"
       >
-        <img 
-          src="/productdetails/minus.svg" 
-          alt="decrease" 
+        <Image
+          src="/productdetails/minus.svg"
+          alt="decrease"
+          width={22}
+          height={22}
           className="w-full h-full"
         />
       </button>
-      
+
       <span className="text-[20px] font-normal leading-[25px] font-['Lexend'] text-black min-w-[20px] text-center">
         {quantity}
       </span>
-      
+
       <button
         type="button"
         onClick={handleIncrement}
@@ -52,9 +55,11 @@ const QuantityInput = ({
         className="w-[22px] h-[22px] flex items-center justify-center hover:opacity-70 transition-opacity disabled:opacity-50"
         aria-label="Increase quantity"
       >
-        <img 
-          src="/productdetails/max.svg" 
-          alt="increase" 
+        <Image
+          src="/productdetails/max.svg"
+          alt="increase"
+          width={22}
+          height={22}
           className="w-full h-full"
         />
       </button>

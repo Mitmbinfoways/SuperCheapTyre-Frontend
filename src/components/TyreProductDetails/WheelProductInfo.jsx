@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Button from './ui/Button';
@@ -164,9 +165,11 @@ const WheelProductInfo = ({ product }) => {
                 key={index}
                 className={`flex justify-start items-center w-full ${index > 0 ? 'mt-[-2px]' : ''} ${index === specifications?.length - 1 ? 'mb-[8px]' : ''}`}
               >
-                <img
+                <Image
                   src={spec?.icon}
                   alt="specification icon"
+                  width={20}
+                  height={20}
                   className="w-[20px] h-[20px] object-contain flex-shrink-0"
                 />
                 <span className="text-[14px] sm:text-[15px] font-normal leading-[18px] sm:leading-[19px] md:leading-[20px] font-['Lexend'] text-black border border-white py-[10px] px-[10px] w-[140px] flex-shrink-0">
@@ -193,9 +196,11 @@ const WheelProductInfo = ({ product }) => {
                       href={`/wheel/${item._id}`}
                       className="flex flex-col items-center border p-3 rounded-lg text-center hover:scale-105 transition-transform cursor-pointer"
                     >
-                      <img
+                      <Image
                         src={item.images?.[0] ? getTyreImageUrl(item.images[0]) : "/cart/carttyre.svg"}
                         alt={item.name}
+                        width={80}
+                        height={80}
                         className="w-20 h-20 object-contain"
                       />
                       <p className="text-sm text-gray-700 mt-2 hover:underline underline-offset-2">

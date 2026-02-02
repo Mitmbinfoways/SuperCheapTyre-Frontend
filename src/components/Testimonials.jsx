@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination, Navigation, Autoplay } from "swiper/modules";
 import { images } from "../assets/data";
@@ -48,12 +49,12 @@ const VerificationIcon = ({ size = 16 }) => (
 );
 
 const TestimonialCard = ({ testimonial, isGoogleReview = false, onClick }) => (
-  <div 
+  <div
     className="bg-white h-full space-y-4 p-4 sm:p-6 md:p-8 rounded-xl border border-gray-300 shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
     onClick={onClick}
   >
     <div className="flex items-center">
-      <img
+      <Image
         src={
           testimonial.avatar ||
           testimonial.authorPhoto ||
@@ -62,6 +63,8 @@ const TestimonialCard = ({ testimonial, isGoogleReview = false, onClick }) => (
           )}&background=random`
         }
         alt={testimonial.author}
+        width={50}
+        height={50}
         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 object-cover"
       />
       <div>
@@ -97,17 +100,17 @@ const TestimonialModal = ({ testimonial, isOpen, onClose, isGoogleReview = false
         <div className="p-6">
           <div className="flex justify-between items-start mb-4">
             <h3 className="text-xl font-bold text-blue-900">Customer Review</h3>
-            <button 
+            <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
             >
               &times;
             </button>
           </div>
-          
+
           <div className="space-y-4">
             <div className="flex items-center">
-              <img
+              <Image
                 src={
                   testimonial.avatar ||
                   testimonial.authorPhoto ||
@@ -116,6 +119,8 @@ const TestimonialModal = ({ testimonial, isOpen, onClose, isGoogleReview = false
                   )}&background=random`
                 }
                 alt={testimonial.author}
+                width={50}
+                height={50}
                 className="w-12 h-12 rounded-full mr-4 object-cover"
               />
               <div>
@@ -130,15 +135,15 @@ const TestimonialModal = ({ testimonial, isOpen, onClose, isGoogleReview = false
                 </div>
               </div>
             </div>
-            
+
             <div>
               <StarRating rating={testimonial.rating} />
             </div>
-            
+
             <p className="text-blue-900 text-base md:text-lg leading-relaxed">
               {testimonial.text}
             </p>
-            
+
             {isGoogleReview && testimonial.relativeTime && (
               <p className="text-sm text-gray-500 italic">{testimonial.relativeTime}</p>
             )}
@@ -159,7 +164,7 @@ const Testimonials = () => {
 
   const [swiperKey, setSwiperKey] = useState(0);
   const GOOGLE_PLACE_ID = "ChIJ-zBzY_YT1moRjVAieKugY9c";
-  
+
   useEffect(() => {
     const loadGoogleReviews = async () => {
       try {
@@ -252,9 +257,9 @@ const Testimonials = () => {
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-              pagination={{ 
+              pagination={{
                 clickable: true,
-                el: ".testimonials-pagination" 
+                el: ".testimonials-pagination"
               }}
               loop={true}
               navigation={{ prevEl: ".testi-prev", nextEl: ".testi-next" }}
@@ -269,8 +274,8 @@ const Testimonials = () => {
               {testimonials?.map((item, index) => (
                 <SwiperSlide key={index} className="!h-auto">
                   <div className="w-full max-w-[600px] mx-auto p-3">
-                    <TestimonialCard 
-                      testimonial={item} 
+                    <TestimonialCard
+                      testimonial={item}
                       onClick={() => openModal(item)}
                     />
                   </div>
@@ -281,7 +286,7 @@ const Testimonials = () => {
             <div className="testimonials-pagination swiper-pagination !relative flex justify-center mt-4"></div>
 
             <div className="mt-6 sm:mt-8 flex items-center justify-center lg:justify-between">
-              <button 
+              <button
                 className="bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-20 mx-auto rounded-lg hover:bg-red-700 transition-colors text-sm"
                 onClick={() => window.open('https://www.google.com/search?sca_esv=b8098a47c6cf00ad&sxsrf=AE3TifMw3JOMMMhP9dz-N5xq5Cr_dZEMZA:1762234719929&si=AMgyJEvkVjFQtirYNBhM3ZJIRTaSJ6PxY6y1_6WZHGInbzDnMdVStg_EEEonJJtI8d7GD97M60bbsx8XDV-413m41dLPLPNRRHUgj5gekhYC_alwI2SrSGen01u35HERQP2VvM1ShizMjH24S8GhyNGBjY4dUj55Eg%3D%3D&q=Supercheap+Tyres+Dandenong+Reviews&sa=X&ved=2ahUKEwi_2_fz49eQAxUIzjgGHZ1NG9YQ0bkNegQIHRAE&biw=1536&bih=695&dpr=1.25', '_blank')}
               >
@@ -294,10 +299,11 @@ const Testimonials = () => {
           <div className="relative w-full h-64 sm:h-80 md:h-[31rem] rounded-xl sm:rounded-2xl overflow-hidden mb-8 shadow-2xl">
             {!isVideoOpen ? (
               <>
-                <img
+                <Image
                   src={images.videoBg}
                   alt="Tyre world"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div
                   className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer group"
@@ -321,9 +327,9 @@ const Testimonials = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Testimonial Modal */}
-      <TestimonialModal 
+      <TestimonialModal
         testimonial={selectedTestimonial}
         isOpen={isModalOpen}
         onClose={closeModal}

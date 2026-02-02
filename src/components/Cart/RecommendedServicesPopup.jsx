@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { getAllServices } from '../../axios/axios';
 import { getBlogImageUrl } from '../../Utils/Utils';
 import { secureGetItem, secureSetItem } from '../../Utils/encryption';
@@ -140,10 +141,11 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                                 {/* IMAGE */}
                                 <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                                     {service.images?.length > 0 ? (
-                                        <img
+                                        <Image
                                             src={getBlogImageUrl(service.images[0])}
                                             alt={service.name}
-                                            className="w-full h-full object-cover"
+                                            fill
+                                            className="object-cover"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-gray-400">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getAllServices } from '../../axios/axios';
 import Loader from '../common/Loader';
@@ -105,13 +106,14 @@ const Service = () => {
                         <div key={service._id} className="p-6 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
                             <div className="h-56 overflow-hidden relative group">
                                 {service.images && service.images.length > 0 ? (
-                                    <img
+                                    <Image
                                         src={getBlogImageUrl(service.images[0])}
                                         alt={service.name}
-                                        className="w-full h-full object-cover transition-transform duration-500"
+                                        fill
+                                        className="object-cover transition-transform duration-500"
                                         onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src = 'https://placehold.co/600x400?text=Service';
+                                            // onError handled by parent logic or specialized image loader if needed
+                                            // For Next.js Image, onError handling is different
                                         }}
                                     />
                                 ) : (

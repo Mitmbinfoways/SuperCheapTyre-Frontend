@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getblog } from "../../axios/axios";
 import { getBlogImageUrl, formatDateTime } from "../../Utils/Utils";
@@ -130,12 +131,13 @@ const BlogList = () => {
               onClick={() => router.push(`/blog/${post.id}`)}
               className="bg-white rounded-2xl p-3 sm:p-4 md:p-5 shadow-[8px_3px_22px_10px_#9696961C] cursor-pointer"
             >
-              <div className="w-full h-48 sm:h-56 rounded-xl bg-gray-50 flex items-center justify-center p-2 mb-3">
+              <div className="w-full h-48 sm:h-56 rounded-xl bg-gray-50 flex items-center justify-center p-2 mb-3 relative">
                 {post.previewImage ? (
-                  <img
+                  <Image
                     src={post.previewImage}
                     alt={post.title}
-                    className="block max-h-full max-w-full object-contain"
+                    fill
+                    className="object-contain p-2"
                   />
                 ) : (
                   <div className="text-gray-400 text-sm">No image</div>

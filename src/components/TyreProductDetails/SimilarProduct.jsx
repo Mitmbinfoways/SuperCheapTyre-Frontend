@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import Link from './ui/Link';
 import { getSimilarProducts, getTyreById, getAllMasterFilters } from '../../axios/axios';
@@ -164,9 +165,11 @@ const SimilarProducts = ({ productCategory }) => {
 
                       {/* Product Image and Rating */}
                       <div className="flex flex-col gap-[6px] items-center w-full mb-[20px] sm:mb-[24px] md:mb-[26px] lg:mb-[28px]">
-                        <img
+                        <Image
                           src={product?.image}
                           alt={`${product?.brand} ${categoryTitle.slice(0, -1)} Product`}
+                          width={218}
+                          height={218}
                           className="w-full max-w-[218px] h-[218px] object-contain"
                         />
                       </div>

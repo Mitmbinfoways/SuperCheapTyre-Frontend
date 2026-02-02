@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 import img from '../../../public/privacy/privacybg.svg'
 import Link from 'next/link';
+import Image from 'next/image';
 
 function PrivacyPolicy() {
     const contactInfo = useSelector((state) => state.contact.data);
@@ -9,7 +10,11 @@ function PrivacyPolicy() {
     return (
         <div className="flex">
             <main className="flex-grow max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-12 relative overflow-x-hidden">
-                <img src={img} className='absolute right-0 -top-16 h-40 sm:h-96 max-w-full pointer-events-none select-none z-0' />
+                <Image
+                    src={img}
+                    alt="Privacy Background"
+                    className='absolute right-0 -top-16 h-40 sm:h-96 max-w-full pointer-events-none select-none z-0'
+                />
                 <div className="relative z-10">
                     {/* Title */}
                     <h1 className="text-xl sm:text-3xl font-medium px-6 sm:px-10 text-red-600 mb-4 sm:mb-6">

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { formatPhoneNumber } from "../../Utils/FormatePhoneNumber";
@@ -94,10 +95,11 @@ export const ContactSection = ({ contactData }) => {
 
   return (
     <section className="relative w-full h-auto overflow-visible">
-      <img
+      <Image
         className="absolute inset-0 w-full h-full object-cover"
         alt="New WHAT TO LOOK FOR"
         src="/contactus/contactbg.jpeg"
+        fill
       />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-10">
@@ -115,10 +117,12 @@ export const ContactSection = ({ contactData }) => {
             >
               <CardContent className="relative h-full p-4 sm:p-5 flex flex-col items-center justify-center gap-2">
                 <div className="flex justify-center">
-                  <img
+                  <Image
                     className="object-contain w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11"
                     alt="Contact icon"
                     src={card.icon}
+                    width={44}
+                    height={44}
                   />
                 </div>
 

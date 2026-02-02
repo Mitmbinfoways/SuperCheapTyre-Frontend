@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import { RiDeleteBin5Fill, RiDeleteBinFill, RiDeleteBinLine } from "react-icons/ri";
@@ -12,7 +13,13 @@ const CartItem = ({ item, productStock, loadingStock, onQuantityChange, onRemove
   return (
     <div className="flex flex-col sm:flex-row gap-4">
       <div className="flex-shrink-0 w-full sm:w-32 h-32 rounded-lg flex items-center justify-center cursor-pointer border border-black" onClick={() => router.push(`/productdetails/${item.id}`)}>
-        <img src={item.image} alt={item.name} className="w-28 h-28 object-contain" />
+        <Image
+          src={item.image}
+          alt={item.name}
+          width={112}
+          height={112}
+          className="w-28 h-28 object-contain"
+        />
       </div>
       <div className="flex-grow flex flex-col sm:flex-row justify-between gap-4">
         <div className="flex flex-col justify-between cursor-pointer" onClick={() => router.push(`/productdetails/${item.id}`)}>

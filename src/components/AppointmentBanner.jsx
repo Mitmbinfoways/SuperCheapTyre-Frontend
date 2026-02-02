@@ -3,21 +3,24 @@ import { images } from '../assets/data';
 import appointmentTyre from '../assets/home/appointmentgirl.png';
 import Link from 'next/link';
 
+import Image from 'next/image';
+
 const AppointmentBanner = () => {
   return (
     <section className="relative h-72 bg-gray-900 bg-white/10">
-      <img
+      <Image
         src={images.appointmentBg}
         alt="Tires stacked"
-        className="absolute inset-0 w-full h-full object-cover opacity-100"
+        fill
+        className="object-cover opacity-100"
       />
       <div className="relative h-full">
         {/* Tyre image anchored to container */}
         <div className="pointer-events-none absolute -bottom-40 right-0 sm:-bottom-12 md:bottom-0 sm:right-0 md:-right-6 lg:-right-14 xl:-right-24 z-0">
-          <img
-            src={appointmentTyre.src}
+          <Image
+            src={appointmentTyre}
             alt="Two tires"
-            className="w-40 xs:w-48 sm:w-60 md:w-72 lg:w-96 xl:w-[460px] sm:h-[454px] md:h-[360px] h-[554px]  object-contain drop-shadow-xl"
+            className="w-40 xs:w-48 sm:w-60 md:w-72 lg:w-96 xl:w-[460px] sm:h-[454px] md:h-[360px] h-[554px] object-contain drop-shadow-xl"
           />
         </div>
 

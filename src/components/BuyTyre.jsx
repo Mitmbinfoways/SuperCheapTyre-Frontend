@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import tyresIllustration from "../assets/home/Grouptyre.png";
 import formBackground from "../assets/home/bg.png";
 import SingleSelect from "./common/SingleSelect";
@@ -201,10 +202,10 @@ const BuyTyre = () => {
               <div className="relative flex items-center -space-x-8 sm:-space-x-12 md:-space-x-16 lg:-space-x-20 xl:-space-x-24">
                 <div className="relative">
                   <div className="absolute inset-0 blur-xl opacity-30 rounded-full transform -rotate-12"></div>
-                  <img
-                    src={tyresIllustration.src}
+                  <Image
+                    src={tyresIllustration}
                     alt="Tyre"
-                    className="relative hidden lg:block  xl:-top-14 z-30 w-full h-[580px] object-contain drop-shadow-2xl max-w-[clamp(10rem,40vw,28rem)] sm:max-w-[clamp(12rem,45vw,30rem)] md:max-w-[clamp(14rem,46vw,32rem)] lg:max-w-[clamp(16rem,44vw,34rem)] xl:max-w-[clamp(20rem,40vw,36rem)]"
+                    className="relative hidden lg:block xl:-top-14 z-30 w-full h-[580px] object-contain drop-shadow-2xl max-w-[clamp(10rem,40vw,28rem)] sm:max-w-[clamp(12rem,45vw,30rem)] md:max-w-[clamp(14rem,46vw,32rem)] lg:max-w-[clamp(16rem,44vw,34rem)] xl:max-w-[clamp(20rem,40vw,36rem)]"
                   />
                 </div>
                 {/* <div className="relative">

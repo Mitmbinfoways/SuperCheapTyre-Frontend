@@ -3,6 +3,7 @@ import img from '../../../public/privacy/privacybg.svg'
 import terms from '../../../public/terms/terms.svg'
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function Terms() {
     const contactInfo = useSelector((state) => state.contact.data);
@@ -10,7 +11,7 @@ function Terms() {
         <div className="flex">
 
             <main className="flex-grow max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-8 py-8 sm:py-12 relative overflow-x-hidden">
-                <img src={img} className='absolute -right-8 -top-24 h-40 sm:h-80 max-w-full pointer-events-none select-none z-0' />
+                <Image src={img} alt="Terms Background" className='absolute -right-8 -top-24 h-40 sm:h-80 max-w-full pointer-events-none select-none z-0' />
                 <div className="relative z-10">
                     {/* Title */}
                     <h1 className="text-xl sm:text-3xl font-medium px-6 sm:px-10 text-red-600 mb-4 sm:mb-6">
@@ -85,7 +86,7 @@ function Terms() {
                         </section>
                     </div>
                 </div>
-                <img src={terms} className='hidden xl:block absolute -right-0 top-52 h-40 sm:h-72 max-w-full pointer-events-none select-none' />
+                <Image src={terms} alt="Terms Illustration" className='hidden xl:block absolute -right-0 top-52 h-40 sm:h-72 max-w-full pointer-events-none select-none' />
 
             </main>
         </div>

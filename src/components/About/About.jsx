@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import AboutUsHero from './AboutUsHero';
 import AboutUsContent from './AboutUsContent';
 import AboutUsVideo from './AboutUsVideo';
@@ -53,11 +54,10 @@ export const About = () => {
               </div>
               <div className="order-1 lg:order-none lg:col-span-4 flex items-stretch">
                 <div className="h-full w-full">
-                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden">
-                    <img
-                      className="w-full h-full object-cover aspect-[2/1]"
-                      width={1200}
-                      height={600}
+                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden relative">
+                    <Image
+                      className="object-cover"
+                      fill
                       alt={decorativeImages[0].alt}
                       src={decorativeImages[0].src}
                     />
@@ -72,11 +72,10 @@ export const About = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch gap-4 sm:gap-6 min-h-[320px] sm:min-h-[360px] md:min-h-[400px]">
               <div className="order-1 lg:order-none lg:col-span-4 flex items-stretch">
                 <div className="h-full w-full">
-                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden">
-                    <img
-                      className="w-full h-full object-cover"
-                      width={1200}
-                      height={800}
+                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden relative">
+                    <Image
+                      className="object-cover"
+                      fill
                       alt={decorativeImages[1].alt}
                       src={decorativeImages[1].src}
                     />
@@ -101,11 +100,10 @@ export const About = () => {
               </div>
               <div className="order-1 lg:order-none lg:col-span-4 flex items-stretch">
                 <div className="h-full w-full">
-                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden">
-                    <img
-                      className="w-full h-full object-cover"
-                      width={1200}
-                      height={800}
+                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden relative">
+                    <Image
+                      className="object-cover"
+                      fill
                       alt={decorativeImages[2].alt}
                       src={decorativeImages[2].src}
                     />
@@ -120,11 +118,10 @@ export const About = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch gap-4 sm:gap-6 min-h-[320px] sm:min-h-[360px] md:min-h-[400px]">
               <div className="order-1 lg:order-none lg:col-span-4 flex items-stretch">
                 <div className="h-full w-full">
-                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden">
-                    <img
-                      className="w-full h-full object-cover"
-                      width={1200}
-                      height={800}
+                  <div className="w-full h-full min-h-[240px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[360px] rounded-[40px] overflow-hidden relative">
+                    <Image
+                      className="object-cover"
+                      fill
                       alt={decorativeImages[3].alt}
                       src={decorativeImages[3].src}
                     />
