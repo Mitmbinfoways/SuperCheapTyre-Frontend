@@ -1,4 +1,7 @@
 'use client';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchContactInfo } from '../store/slices/contactSlice';
 import Header from './Header';
 import Footer from './Footer';
 import { ToastContainer } from 'react-toastify';
@@ -8,6 +11,11 @@ import useGlobalImageOptimization from '../hooks/useGlobalImageOptimization';
 
 export default function ClientLayout({ children }) {
     useGlobalImageOptimization();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchContactInfo());
+    }, [dispatch]);
 
     return (
         <>

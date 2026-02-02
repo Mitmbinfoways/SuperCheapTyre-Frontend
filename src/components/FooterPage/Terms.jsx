@@ -1,24 +1,11 @@
+import { useSelector } from 'react-redux';
 import img from '../../../public/privacy/privacybg.svg'
 import terms from '../../../public/terms/terms.svg'
-import { getContactInfoDetail } from '../../axios/axios';
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 function Terms() {
-    const [contactInfo, setContactInfo] = useState([]);
-
-    const getContactInfo = async () => {
-        try {
-            const response = await getContactInfoDetail();
-            setContactInfo(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        getContactInfo();
-    }, []);
+    const contactInfo = useSelector((state) => state.contact.data);
     return (
         <div className="flex">
 
@@ -91,9 +78,9 @@ function Terms() {
                             <p className="mb-2">In case you need any inquiries about these Terms and Conditions, please call us:</p>
                             <div className="ml-4">
                                 <p className="font-semibold">Supercheap Tyres Dandenong</p>
-                                <p>📞 Phone: <a href={`tel:${formatPhoneNumber(contactInfo?.phone)}`} className="text-red-600 hover:underline">{formatPhoneNumber(contactInfo?.phone)}</a></p>
-                                <p>📧 Email: <a href={`mailto:${contactInfo?.email}`} className="text-red-600 hover:underline">{contactInfo?.email}</a></p>
-                                <p>📍 Address: <a href={`${contactInfo?.mapLocation}`} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{contactInfo?.address}</a></p>
+                                <p>📞 Phone: <Link href={`tel:${formatPhoneNumber(contactInfo?.phone)}`} className="text-red-600 hover:underline">{formatPhoneNumber(contactInfo?.phone)}</Link></p>
+                                <p>📧 Email: <Link href={`mailto:${contactInfo?.email}`} className="text-red-600 hover:underline">{contactInfo?.email}</Link></p>
+                                <p>📍 Address: <Link href={`${contactInfo?.mapLocation}`} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{contactInfo?.address}</Link></p>
                             </div>
                         </section>
                     </div>

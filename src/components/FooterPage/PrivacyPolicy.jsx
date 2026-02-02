@@ -1,23 +1,10 @@
-import { useEffect, useState } from 'react';
-import img from '../../../public/privacy/privacybg.svg'
-import { getContactInfoDetail } from '../../axios/axios';
+import { useSelector } from 'react-redux';
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
+import img from '../../../public/privacy/privacybg.svg'
+import Link from 'next/link';
 
 function PrivacyPolicy() {
-    const [contactInfo, setContactInfo] = useState([]);
-
-    const getContactInfo = async () => {
-        try {
-            const response = await getContactInfoDetail();
-            setContactInfo(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        getContactInfo();
-    }, []);
+    const contactInfo = useSelector((state) => state.contact.data);
 
     return (
         <div className="flex">
@@ -86,9 +73,9 @@ function PrivacyPolicy() {
                             <p className="mb-2">In case of any enquiries or further questions regarding this Privacy Policy or how we process your personal information then please contact us:</p>
                             <div className="ml-4">
                                 <p className="font-semibold">Supercheap Tyres Dandenong</p>
-                                <p>📞 Phone: <a href={`tel:${formatPhoneNumber(contactInfo?.phone)}`} className="text-red-600 hover:underline">{formatPhoneNumber(contactInfo?.phone)}</a></p>
-                                <p>📧 Email: <a href={`mailto:${contactInfo?.email}`} className="text-red-600 hover:underline">{contactInfo?.email}</a></p>
-                                <p>📍 Address: <a href={`${contactInfo?.mapLocation}`} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{contactInfo?.address}</a></p>
+                                <p>📞 Phone: <Link href={`tel:${formatPhoneNumber(contactInfo?.phone)}`} className="text-red-600 hover:underline">{formatPhoneNumber(contactInfo?.phone)}</Link></p>
+                                <p>📧 Email: <Link href={`mailto:${contactInfo?.email}`} className="text-red-600 hover:underline">{contactInfo?.email}</Link></p>
+                                <p>📍 Address: <Link href={`${contactInfo?.mapLocation}`} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{contactInfo?.address}</Link></p>
                             </div>
                         </section>
                     </div>

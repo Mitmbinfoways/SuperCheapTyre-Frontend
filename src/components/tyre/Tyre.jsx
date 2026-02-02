@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { useRouter, useSearchParams } from "next/navigation";
 import BreadcrumbSection from "./BreadcrumbSection";
 import FilterSidebar from "./FilterSidebar";
 import TyreGrid from "./TyreGrid";
 import Pagination from "./Pagination";
 import HeroBanner from "./HeroBanner";
-import { getTyres, getAllMasterFilters, getContactInfoDetail } from "../../axios/axios";
+import { getTyres, getAllMasterFilters } from "../../axios/axios";
 import { getTyreImageUrl } from "../../Utils/Utils";
 import Loader from "../common/Loader";
 import { formatPhoneNumber } from '../../Utils/FormatePhoneNumber';
+import Link from "next/link";
 
 function Tyre() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
-  const [contactData, setContactData] = useState(null);
+  const contactData = useSelector((state) => state.contact.data);
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -124,18 +126,7 @@ function Tyre() {
     search, // Add search to dependency array
   ]);
 
-  const fetchContactInfo = async () => {
-    try {
-      const response = await getContactInfoDetail();
-      setContactData(response.data.data);
-    } catch (error) {
-      console.error("Error fetching contact info:", error);
-    }
-  };
 
-  useEffect(() => {
-    fetchContactInfo();
-  }, []);
 
   // Scroll to top when page changes
   useEffect(() => {
@@ -224,9 +215,9 @@ function Tyre() {
                   <div className="p-4 text-center">
                     <p className="text-base font-lexend text-gray-600 max-w-lg text-center mb-6">
                       “It looks like this product is not currently listed on our website. Don’t worry our team can help! Call us at{" "}
-                      <a href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
-                        {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
-                      </a>{" "}
+                      <Link href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
+                        {formatPhoneNumber(contactData?.phone) || "+61 3 9793 6190"}
+                      </Link>{" "}
                       to get the product you’re looking for.”
                     </p>
                   </div>

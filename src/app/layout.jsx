@@ -1,4 +1,5 @@
 import ClientLayout from '../components/ClientLayout';
+import ReduxProvider from '../components/ReduxProvider';
 import '../index.css';
 
 export const metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
                     rel="stylesheet" />
             </head>
             <body className="bg-white">
-                <ClientLayout>{children}</ClientLayout>
+                <ReduxProvider>
+                    <ClientLayout>{children}</ClientLayout>
+                </ReduxProvider>
 
                 {/* Third Party Scripts similar to index.html */}
                 <script

@@ -1,23 +1,11 @@
 import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { ContactSection } from "./ContactSection";
 import { EnquirySection } from "./EnquirySection";
-import { getContactInfoDetail } from "../../axios/axios";
+
 
 export const ContactUs = () => {
-  const [contactData, setContactData] = useState(null);
-
-  const fetchContactInfo = async () => {
-    try {
-      const response = await getContactInfoDetail();
-      setContactData(response.data.data);
-    } catch (error) {
-      console.error("Error fetching contact info:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchContactInfo();
-  }, []);
+  const contactData = useSelector((state) => state.contact.data);
 
   return (
     <div

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
@@ -11,7 +12,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { secureGetItem } from '../Utils/encryption';
-import { getAllTyres, getContactInfoDetail } from '../axios/axios'; // Import the API function
+import { getAllTyres } from '../axios/axios'; // Import the API function
 import { getTyreImageUrl, formatCurrency } from '../Utils/Utils'; // Import image utility and formatCurrency
 import { formatPhoneNumber } from '../Utils/FormatePhoneNumber';
 
@@ -24,7 +25,7 @@ const Header = () => {
   const searchRef = useRef(null); // Ref for search container
   const router = useRouter(); // Hook for navigation
   const pathname = usePathname();
-  const [contactData, setContactData] = useState(null);
+  const contactData = useSelector((state) => state.contact.data);
 
   useEffect(() => {
     // Client-side only hydration for cart count
@@ -135,18 +136,7 @@ const Header = () => {
     setIsMenuOpen(false); // Close mobile menu
   };
 
-  const fetchContactInfo = async () => {
-    try {
-      const response = await getContactInfoDetail();
-      setContactData(response.data.data);
-    } catch (error) {
-      console.error("Error fetching contact info:", error);
-    }
-  };
 
-  useEffect(() => {
-    fetchContactInfo();
-  }, []);
 
   // Helper for NavLink active state
   const isLinkActive = (to) => {
@@ -170,20 +160,15 @@ const Header = () => {
                 <div className="flex items-center gap-8">
                   <div className="flex items-center space-x-3 -mx-5">
                     <a
-                      href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`}
+                      href={`tel:${(contactData?.phone || "+61397936190").replace(/\s+/g, "")}`}
                       className="flex items-center xl:gap-2 lg:gap-4 md:gap-3 gap-2 text-white hover:text-gray-300 cursor-pointer -mx-1"
-                      onClick={(e) => {
-                        if (!contactData?.phone) {
-                          console.log("Using fallback number");
-                        }
-                      }}
                     >
                       <div className="sm:hidden p-2 rounded-full bg-white text-black hover:bg-gray-100 transition-colors shadow-sm">
                         <FaPhoneAlt size={18} />
                       </div>
                       <FaPhoneAlt className="hidden sm:block size-6 md:size-4 lg:size-5 xl:size-4" />
                       <span className="hidden sm:block text-xs md:text-lg xl:text-sm lg:text-3xl">
-                        {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
+                        {formatPhoneNumber(contactData?.phone) || "+61 3 9793 6190"}
                       </span>
                     </a>
                   </div>
@@ -254,9 +239,9 @@ const Header = () => {
                         <p className="font-semibold text-gray-900 mb-2">Can’t find what you’re looking for?</p>
                         <p className="text-sm text-gray-600">
                           “It looks like this product is not currently listed on our website. Don’t worry our team can help! Call us at{" "}
-                          <a href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
+                          <Link href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
                             {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
-                          </a>{" "}
+                          </Link>{" "}
                           to get the product you’re looking for.”
                         </p>
                       </div>
@@ -379,9 +364,9 @@ const Header = () => {
                       <p className="font-semibold text-gray-900 mb-2">Can’t find what you’re looking for?</p>
                       <p className="text-sm text-gray-600">
                         “It looks like this product is not currently listed on our website. Don’t worry our team can help! Call us at{" "}
-                        <a href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
-                          {formatPhoneNumber(contactData?.phone) || "(03) 9793 6190"}
-                        </a>{" "}
+                        <Link href={`tel:${(contactData?.phone || "0397936190").replace(/\s+/g, "")}`} className="font-bold text-primary hover:underline">
+                          {formatPhoneNumber(contactData?.phone) || "+61 3 9793 6190"}
+                        </Link>{" "}
                         to get the product you’re looking for.”
                       </p>
                     </div>
@@ -390,7 +375,7 @@ const Header = () => {
               )}
             </form>
             <div className="flex items-center space-x-3 sm:space-x-4 pt-4 border-t border-gray-700 w-full justify-center">
-              <a
+              <Link
                 href="https://maps.app.goo.gl/8MCfDBfNa6dqdQY9A"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -398,7 +383,7 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <MdLocationPin size={18} className="sm:w-5 sm:h-5" />
-              </a>
+              </Link>
             </div>
           </nav>
         </div>

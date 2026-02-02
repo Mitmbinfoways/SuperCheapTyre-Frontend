@@ -4,25 +4,11 @@ import { images } from '../assets/data';
 import { Mail } from 'lucide-react';
 import { FaFacebookF } from "react-icons/fa";
 import { ImInstagram } from "react-icons/im";
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { getContactInfoDetail } from '../axios/axios';
+import { useSelector } from 'react-redux';
 import { formatPhoneNumber } from '../Utils/FormatePhoneNumber';
 
 const Footer = () => {
-    const [contactData, setContactData] = useState(null);
-
-    const fetchContactInfo = async () => {
-        try {
-            const response = await getContactInfoDetail();
-            setContactData(response.data.data);
-        } catch (error) {
-            console.error("Error fetching contact info:", error);
-        }
-    };
-    useEffect(() => {
-        fetchContactInfo();
-    }, []);
+    const contactData = useSelector((state) => state.contact.data);
 
     return (
         <footer className="relative z-50 bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20]">
@@ -36,9 +22,9 @@ const Footer = () => {
                             Our mission is to provide convenience, safety and value for every customer on every road in Australia.
                         </p>
                         <div className="flex space-x-3 sm:space-x-4 justify-center sm:justify-start">
-                            <a href="https://www.facebook.com/Supercheaptyre" className="p-2 bg-white rounded-full"><FaFacebookF size={18} className="sm:w-5 sm:h-5 text-black" /></a>
+                            <Link href="https://www.facebook.com/Supercheaptyre" className="p-2 bg-white rounded-full"><FaFacebookF size={18} className="sm:w-5 sm:h-5 text-black" /></Link>
                             {/* <a href="#" className="p-2 bg-white rounded-full"><FaTwitter size={18} className="sm:w-5 sm:h-5 text-black" /></a> */}
-                            <a href="https://www.instagram.com/supercheaptyres/" className="p-2 bg-white rounded-full"><ImInstagram size={18} className="sm:w-5 sm:h-5 text-black rounded-sm" /></a>
+                            <Link href="https://www.instagram.com/supercheaptyres/" className="p-2 bg-white rounded-full"><ImInstagram size={18} className="sm:w-5 sm:h-5 text-black rounded-sm" /></Link>
                         </div>
                     </div>
 
@@ -64,17 +50,18 @@ const Footer = () => {
                             <ul className="space-y-2 sm:space-y-3 font-plus-jakarta text-white text-sm sm:text-base">
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
                                     <Image src='/contactus/call.svg' alt="Phone" width={20} height={20} className="w-5 h-5 sm:w-5 sm:h-5 text-white" />
-                                    <a href={`tel:${contactData?.phone || "(03)97936190"}`}>
-                                        {formatPhoneNumber(contactData?.phone) || "(03)97936190"}
-                                    </a>
+                                    <Link href={`tel:${contactData?.phone || "+61397936190"}`}>
+                                        {formatPhoneNumber(contactData?.phone) || "+61 3 9793 6190"}
+                                    </Link>
                                 </li>
                                 <li className="flex items-center space-x-2 sm:space-x-3 justify-center sm:justify-start">
                                     <Mail size={16} className="sm:w-5 sm:h-5" />
-                                    <a
-                                        href={`mailto:${contactData?.email || "supercheaptyredandenong@gmail.com"}`}
+                                    <Link
+                                        target='_blank'
+                                        href={`https://mail.google.com/mail/?view=cm&fs=1&to=${contactData?.email || "goodwillmotors@hotmail.com"}`}
                                     >
-                                        {contactData?.email || "supercheaptyredandenong@gmail.com"}
-                                    </a>
+                                        {contactData?.email || "goodwillmotors@hotmail.com"}
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
