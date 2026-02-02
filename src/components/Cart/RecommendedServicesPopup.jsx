@@ -100,7 +100,7 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
         }
     };
 
-    if (loading) return null; // Or a spinner if preferred, but null avoids flash if empty
+    if (loading) return null;
 
     if (services.length === 0) return null;
 
@@ -139,7 +139,7 @@ const RecommendedServicesPopup = ({ onClose, onContinue, refreshCart }) => {
                                 </div>
 
                                 {/* IMAGE */}
-                                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 relative">
                                     {service.images?.length > 0 ? (
                                         <Image
                                             src={getBlogImageUrl(service.images[0])}

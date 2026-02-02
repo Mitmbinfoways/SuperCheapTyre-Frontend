@@ -199,14 +199,7 @@ const ProductInfo = ({ product }) => {
   return (
     <div className="w-full">
       <div className="flex flex-col gap-[8px] sm:gap-[12px] md:gap-[14px] lg:gap-[16px] w-full">
-        {/* Product Specifications */}
         <div className="flex flex-col w-full">
-          {/* Specification Header */}
-          {/* <div className="flex justify-center items-center w-auto border border-white mb-[-2px]">
-                
-              </div> */}
-
-          {/* Specifications List */}
           <div className="border border-[#e0e0e0] rounded-[14px] bg-white px-[16px] sm:px-[18px] md:px-[20px] lg:px-[22px] py-[10px]">
             <div className="flex gap-6 border-b border-gray-200 mb-4 px-[6px]">
               <button
@@ -271,7 +264,7 @@ const ProductInfo = ({ product }) => {
                 <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-3 max-h-72 overflow-y-auto h-fit ">
                   {relatedData.map((item) => (
                     <div key={item._id} >
-                      <Link to={isWheelProduct ? `/wheel/${item._id}` : `/productdetails/${item._id}`}>
+                      <Link href={isWheelProduct ? `/wheel/${item._id}` : `/productdetails/${item._id}`}>
                         <div className="hover:underline underline-offset-2">
                           {getFilterValue(item?.tyreSpecifications?.width)}/
                           {getFilterValue(item?.tyreSpecifications?.profile)}
