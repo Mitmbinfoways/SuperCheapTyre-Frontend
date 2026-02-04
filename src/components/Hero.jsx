@@ -201,7 +201,7 @@ const Hero = ({ homeData }) => {
                   nextEl: '.hero-next',
                 }}
                 loop={banners.length > 1}
-                className="hero-carousel w-full md:aspect-video aspect-[4/5]"
+                className="hero-carousel w-full md:aspect-video aspect-[4/5] max-h-[750px]"
                 onSlideChange={handleSlideChange}
                 onInit={handleInit}
               >
