@@ -46,7 +46,7 @@ const FilterSidebar = () => {
       if (response.data.statusCode === 200) {
         // Filter brands by category 'tyre' and map to options
         const brands = response.data.data.items
-          .filter(brand => brand.category === 'tyre')
+          .filter(brand => brand.category === 'tyre' || brand.category === 'both')
           .map(brand => ({
             value: brand.name,
             label: brand.name
