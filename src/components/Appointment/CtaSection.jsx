@@ -12,7 +12,7 @@ const CtaSection = () => {
               src={appointmentIllustration}
               sizes="(min-width: 1024px) 28vw, 40vw"
               alt="Professional holding a clipboard"
-              className="h-auto max-lg:max-h-96 aspect-[2/3] hidden md:block max-lg:opacity-70"
+              className="hidden md:block md:w-[17rem] xl:w-[26rem] aspect-[2/3]"
             />
           </div>
           <div className="relative z-10 order-1 md:order-2 text-center  ">
