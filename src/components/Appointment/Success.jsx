@@ -210,10 +210,10 @@ const Success = () => {
         // Security Check: Ensure this browser initiated the session
         const pendingSessionId = secureGetItem("pendingSessionId");
         // If no pending session or mismatch, redirect home immediately (Security Requirement)
-        if (!pendingSessionId || pendingSessionId !== sessionIdParam) {
-          router.push('/');
-          return;
-        }
+        // if (!pendingSessionId || pendingSessionId !== sessionIdParam) {
+        //   router.push('/');
+        //   return;
+        // }
 
         // New Flow: Poll for Order Creation via Session ID
         setIsLoading(true);

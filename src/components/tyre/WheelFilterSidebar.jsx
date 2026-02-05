@@ -41,8 +41,9 @@ const WheelFilterSidebar = () => {
       const response = await axiosInstance.get('/api/v1/brand');
       if (response.data.statusCode === 200) {
         // Filter brands by category 'wheel' and map to options
+        console.log("response", response.data.data.items)
         const brands = response.data.data.items
-          .filter(brand => brand.category === 'wheel')
+          .filter(brand => brand.category === 'wheel' || brand.category === 'both')
           .map(brand => ({
             value: brand.name,
             label: brand.name
