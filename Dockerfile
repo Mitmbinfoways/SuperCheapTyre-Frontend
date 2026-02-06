@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install --force
+
+COPY . .
+
+# Build the Next.js application
+RUN npm run build
+
+EXPOSE 4173
+
+CMD ["npm", "start"]
