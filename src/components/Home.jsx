@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Hero from './Hero';
-import BuyTyre from './BuyTyre';
-import FeaturedProducts from './FeaturedProducts';
-import TireShowcase from './TireShowcase';
-import Brands from './Brands';
-import WhyChooseUs from './WhyChooseUs';
-import Testimonials from './Testimonials';
-import AppointmentBanner from './AppointmentBanner';
-import { gethomedata } from '../axios/axios';
-import Loader from './common/Loader';
+import React, { useEffect, useState } from "react";
+import Hero from "./Hero";
+import BuyTyre from "./BuyTyre";
+import FeaturedProducts from "./FeaturedProducts";
+import TireShowcase from "./TireShowcase";
+import Brands from "./Brands";
+import WhyChooseUs from "./WhyChooseUs";
+import Testimonials from "./Testimonials";
+import AppointmentBanner from "./AppointmentBanner";
+import { gethomedata } from "../axios/axios";
+import Loader from "./common/Loader";
 
 function Home() {
   const [homeData, setHomeData] = useState(null);
@@ -19,7 +19,7 @@ function Home() {
       const response = await gethomedata();
       setHomeData(response.data.data);
     } catch (error) {
-      console.error('Error fetching home data:', error);
+      console.error("Error fetching home data:", error);
       setHomeData(null);
     } finally {
       setLoading(false);
@@ -35,7 +35,7 @@ function Home() {
   }
 
   return (
-    <main className='overflow-x-hidden'>
+    <main className="overflow-x-hidden overflow-y-hidden">
       <Hero homeData={homeData} />
       {/* <BuyTyre /> */}
       <FeaturedProducts homeData={homeData} />
